@@ -1,0 +1,78 @@
+
+<resources>
+    <string name="app_name">NightViewer</string>
+    <string name="title_activity_preferences">Preferences</string>
+
+    <!-- Menu -->
+    <string name="string_pref">Preferences</string>
+    <string name="string_about">About</string>
+    <string name="string_exit">Exit</string>
+
+    <!-- 일반 -->
+    <string name="string_general">General</string>
+    <string name="string_layout">Layout</string>
+    <string name="string_layout1">Landscape 1</string>
+    <string name="string_layout2">Landscape 2</string>
+    <string name="string_layout3">Landscape 3(Classic)</string>
+    <string name="string_layout4">Portrait 1</string>
+    <string name="string_enablenoti">Enable Notification</string>
+    <string name="string_readfromns">Read from Nightscout</string>
+    <string name="string_nsurl">Nightscout URL</string>
+
+    <!-- 혈당 -->
+    <string name="string_bg">Glucose</string>
+    <string name="string_bgunit">BG Units</string>
+    <string name="string_urgenthigh">Urgent High</string>
+    <string name="string_high">High</string>
+    <string name="string_low">Low</string>
+    <string name="string_urgentlow">Urgent Low</string>
+
+    <!-- 정보표시 -->
+    <string name="string_displayinfo">Display Info</string>
+    <string name="string_timeformat">Time Format</string>
+    <string name="string_24hours">24 Hour</string>
+    <string name="string_ampm">AM/PM</string>
+    <string name="string_displayiob">IOB</string>
+    <string name="string_displaycob">COB</string>
+    <string name="string_displaybasal">Basal</string>
+
+    <!-- 글자크기 -->
+    <string name="string_fontsize">Font Size</string>
+    <string name="string_fontsizebg">BG</string>
+    <string name="string_fontsizedirection">Direction</string>
+    <string name="string_fontsizetimeinfo">Time &amp; Info</string>
+
+    <!-- 글자색상 -->
+    <string name="string_fontcolor">Font Color</string>
+    <string name="string_fontcolornormal">In-range</string>
+    <string name="string_fontcolorhighlow">High|Low</string>
+    <string name="string_fontcolorurgenthighlow">Urgent High|Low</string>
+
+    <!-- 차트혈당 -->
+    <string name="string_chartbgpoint">Chart BG</string>
+    <string name="string_chartbgcolornormal">In-range Color</string>
+    <string name="string_chartbgcolorhighlow">High|Low Color</string>
+    <string name="string_chartbgcolorurgenthighlow">Urgent High|Low Color</string>
+    <string name="string_chartbgpointsize">BG Point Size</string>
+
+    <!-- 차트라인 -->
+    <string name="string_chartline">Chart Line</string>
+    <string name="string_chartlinecolorhighlow">High|Low Color</string>
+    <string name="string_chartlinecolorurgenthighlow">Urgent High|Low Color</string>
+    <string name="string_chartlinewidth">Line Width</string>
+
+    <!-- 색상 -->
+    <string name="string_white">White</string>
+    <string name="string_red">Red</string>
+    <string name="string_magenta">Magenta</string>
+    <string name="string_orange">Orange</string>
+    <string name="string_yellow">Yellow</string>
+    <string name="string_green">Green</string>
+    <string name="string_cyan">Cyan</string>
+    <string name="string_blue">Blue</string>
+    <string name="string_indigo">Indigo</string>
+    <string name="string_violet">Violet</string>
+    <string name="string_gray">Gray</string>
+    <string name="string_black">Black</string>
+
+</resources>

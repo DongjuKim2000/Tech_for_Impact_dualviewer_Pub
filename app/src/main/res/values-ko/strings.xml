@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NightViewer</string>
+    <string name="title_activity_preferences">환경설정</string>
+
+    <!-- Menu -->
+    <string name="string_pref">환경설정</string>
+    <string name="string_about">앱정보</string>
+    <string name="string_exit">종료</string>
+
+    <!-- 일반 -->
+    <string name="string_general">일반</string>
+    <string name="string_layout">레이아웃</string>
+    <string name="string_layout1">가로1</string>
+    <string name="string_layout2">가로2</string>
+    <string name="string_layout3">가로3(클래식)</string>
+    <string name="string_layout4">세로1</string>
+    <string name="string_enablenoti">상단알림 활성화</string>
+    <string name="string_readfromns">Nightscout에서 읽기</string>
+    <string name="string_nsurl">Nightscout 주소</string>
+
+    <!-- 혈당 -->
+    <string name="string_bg">혈당</string>
+    <string name="string_bgunit">혈당단위</string>
+    <string name="string_urgenthigh">위험 고혈당</string>
+    <string name="string_high">고혈당</string>
+    <string name="string_low">저혈당</string>
+    <string name="string_urgentlow">위험 저혈당</string>
+
+    <!-- 정보표시 -->
+    <string name="string_displayinfo">정보표시</string>
+    <string name="string_timeformat">시계형식</string>
+    <string name="string_24hours">24시간</string>
+    <string name="string_ampm">오전/오후</string>
+    <string name="string_displayiob">IOB</string>
+    <string name="string_displaycob">COB</string>
+    <string name="string_displaybasal">Basal</string>
+
+    <!-- 글자크기 -->
+    <string name="string_fontsize">글자 크기</string>
+    <string name="string_fontsizebg">혈당</string>
+    <string name="string_fontsizedirection">방향</string>
+    <string name="string_fontsizetimeinfo">시간 &amp; 기타정보</string>
+
+    <!-- 글자색상 -->
+    <string name="string_fontcolor">글자 색상</string>
+    <string name="string_fontcolornormal">일반혈당</string>
+    <string name="string_fontcolorhighlow">고저혈당</string>
+    <string name="string_fontcolorurgenthighlow">위험고저혈당</string>
+
+    <!-- 차트혈당 -->
+    <string name="string_chartbgpoint">차트 혈당</string>
+    <string name="string_chartbgcolornormal">일반혈당 색상</string>
+    <string name="string_chartbgcolorhighlow">고저혈당 색상</string>
+    <string name="string_chartbgcolorurgenthighlow">위험고저혈당 색상</string>
+    <string name="string_chartbgpointsize">혈당포인트 크기</string>
+
+    <!-- 차트라인 -->
+    <string name="string_chartline">차트 고저혈당선</string>
+    <string name="string_chartlinecolorhighlow">고저혈당 색상</string>
+    <string name="string_chartlinecolorurgenthighlow">위험고저혈당 색상</string>
+    <string name="string_chartlinewidth">선두께</string>
+
+    <!-- 색상 -->
+    <string name="string_white">흰색</string>
+    <string name="string_red">빨강색</string>
+    <string name="string_magenta">자홍색</string>
+    <string name="string_orange">주황색</string>
+    <string name="string_yellow">노랑색</string>
+    <string name="string_green">초록색</string>
+    <string name="string_cyan">청록색</string>
+    <string name="string_blue">파랑색</string>
+    <string name="string_indigo">남색</string>
+    <string name="string_violet">보라색</string>
+    <string name="string_gray">회색</string>
+    <string name="string_black">검정색</string>
+
+</resources>

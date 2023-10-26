@@ -1,0 +1,201 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="pref_ns"
+        app:title="@string/string_general">
+
+        <ListPreference
+            app:key="pref_layout"
+            app:title="@string/string_layout"
+            app:entries="@array/LayoutEntries"
+            app:entryValues="@array/LayoutValues"
+            app:defaultValue="1"/>
+
+        <SwitchPreference
+            app:title="@string/string_enablenoti"
+            app:key="enablenoti"
+            app:disableDependentsState="false">
+        </SwitchPreference>
+
+        <SwitchPreference
+            app:title="@string/string_readfromns"
+            app:key="readfromns"
+            app:disableDependentsState="false">
+        </SwitchPreference>
+
+        <EditTextPreference
+            app:key="ns_url"
+            app:title="@string/string_nsurl"
+            app:dialogTitle="Enter your URL"
+            app:defaultValue="https://{yoursite}.herokuapp.com"
+            app:dependency="readfromns">
+        </EditTextPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="glucose"
+        app:title="@string/string_bg">
+
+        <!--
+        <ListPreference
+            app:key="units"
+            app:title="@string/string_bgunit"
+            app:entries="@array/bgUnitEntries"
+            app:entryValues="@array/bgUnitValues"
+            app:defaultValue="mgdl"/>
+        string -->
+
+        <EditTextPreference
+            app:key="urgent_high_value"
+            app:title="@string/string_urgenthigh"
+            app:defaultValue="260"/>
+
+        <EditTextPreference
+            app:key="high_value"
+            app:title="@string/string_high"
+            app:defaultValue="180"/>
+
+        <EditTextPreference
+            app:key="low_value"
+            app:title="@string/string_low"
+            app:defaultValue="80"/>
+
+        <EditTextPreference
+            app:key="urgent_low_value"
+            app:title="@string/string_urgentlow"
+            app:defaultValue="55"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="display"
+        app:title="@string/string_displayinfo">
+
+        <ListPreference
+            app:key="preftimeformat"
+            app:title="@string/string_timeformat"
+            app:entries="@array/timeformatEntries"
+            app:entryValues="@array/timeformatValues"
+            app:defaultValue="timeformat24"/>
+
+        <SwitchPreference
+            app:key="iob_enable"
+            app:title="@string/string_displayiob"
+            app:disableDependentsState="false">
+        </SwitchPreference>
+
+        <SwitchPreference
+            app:key="cob_enable"
+            app:title="@string/string_displaycob"
+            app:disableDependentsState="false">
+        </SwitchPreference>
+
+        <SwitchPreference
+            app:key="basal_enable"
+            app:title="@string/string_displaybasal"
+            app:disableDependentsState="false">
+        </SwitchPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="fontsize"
+        app:title="@string/string_fontsize">
+
+        <EditTextPreference
+            app:key="bg_font"
+            app:title="@string/string_fontsizebg"
+            app:defaultValue="200"/>
+
+        <EditTextPreference
+            app:key="direction_font"
+            app:title="@string/string_fontsizedirection"
+            app:defaultValue="100"/>
+
+        <EditTextPreference
+            app:key="timeinfo_font"
+            app:title="@string/string_fontsizetimeinfo"
+            app:defaultValue="30"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="fontcolor"
+        app:title="@string/string_fontcolor">
+
+        <ListPreference
+            app:key="fontcolornormal"
+            app:title="@string/string_fontcolornormal"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFFFFFF"/>
+
+        <ListPreference
+            app:key="fontcolorhighlow"
+            app:title="@string/string_fontcolorhighlow"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFFFFFF"/>
+
+        <ListPreference
+            app:key="fontcolorurgenthighlow"
+            app:title="@string/string_fontcolorurgenthighlow"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFFFFFF"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="chartbgpoint"
+        app:title="@string/string_chartbgpoint">
+
+        <ListPreference
+            app:key="chartbgcolornormal"
+            app:title="@string/string_chartbgcolornormal"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FC00FF00"/>
+
+        <ListPreference
+            app:key="chartbgcolorhighlow"
+            app:title="@string/string_chartbgcolorhighlow"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFFFF00"/>
+
+        <ListPreference
+            app:key="chartbgcolorurgenthighlow"
+            app:title="@string/string_chartbgcolorurgenthighlow"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFF0000"/>
+
+        <EditTextPreference
+            app:key="chartbgpointsize"
+            app:title="@string/string_chartbgpointsize"
+            app:defaultValue="5"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="chartline"
+        app:title="@string/string_chartline">
+
+        <ListPreference
+            app:key="chartlinecolorhighlow"
+            app:title="@string/string_chartlinecolorhighlow"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFFFF00"/>
+
+        <ListPreference
+            app:key="chartlinecolorurgenthighlow"
+            app:title="@string/string_chartlinecolorurgenthighlow"
+            app:entries="@array/pref_color"
+            app:entryValues="@array/pref_color_code"
+            app:defaultValue="#FCFF0000"/>
+
+        <EditTextPreference
+            app:key="chartlinewidth"
+            app:title="@string/string_chartlinewidth"
+            app:defaultValue="1"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
