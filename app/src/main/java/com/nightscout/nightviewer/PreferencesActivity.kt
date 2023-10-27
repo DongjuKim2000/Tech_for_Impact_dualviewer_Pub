@@ -131,10 +131,6 @@ class PreferencesActivity : AppCompatActivity(),
         val cob_enable = pref.getBoolean("cob_enable", false)
         val basal_enable = pref.getBoolean("basal_enable", false)
 
-        val bg_font = pref.getString("bg_font", "200")
-        val direction_font = pref.getString("direction_font", "50")
-        val timeinfo_font = pref.getString("timeinfo_font", "20")
-
         val fontcolornormal = pref.getString("fontcolornormal", "#FCFFFFFF")
         val fontcolorhighlow = pref.getString("fontcolorhighlow", "#FCFFFFFF")
         val fontcolorurgenthighlow = pref.getString("fontcolorurgenthighlow", "#FCFFFFFF")
@@ -165,10 +161,6 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putBoolean("iob_enable", iob_enable)
             editor.putBoolean("cob_enable", cob_enable)
             editor.putBoolean("basal_enable", basal_enable)
-
-            editor.putString("bg_font", bg_font)
-            editor.putString("direction_font", direction_font)
-            editor.putString("timeinfo_font", timeinfo_font)
 
             editor.putString("fontcolornormal", fontcolornormal)
             editor.putString("fontcolorhighlow", fontcolorhighlow)

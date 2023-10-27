@@ -21,6 +21,7 @@ import android.widget.TextView
 import android.content.SharedPreferences
 import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -33,40 +34,9 @@ class FullscreenActivity2 : AppCompatActivity() {
     lateinit var binding: ActivityFullscreen2Binding
     val showinfobr = ShowinfoBR()
     private var updateTimer: CountDownTimer? = null
-
-    private lateinit var fullscreenContent1: TextView
-    private lateinit var fullscreenContent2: TextView
-    private lateinit var fullscreenContent3: LineChart
-    private lateinit var fullscreenContent4: TextView
-
+    private lateinit var fullscreenContent: ConstraintLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
-
-
-    @SuppressLint("InlinedApi")
-    private val hidePart2Runnable = Runnable {
-        // Delayed removal of status and navigation bar
-        if (Build.VERSION.SDK_INT >= 30) {
-            fullscreenContent1.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            fullscreenContent2.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            fullscreenContent3.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            fullscreenContent4.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-        } else {
-            // Note that some of these constants are new as of API 16 (Jelly Bean)
-            // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
-            fullscreenContent1.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            fullscreenContent2.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            fullscreenContent3.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            fullscreenContent4.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
-    }
-    private val showPart2Runnable = Runnable {
-        // Delayed display of UI elements
-        supportActionBar?.show()
-        //fullscreenContentControls.visibility = View.VISIBLE
-    }
     private var isFullscreen: Boolean = false
-    private val hideRunnable = Runnable { hide() }
 
     inner class ShowinfoBR : BroadcastReceiver()
     {
@@ -80,17 +50,6 @@ class FullscreenActivity2 : AppCompatActivity() {
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
      */
-    private val delayHideTouchListener = View.OnTouchListener { view, motionEvent ->
-        when (motionEvent.action) {
-            MotionEvent.ACTION_DOWN -> if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS)
-            }
-            MotionEvent.ACTION_UP -> view.performClick()
-            else -> {
-            }
-        }
-        false
-    }
 
     @SuppressLint("ClickableViewAccessibility")
 
@@ -182,15 +141,8 @@ class FullscreenActivity2 : AppCompatActivity() {
         }
         isFullscreen = true
         // Set up the user interaction to manually show or hide the system UI.
-        //fullscreenContent = binding.screen1
-        fullscreenContent1 = binding.screenBg
-        fullscreenContent2 = binding.screenDirection
-        fullscreenContent3 = binding.screenLinechart
-        fullscreenContent4 = binding.screenInfo
-        fullscreenContent1.setOnClickListener { toggle() }
-        fullscreenContent2.setOnClickListener { toggle() }
-        fullscreenContent3.setOnClickListener { toggle() }
-        fullscreenContent4.setOnClickListener { toggle() }
+        fullscreenContent = binding.mainlayout2
+        fullscreenContent.setOnClickListener { toggle() }
 
         val filter = IntentFilter()
         filter.addAction("showinfo") //수신할 action 종류 넣기
@@ -224,8 +176,6 @@ class FullscreenActivity2 : AppCompatActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-
-        delayedHide(100)
     }
 
     override fun onResume() {
@@ -276,15 +226,9 @@ class FullscreenActivity2 : AppCompatActivity() {
 
         // Show the system bar
         if (Build.VERSION.SDK_INT >= 30) {
-            fullscreenContent1.windowInsetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            fullscreenContent2.windowInsetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            fullscreenContent3.windowInsetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            fullscreenContent4.windowInsetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+            fullscreenContent.windowInsetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
         } else {
-            fullscreenContent1.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            fullscreenContent2.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            fullscreenContent3.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            fullscreenContent4.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            fullscreenContent.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         }
         isFullscreen = true
 
@@ -294,10 +238,24 @@ class FullscreenActivity2 : AppCompatActivity() {
 
     }
 
-    private fun delayedHide(delayMillis: Int) {
-        hideHandler.removeCallbacks(hideRunnable)
-        hideHandler.postDelayed(hideRunnable, delayMillis.toLong())
+
+    @SuppressLint("InlinedApi")
+    private val hidePart2Runnable = Runnable {
+        // Delayed removal of status and navigation bar
+        if (Build.VERSION.SDK_INT >= 30) {
+            fullscreenContent.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+        } else {
+            // Note that some of these constants are new as of API 16 (Jelly Bean)
+            // and API 19 (KitKat). It is safe to use them, as they are inlined
+            // at compile-time and do nothing on earlier devices.
+            fullscreenContent.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
     }
+    private val showPart2Runnable = Runnable {
+        // Delayed display of UI elements
+        supportActionBar?.show()
+    }
+
 
     /*private fun showinfo() {
 
@@ -356,9 +314,9 @@ class FullscreenActivity2 : AppCompatActivity() {
         binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
         binding.screenInfo.text = info
 
-        binding.screenBg.textSize = pref_bgfont.toFloat()
-        binding.screenDirection.textSize = pref_directionfont.toFloat()
-        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
+//        binding.screenBg.textSize = pref_bgfont.toFloat()
+//        binding.screenDirection.textSize = pref_directionfont.toFloat()
+//        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
 
 
 
