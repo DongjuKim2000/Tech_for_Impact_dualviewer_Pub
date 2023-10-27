@@ -22,6 +22,8 @@ import android.content.SharedPreferences
 import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.dualviewer.GraphThread
+import androidx.core.text.HtmlCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -37,6 +39,8 @@ class FullscreenActivity2 : AppCompatActivity() {
     private lateinit var fullscreenContent: ConstraintLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
     private var isFullscreen: Boolean = false
+
+    private val internetBroadcaster = InternetBroadcaster()
 
     inner class ShowinfoBR : BroadcastReceiver()
     {
@@ -71,45 +75,28 @@ class FullscreenActivity2 : AppCompatActivity() {
                 return true
             }
             R.id.menu_about -> {
+                val dialogView = LayoutInflater.from(this).inflate(R.layout.menu_about_layout, null)
+                val messageTextView = dialogView.findViewById<TextView>(R.id.about_message)
+                messageTextView.movementMethod = LinkMovementMethod.getInstance()
 
-                val image = ImageView(this)
-                image.setImageResource(R.drawable.kst1d)
-
-                var msg = "Made by 김해서연아빠<br>"
-                msg += "Icon directed by 광명셀리나맘 Icon made by 광명셩키<br>"
-                msg += "Thanks to 박상미 강서연 강지유 시조새팬클럽<br>"
-                msg += "and 한국1형당뇨병환우회<br><br>"
-                msg += "환우회 링크   :&nbsp;"
-                msg += "<a href=\"http://kst1d.org\">홈페이지</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://cafe.naver.com/t1d\">공식카페(슈거트리)</a><br>"
-                msg += "<a href=\"https://blog.naver.com/kst1diabetes\">블로그</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://www.youtube.com/channel/UCyO4LR8XD-UzCdsjAWRGlNQ?view_as=subscriber\">유튜브</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://www.instagram.com/kst1diabetes\">인스타그램</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://www.facebook.com/%ED%95%9C%EA%B5%AD1%ED%98%95%EB%8B%B9%EB%87%A8%EB%B3%91%ED%99%98%EC%9A%B0%ED%9A%8C-509826469456836\">페이스북</a>"
-
-                var newmsg = Html.fromHtml(msg)
-
-                val d: AlertDialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogTheme))
-
-                    .setPositiveButton("OK", null)
-                    //.setNegativeButton(android.R.string.ok, null)
-                    //.setNeutralButton(android.R.string.ok, null)
+                val about_message: AlertDialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogTheme))
+                    .setPositiveButton("Thank you", null)
                     .setIcon(R.mipmap.ic_main_round)
-                    .setTitle("Nightviewer v1.11")
-                    .setMessage(newmsg)
-                    .setView(image)
+                    .setTitle(R.string.about_title)
+                    .setView(dialogView)
                     .create()
+                about_message.show()
 
-                d.show()
+                val positiveButton: Button = about_message.getButton(AlertDialog.BUTTON_POSITIVE)
+                positiveButton.setTextColor(Color.parseColor("#00ff00"))
 
-                val positiveButton: Button = d.getButton(AlertDialog.BUTTON_POSITIVE)
-                positiveButton.setTextColor(Color.parseColor("#515151"))
+                (about_message.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
 
-                (d.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
-                //(d.findViewById(android.R.id.message) as TextView).gravity = Gravity.CENTER
+                val htmlMessage = HtmlCompat.fromHtml(getString(R.string.menu_about_message), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                messageTextView.text = htmlMessage
+                messageTextView.movementMethod = LinkMovementMethod.getInstance()
 
                 return true
-
             }
             R.id.menu_exit -> {
                 finish()
@@ -163,6 +150,12 @@ class FullscreenActivity2 : AppCompatActivity() {
         }
         updateTimer?.start()
 
+        // 인터넷 연결 상태를 감지하는 Receiver
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        this.registerReceiver(internetBroadcaster, filter)
+
+        Log.d("Activity2","onCreate 끝")
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -187,9 +180,10 @@ class FullscreenActivity2 : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        Log.d("Activity2","onDetroy  시작")
         super.onDestroy()
         try{unregisterReceiver(showinfobr)} catch (e: Exception){}
-        //log.d(activityName,"onDestroy")
+        try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
 
     private fun toggle() {
@@ -246,6 +240,7 @@ class FullscreenActivity2 : AppCompatActivity() {
         // Delayed display of UI elements
         supportActionBar?.show()
     }
+
 
     private fun showinfo() {
 
@@ -308,6 +303,11 @@ class FullscreenActivity2 : AppCompatActivity() {
             binding.screenDirection.textSize = pref_directionfont.toFloat()
             binding.screenInfo.textSize = pref_timeinfofont.toFloat()
         }
+
+        //그래프 표시
+        val lineChart: LineChart = findViewById(R.id.lineChart)
+        val thread = GraphThread(lineChart, baseContext)
+        thread.start()
 
         if (isFullscreen) { hide() }
         fun getComplementaryColor(color: Int): Int {

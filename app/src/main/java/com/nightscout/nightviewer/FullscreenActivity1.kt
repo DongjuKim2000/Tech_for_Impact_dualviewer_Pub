@@ -28,6 +28,8 @@ import java.text.SimpleDateFormat
 import android.os.CountDownTimer
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.dualviewer.GraphThread
+import androidx.core.text.HtmlCompat
 
 // 멀티스크린을 위한 액티비티입니다.
 class FullscreenActivity1 : AppCompatActivity() {
@@ -38,6 +40,8 @@ class FullscreenActivity1 : AppCompatActivity() {
     private lateinit var fullscreenContent: ConstraintLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
     private var isFullscreen: Boolean = false
+
+    private val internetBroadcaster = InternetBroadcaster()
 
     inner class ShowinfoBR : BroadcastReceiver()
     {
@@ -62,42 +66,30 @@ class FullscreenActivity1 : AppCompatActivity() {
                 startActivity(i) // preference 설정 페이지로 넘어감
                 return true
             }
-            R.id.menu_about -> {
+                R.id.menu_about -> {
+                    val dialogView = LayoutInflater.from(this).inflate(R.layout.menu_about_layout, null)
+                    val messageTextView = dialogView.findViewById<TextView>(R.id.about_message)
+                    messageTextView.movementMethod = LinkMovementMethod.getInstance()
 
-                val image = ImageView(this)
-                image.setImageResource(R.drawable.kst1d)
-                // 다이얼로그로 아래 메시지 출력
-                var msg = "Made by 김해서연아빠<br>"
-                msg += "Icon directed by 광명셀리나맘 Icon made by 광명셩키<br>"
-                msg += "Thanks to 박상미 강서연 강지유 시조새팬클럽<br>"
-                msg += "and 한국1형당뇨병환우회<br><br>"
-                msg += "환우회 링크   :&nbsp;"
-                msg += "<a href=\"http://kst1d.org\">홈페이지</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://cafe.naver.com/t1d\">공식카페(슈거트리)</a><br>"
-                msg += "<a href=\"https://blog.naver.com/kst1diabetes\">블로그</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://www.youtube.com/channel/UCyO4LR8XD-UzCdsjAWRGlNQ?view_as=subscriber\">유튜브</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://www.instagram.com/kst1diabetes\">인스타그램</a>&nbsp;&nbsp;&nbsp;"
-                msg += "<a href=\"https://www.facebook.com/%ED%95%9C%EA%B5%AD1%ED%98%95%EB%8B%B9%EB%87%A8%EB%B3%91%ED%99%98%EC%9A%B0%ED%9A%8C-509826469456836\">페이스북</a>"
+                    val about_message: AlertDialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogTheme))
+                        .setPositiveButton("Thank you", null)
+                        .setIcon(R.mipmap.ic_main_round)
+                        .setTitle(R.string.about_title)
+                        .setView(dialogView)
+                        .create()
+                    about_message.show()
 
-                var newmsg = Html.fromHtml(msg)
+                    val positiveButton: Button = about_message.getButton(AlertDialog.BUTTON_POSITIVE)
+                    positiveButton.setTextColor(Color.parseColor("#00ff00"))
 
-                val d: AlertDialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogTheme))
+                    (about_message.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
 
-                    .setPositiveButton("OK", null)   //버튼
-                    .setIcon(R.mipmap.ic_main_round)    //메시지 밑에 아이콘
-                    .setTitle("Nightviewer v1.11")
-                    .setMessage(newmsg)
-                    .setView(image)
-                    .create()
+                    val htmlMessage = HtmlCompat.fromHtml(getString(R.string.menu_about_message), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    messageTextView.text = htmlMessage
+                    messageTextView.movementMethod = LinkMovementMethod.getInstance()
 
-                d.show()
-
-                val positiveButton: Button = d.getButton(AlertDialog.BUTTON_POSITIVE)
-                positiveButton.setTextColor(Color.parseColor("#515151"))
-
-                (d.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
-                return true
-            }
+                    return true
+                }
             R.id.menu_exit -> { // 설정 버튼 중 exit(나가기) 누름
                 finish()  // 앱 (완전히) 종료
                 return true
@@ -137,6 +129,7 @@ class FullscreenActivity1 : AppCompatActivity() {
 
         showinfo()
 
+
         val updateIntervalMillis: Long = 10000
 
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
@@ -148,6 +141,10 @@ class FullscreenActivity1 : AppCompatActivity() {
             }
         }
         updateTimer?.start()
+
+        // 인터넷 연결 상태를 감지하는 Receiver
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        this.registerReceiver(internetBroadcaster, filter)
 
         Log.d("Activity1","onCreate 끝")
 
@@ -181,6 +178,7 @@ class FullscreenActivity1 : AppCompatActivity() {
         Log.d("Activity1","onDetroy  시작")
         super.onDestroy()
         try{unregisterReceiver(showinfobr)} catch (e: Exception){}
+        try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
 
 
@@ -234,26 +232,32 @@ class FullscreenActivity1 : AppCompatActivity() {
     }
 
 
+
     private fun showinfo() {
 
         //설정
+
         val pref_timeformat = prefs.getString("preftimeformat", "timeformat24")
         val pref_urgenthighvalue = prefs.getString ("urgent_high_value", "260")?.toFloat() ?: 260f
         val pref_highvalue = prefs.getString ("high_value", "180")?.toFloat() ?: 180f
         val pref_lowvalue = prefs.getString ("low_value", "80")?.toFloat() ?: 80f
         val pref_urgentlowvalue = prefs.getString ("urgent_low_value", "55")?.toFloat() ?: 55f
+
         val pref_bgfont = prefs.getString ("bg_font", "200")?.toFloat() ?: 200f
         val pref_directionfont = prefs.getString ("direction_font", "100")?.toFloat() ?: 100f
         val pref_timeinfofont = prefs.getString ("timeinfo_font", "30")?.toFloat() ?: 30f
+
         val pref_fontcolornormal = prefs.getString ("fontcolornormal", "#FCFFFFFF").toString()
         val pref_fontcolorhighlow = prefs.getString ("fontcolorhighlow", "#FCFFFFFF").toString()
         val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FCFFFFFF").toString()
+
 
 
         val bgData = BGData(this)
         val bgInfo = bgData.BGInfo()
         //bgData.get_EntireBGInfo()
         val current_bgInfo = bgInfo.bginfo
+
         Log.d("current_info", "${current_bgInfo.toString()}")
 
 
@@ -262,11 +266,13 @@ class FullscreenActivity1 : AppCompatActivity() {
         var mins: Long = 0
         var displayMins: String = ""
         var info : String = ""
+      
         var int_bg =0
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
         info = "$displayTime   $displayMins"
+
         if(current_bgInfo!=null){
             var displayIOB = current_bgInfo.iob
 
@@ -297,6 +303,7 @@ class FullscreenActivity1 : AppCompatActivity() {
         }
 
         if (isFullscreen) { hide() }
+
         fun getComplementaryColor(color: Int): Int {
             val alpha = color shr 24 and 0xFF
             val red = 255 - (color shr 16 and 0xFF)
@@ -308,6 +315,7 @@ class FullscreenActivity1 : AppCompatActivity() {
         var fontcolor : Int
 
         try {
+
             val bgInt : Int = int_bg
 
             //일반혈당
@@ -324,6 +332,7 @@ class FullscreenActivity1 : AppCompatActivity() {
         catch (e: Exception ) {
             fontcolor = Color.WHITE
         }
+
         Log.d("color", "${fontcolor.toString()}")
 
         binding.screenBg.setTextColor(fontcolor)
@@ -355,6 +364,5 @@ class FullscreenActivity1 : AppCompatActivity() {
          */
         private const val UI_ANIMATION_DELAY = 300
     }
-
 
 }
