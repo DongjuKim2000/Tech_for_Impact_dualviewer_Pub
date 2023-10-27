@@ -38,6 +38,9 @@ class FullscreenActivity2 : AppCompatActivity() {
     private val hideHandler = Handler(Looper.myLooper()!!)
     private var isFullscreen: Boolean = false
 
+    private val internetBroadcaster = InternetBroadcaster()
+    private val intFilter = IntentFilter()
+
     inner class ShowinfoBR : BroadcastReceiver()
     {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -172,6 +175,12 @@ class FullscreenActivity2 : AppCompatActivity() {
         }
         updateTimer?.start()
 
+        // 인터넷 연결 상태를 감지하는 Receiver
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        this.registerReceiver(internetBroadcaster, intFilter)
+
+        Log.d("Activity2","onCreate 끝")
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -196,9 +205,10 @@ class FullscreenActivity2 : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        Log.d("Activity2","onDetroy  시작")
         super.onDestroy()
         try{unregisterReceiver(showinfobr)} catch (e: Exception){}
-        //log.d(activityName,"onDestroy")
+        try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
 
     private fun toggle() {
