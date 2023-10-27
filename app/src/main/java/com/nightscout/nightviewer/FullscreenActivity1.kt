@@ -136,7 +136,16 @@ class FullscreenActivity1 : AppCompatActivity() {
         filter.addAction("showinfo") //수신할 action 종류 넣기
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
-        val current_bgInfo = bgData.get_Recent10BGValues()[9]
+//        val current_bgInfo = bgData.get_Recent10BGValues()[9]
+        val currentBGlist = bgData.get_Recent10BGValues()
+        if(currentBGlist.isEmpty())
+            Log.d("BGlistEmpty", "empty")
+
+        else{
+            val index = currentBGlist.size
+            val current_bgInfo = currentBGlist[index]
+        }
+
 
         var  bg_value : String = current_bgInfo.bg
         var float_bg = bg_value.toFloat()
