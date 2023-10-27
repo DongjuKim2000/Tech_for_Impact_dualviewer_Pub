@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
+import android.util.Log
 
 fun convertUtcToKst(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
@@ -36,11 +37,14 @@ fun calculateDelta(glucoseData: List<BG>): String {
     val previousBg = glucoseData[glucoseData.size - 2].bg.toFloat()
 
     val glucoseChange = latestBg - previousBg
+    Log.d("delta", "${glucoseChange.toString()}")
+    val float_glucosechange = glucoseChange.toFloat()
+    val int_glucoseChange = float_glucosechange.toInt()
 
     return if (glucoseChange >= 0) {
-        "+${glucoseChange}"
+        "+${int_glucoseChange}"
     } else {
-        "${glucoseChange}"
+        "${int_glucoseChange}"
     }
 }
 
@@ -54,7 +58,7 @@ fun getGlucoseTrend(glucoseData: List<BG>): String {
 
     // 데이터 개수가 7개보다 작을 경우 "XX"를 반환합니다.
     if (glucoseData.size < 7) {
-        return "XX"
+        return "!!"
     }
 
     // Format for parsing timestamps
@@ -81,14 +85,14 @@ fun getGlucoseTrend(glucoseData: List<BG>): String {
     val rateOfChange = changeCurrent / timeDifferenceMinutes_2
     // 화살표로 나타내는 혈당 추세를 결정합니다.
     return when {
-        rateOfChange > 3 || changeIn30Mins > 90 -> "⇈"
+        rateOfChange > 3.0 || changeIn30Mins > 90 -> "⇈"
         rateOfChange in 2.0..3.0 || changeIn30Mins in 60.0..90.0 -> "↑"
         rateOfChange in 1.0..2.0 || changeIn30Mins in 30.0..60.0 -> "↗"
-        rateOfChange in -1.0..1.0 && changeIn30Mins in -30.0..30.0 -> "→"
+        rateOfChange in -1.0..1.0 || changeIn30Mins in -30.0..30.0 -> "→"
         rateOfChange in -2.0..-1.0 || changeIn30Mins in -30.0..-60.0 -> "↘"
         rateOfChange in -3.0..-2.0 || changeIn30Mins in -60.0..-90.0 -> "↓"
-        rateOfChange < -3 || changeIn30Mins < -90 -> "⇊"
-        else -> "XX"
+        rateOfChange < -3.0 || changeIn30Mins < -90 -> "⇊"
+        else -> ".."
     }
 }
 

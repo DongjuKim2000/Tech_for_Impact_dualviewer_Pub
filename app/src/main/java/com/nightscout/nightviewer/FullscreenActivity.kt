@@ -32,7 +32,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         val bgData = BGData(this)
         bgData.initializeBG_db()
-        bgData.get_EntireBGInfo()
+        //bgData.get_EntireBGInfo()
         //화면선택
         val pref_layout = prefs.getString ("pref_layout", "2").toString()
         when (pref_layout)
@@ -46,9 +46,7 @@ class FullscreenActivity : AppCompatActivity() {
                 Log.d("FullscreenActivity","스타트 activity1")
             }
 
-
         }
-
 
         //메인액티비티종료
         finish()

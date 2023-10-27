@@ -134,20 +134,11 @@ class FullscreenActivity2 : AppCompatActivity() {
         val filter = IntentFilter()
         filter.addAction("showinfo") //수신할 action 종류 넣기
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
-        val bgData = BGData(this)
-        val current_bgInfo = bgData.get_Recent10BGValues()[9]
 
-        var  bg_value : String = current_bgInfo.bg
-        var float_bg = bg_value.toFloat()
-        var int_bg = float_bg.toInt()
-
-        binding.screenBg.text = int_bg.toString()
-        binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
-        binding.screenInfo.text =current_bgInfo.time.toString()
-
+        showinfo()
         setLineChartInitialization()
 
-        val updateIntervalMillis: Long = 60000
+        val updateIntervalMillis: Long = 10000
 
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
             override fun onTick(millisUntilFinished: Long) {
@@ -263,13 +254,13 @@ class FullscreenActivity2 : AppCompatActivity() {
         val pref_directionfont = prefs.getString ("direction_font", "100")?.toFloat() ?: 100f
         val pref_timeinfofont = prefs.getString ("timeinfo_font", "30")?.toFloat() ?: 30f
         val pref_fontcolornormal = prefs.getString ("fontcolornormal", "#FCFFFFFF").toString()
-        val pref_fontcolorhighlow = prefs.getString ("fontcolorhighlow", "#FCFFFFFF").toString()
-        val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FCFFFFFF").toString()
+        val pref_fontcolorhighlow = prefs.getString ("fontcolorhighlow", "#FF0000").toString()
+        val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FFFF00").toString()
 
 
         val bgData = BGData(this)
         val bgInfo = bgData.BGInfo()
-        bgData.get_EntireBGInfo()
+        //bgData.get_EntireBGInfo()
         val current_bgInfo = bgInfo.bginfo
         Log.d("current_info", "${current_bgInfo.toString()}")
 
@@ -279,7 +270,7 @@ class FullscreenActivity2 : AppCompatActivity() {
         var mins: Long = 0
         var displayMins: String = ""
         var info : String = ""
-
+        var int_bg=0
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
@@ -301,7 +292,7 @@ class FullscreenActivity2 : AppCompatActivity() {
             // xml 구성 관련 부분
             var  bg_value : String = current_bgInfo.bg
             var float_bg = bg_value.toFloat()
-            var int_bg = float_bg.toInt()
+            int_bg = float_bg.toInt()
             binding.screenBg.text = int_bg.toString()
             Log.d("showinfo", "bg값 끝")
 
@@ -319,6 +310,38 @@ class FullscreenActivity2 : AppCompatActivity() {
         thread.start()
 
         if (isFullscreen) { hide() }
+        fun getComplementaryColor(color: Int): Int {
+            val alpha = color shr 24 and 0xFF
+            val red = 255 - (color shr 16 and 0xFF)
+            val green = 255 - (color shr 8 and 0xFF)
+            val blue = 255 - (color and 0xFF)
+            return alpha shl 24 or (red shl 16) or (green shl 8) or blue
+        }
+
+        var fontcolor : Int
+
+        try {
+            val bgInt : Int = int_bg
+
+            //일반혈당
+            if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
+                fontcolor = Color.parseColor(pref_fontcolornormal)
+            }
+            else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
+                fontcolor = Color.parseColor(pref_fontcolorhighlow)
+            }
+            else {
+                fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+            }
+        }
+        catch (e: Exception ) {
+            fontcolor = Color.WHITE
+        }
+        Log.d("color", "${fontcolor.toString()}")
+
+        binding.screenBg.setTextColor(fontcolor)
+        binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
+
 
     }
 
