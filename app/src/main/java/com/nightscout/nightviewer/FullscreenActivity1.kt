@@ -121,7 +121,6 @@ class FullscreenActivity1 : AppCompatActivity() {
         Log.d("Activity1","onCreate")
         setContentView(binding.root) // xml 파일 지정
 
-        val bgData = BGData(this)
 
         if (Build.VERSION.SDK_INT >= 26) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -136,18 +135,9 @@ class FullscreenActivity1 : AppCompatActivity() {
         filter.addAction("showinfo") //수신할 action 종류 넣기
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
-        val current_bgInfo = bgData.get_Recent10BGValues()[9]
+        showinfo()
 
-        var  bg_value : String = current_bgInfo.bg
-        var float_bg = bg_value.toFloat()
-        var int_bg = float_bg.toInt()
-        binding.screenBg.text = int_bg.toString()
-
-        binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
-        binding.screenInfo.text =current_bgInfo.time.toString()
-
-
-        val updateIntervalMillis: Long = 60000
+        val updateIntervalMillis: Long = 10000
 
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
             override fun onTick(millisUntilFinished: Long) {
@@ -244,31 +234,26 @@ class FullscreenActivity1 : AppCompatActivity() {
     }
 
 
-    /*fun showinfo() {//설정
-        // class.kt가 바뀔 시 수정되어야 하는 부분
-        //일단 글씨 크기 임의로 고정함. 추후 바뀔 예정
-        val pref_bgfont = "100".toFloat()
-        val pref_directionfont = "40".toFloat()
-        val pref_timeinfofont = "25".toFloat()
+    private fun showinfo() {
 
-        //val pref_urlText = "https://pkd7320591.my.nightscoutpro.com"
-
+        //설정
         val pref_timeformat = prefs.getString("preftimeformat", "timeformat24")
         val pref_urgenthighvalue = prefs.getString ("urgent_high_value", "260")?.toFloat() ?: 260f
         val pref_highvalue = prefs.getString ("high_value", "180")?.toFloat() ?: 180f
         val pref_lowvalue = prefs.getString ("low_value", "80")?.toFloat() ?: 80f
         val pref_urgentlowvalue = prefs.getString ("urgent_low_value", "55")?.toFloat() ?: 55f
+        val pref_bgfont = prefs.getString ("bg_font", "200")?.toFloat() ?: 200f
+        val pref_directionfont = prefs.getString ("direction_font", "100")?.toFloat() ?: 100f
+        val pref_timeinfofont = prefs.getString ("timeinfo_font", "30")?.toFloat() ?: 30f
         val pref_fontcolornormal = prefs.getString ("fontcolornormal", "#FCFFFFFF").toString()
         val pref_fontcolorhighlow = prefs.getString ("fontcolorhighlow", "#FCFFFFFF").toString()
         val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FCFFFFFF").toString()
 
-        Log.d("showinfo", "showinfo 시작")
 
         val bgData = BGData(this)
         val bgInfo = bgData.BGInfo()
-        bgData.get_EntireBGInfo()
-
-        val current_bgInfo = bgData.get_Recent10BGValues()[9]
+        //bgData.get_EntireBGInfo()
+        val current_bgInfo = bgInfo.bginfo
         Log.d("current_info", "${current_bgInfo.toString()}")
 
 
@@ -277,42 +262,41 @@ class FullscreenActivity1 : AppCompatActivity() {
         var mins: Long = 0
         var displayMins: String = ""
         var info : String = ""
-
+        var int_bg =0
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
         info = "$displayTime   $displayMins"
-        Log.d("showinfo", "시간설정 끝")
-        var displayIOB = current_bgInfo.iob
+        if(current_bgInfo!=null){
+            var displayIOB = current_bgInfo.iob
 
-        if (current_bgInfo.iob != ""){
-            displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
-            info += displayIOB
+            if (current_bgInfo.iob != ""){
+                displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
+                info += displayIOB
+            }
+            var displayCOB = current_bgInfo.cob
+
+            if (current_bgInfo.cob != ""){
+                displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
+                info += displayCOB
+            }
+            Log.d("showinfo", "iob cob 끝")
+            // xml 구성 관련 부분
+            var  bg_value : String = current_bgInfo.bg
+            var float_bg = bg_value.toFloat()
+            int_bg = float_bg.toInt()
+            binding.screenBg.text = int_bg.toString()
+            Log.d("showinfo", "bg값 끝")
+
+            binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
+            binding.screenInfo.text = info
+
+            binding.screenBg.textSize = pref_bgfont.toFloat()
+            binding.screenDirection.textSize = pref_directionfont.toFloat()
+            binding.screenInfo.textSize = pref_timeinfofont.toFloat()
         }
-        var displayCOB = current_bgInfo.cob
 
-        if (current_bgInfo.cob != ""){
-            displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
-            info += displayCOB
-        }
-        Log.d("showinfo", "iob cob 끝")
-        // xml 구성 관련 부분
-        var  bg_value : String = current_bgInfo.bg
-        var float_bg = bg_value.toFloat()
-        var int_bg = float_bg.toInt()
-        binding.screenBg.text = int_bg.toString()
-        Log.d("showinfo", "bg값 끝")
-
-        binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
-
-        binding.screenInfo.text = info
-        // 사이즈 고정. xml 파일에서 직접 textsize 지정 불가능하게함.
-//        binding.screenBg.textSize = pref_bgfont.toFloat()
-//        binding.screenDirection.textSize = pref_directionfont.toFloat()
-//        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
-
-
-        //글자색깔변경
+        if (isFullscreen) { hide() }
         fun getComplementaryColor(color: Int): Int {
             val alpha = color shr 24 and 0xFF
             val red = 255 - (color shr 16 and 0xFF)
@@ -340,76 +324,10 @@ class FullscreenActivity1 : AppCompatActivity() {
         catch (e: Exception ) {
             fontcolor = Color.WHITE
         }
-        Log.d("urgent", "color set 완료")
+        Log.d("color", "${fontcolor.toString()}")
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
-
-        if (isFullscreen) { hide() }
-    }*/
-    private fun showinfo() {
-
-        //설정
-        val pref_timeformat = prefs.getString("preftimeformat", "timeformat24")
-        val pref_urgenthighvalue = prefs.getString ("urgent_high_value", "260")?.toFloat() ?: 260f
-        val pref_highvalue = prefs.getString ("high_value", "180")?.toFloat() ?: 180f
-        val pref_lowvalue = prefs.getString ("low_value", "80")?.toFloat() ?: 80f
-        val pref_urgentlowvalue = prefs.getString ("urgent_low_value", "55")?.toFloat() ?: 55f
-        val pref_bgfont = prefs.getString ("bg_font", "200")?.toFloat() ?: 200f
-        val pref_directionfont = prefs.getString ("direction_font", "100")?.toFloat() ?: 100f
-        val pref_timeinfofont = prefs.getString ("timeinfo_font", "30")?.toFloat() ?: 30f
-        val pref_fontcolornormal = prefs.getString ("fontcolornormal", "#FCFFFFFF").toString()
-        val pref_fontcolorhighlow = prefs.getString ("fontcolorhighlow", "#FCFFFFFF").toString()
-        val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FCFFFFFF").toString()
-
-
-        val bgData = BGData(this)
-        val bgInfo = bgData.BGInfo()
-        bgData.get_EntireBGInfo()
-        val current_bgInfo = bgInfo.bginfo
-        Log.d("current_info", "${current_bgInfo.toString()}")
-
-
-        val currentTime : Long = System.currentTimeMillis() // ms로 반환
-
-        var mins: Long = 0
-        var displayMins: String = ""
-        var info : String = ""
-
-        var sdf = SimpleDateFormat("HH:mm")
-        if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
-        val displayTime: String = sdf.format(currentTime)
-        info = "$displayTime   $displayMins"
-        if(current_bgInfo!=null){
-            var displayIOB = current_bgInfo.iob
-
-            if (current_bgInfo.iob != ""){
-                displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
-                info += displayIOB
-            }
-            var displayCOB = current_bgInfo.cob
-
-            if (current_bgInfo.cob != ""){
-                displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
-                info += displayCOB
-            }
-            Log.d("showinfo", "iob cob 끝")
-            // xml 구성 관련 부분
-            var  bg_value : String = current_bgInfo.bg
-            var float_bg = bg_value.toFloat()
-            var int_bg = float_bg.toInt()
-            binding.screenBg.text = int_bg.toString()
-            Log.d("showinfo", "bg값 끝")
-
-            binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
-            binding.screenInfo.text = info
-
-            binding.screenBg.textSize = pref_bgfont.toFloat()
-            binding.screenDirection.textSize = pref_directionfont.toFloat()
-            binding.screenInfo.textSize = pref_timeinfofont.toFloat()
-        }
-
-        if (isFullscreen) { hide() }
 
     }
 

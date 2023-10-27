@@ -38,7 +38,7 @@ object SharedPreferencesUtil {
         //Logr.d("lastBGData", datas.toString())
         return try {
             datas.last().arrow = getGlucoseTrend(datas) //마지막 arrow를 불러올때 계산하기.
-            if (datas.last().delta =="1"){
+            if (datas.last() != null){
                 datas.last().delta = calculateDelta(datas)
             }
             datas.last()
