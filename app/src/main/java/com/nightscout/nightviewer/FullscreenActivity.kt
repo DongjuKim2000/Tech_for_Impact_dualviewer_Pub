@@ -34,7 +34,7 @@ class FullscreenActivity : AppCompatActivity() {
         bgData.initializeBG_db()
         bgData.get_EntireBGInfo()
         //화면선택
-        val pref_layout = prefs.getString ("pref_layout", "1").toString()
+        val pref_layout = prefs.getString ("pref_layout", "2").toString()
         when (pref_layout)
         {
             "1" -> {val i = Intent(this, FullscreenActivity1::class.java)

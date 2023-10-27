@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat
 import android.os.CountDownTimer
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.dualviewer.GraphThread
 
 // 멀티스크린을 위한 액티비티입니다.
 class FullscreenActivity1 : AppCompatActivity() {
@@ -136,15 +137,15 @@ class FullscreenActivity1 : AppCompatActivity() {
         filter.addAction("showinfo") //수신할 action 종류 넣기
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
-//        val current_bgInfo = bgData.get_Recent10BGValues()[9]
-        val currentBGlist = bgData.get_Recent10BGValues()
-        if(currentBGlist.isEmpty())
-            Log.d("BGlistEmpty", "empty")
-
-        else{
-            val index = currentBGlist.size
-            val current_bgInfo = currentBGlist[index]
-        }
+        val current_bgInfo = bgData.get_Recent10BGValues()[9]
+//        val currentBGlist = bgData.get_Recent10BGValues()
+//        if(currentBGlist.isEmpty())
+//            Log.d("BGlistEmpty", "empty")
+//
+//        else{
+//            val index = currentBGlist.size
+//            val current_bgInfo = currentBGlist[index]
+//        }
 
 
         var  bg_value : String = current_bgInfo.bg
@@ -360,10 +361,6 @@ class FullscreenActivity1 : AppCompatActivity() {
 
         //설정
         val pref_timeformat = prefs.getString("preftimeformat", "timeformat24")
-        val pref_urgenthighvalue = prefs.getString ("urgent_high_value", "260")?.toFloat() ?: 260f
-        val pref_highvalue = prefs.getString ("high_value", "180")?.toFloat() ?: 180f
-        val pref_lowvalue = prefs.getString ("low_value", "80")?.toFloat() ?: 80f
-        val pref_urgentlowvalue = prefs.getString ("urgent_low_value", "55")?.toFloat() ?: 55f
         val pref_bgfont = prefs.getString ("bg_font", "200")?.toFloat() ?: 200f
         val pref_directionfont = prefs.getString ("direction_font", "100")?.toFloat() ?: 100f
         val pref_timeinfofont = prefs.getString ("timeinfo_font", "30")?.toFloat() ?: 30f
@@ -417,6 +414,10 @@ class FullscreenActivity1 : AppCompatActivity() {
             binding.screenDirection.textSize = pref_directionfont.toFloat()
             binding.screenInfo.textSize = pref_timeinfofont.toFloat()
         }
+//        //그래프 표시
+//        val lineChart: LineChart = findViewById(R.id.lineChart)
+//        val thread = GraphThread(lineChart, baseContext)
+//        thread.start()
 
         if (isFullscreen) { hide() }
 
