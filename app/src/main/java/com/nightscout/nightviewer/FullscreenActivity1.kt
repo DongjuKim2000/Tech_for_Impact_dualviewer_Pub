@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat
 import android.os.CountDownTimer
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.dualviewer.GraphThread
 import androidx.core.text.HtmlCompat
 
 // 멀티스크린을 위한 액티비티입니다.
@@ -128,6 +129,15 @@ class FullscreenActivity1 : AppCompatActivity() {
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
         val current_bgInfo = bgData.get_Recent10BGValues()[9]
+//        val currentBGlist = bgData.get_Recent10BGValues()
+//        if(currentBGlist.isEmpty())
+//            Log.d("BGlistEmpty", "empty")
+//
+//        else{
+//            val index = currentBGlist.size
+//            val current_bgInfo = currentBGlist[index]
+//        }
+
 
         var  bg_value : String = current_bgInfo.bg
         var float_bg = bg_value.toFloat()
@@ -341,7 +351,6 @@ class FullscreenActivity1 : AppCompatActivity() {
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
-
 
     }
 

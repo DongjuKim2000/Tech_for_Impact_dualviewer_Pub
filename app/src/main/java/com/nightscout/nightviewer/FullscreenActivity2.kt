@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.dualviewer.GraphThread
 import androidx.core.text.HtmlCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -311,6 +312,11 @@ class FullscreenActivity2 : AppCompatActivity() {
             binding.screenDirection.textSize = pref_directionfont.toFloat()
             binding.screenInfo.textSize = pref_timeinfofont.toFloat()
         }
+
+        //그래프 표시
+        val lineChart: LineChart = findViewById(R.id.lineChart)
+        val thread = GraphThread(lineChart, baseContext)
+        thread.start()
 
         if (isFullscreen) { hide() }
 
