@@ -11,7 +11,6 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
-import android.util.Log
 
 fun convertUtcToKst(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)

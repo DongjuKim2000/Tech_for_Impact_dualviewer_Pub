@@ -46,28 +46,31 @@
         app:layout_constraintEnd_toStartOf="@id/guideline1"/>
 
     <!-- Screen Direction TextView -->
+
+    <!-- Screen Info TextView -->
     <TextView
         android:id="@+id/screen_direction"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:autoSizeMaxTextSize="10000sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeTextType="uniform"
         android:background="@android:color/black"
         android:gravity="center"
         android:includeFontPadding="false"
         android:keepScreenOn="true"
-        android:text="→ -5"
         android:maxLines="1"
-        android:textColor="@android:color/white"
         android:padding="3sp"
-        android:autoSizeTextType="uniform"
-        android:autoSizeMinTextSize="10sp"
-        android:autoSizeMaxTextSize="10000sp"
+        android:text="→ -5"
+        android:textColor="@android:color/white"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/lineChart"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Screen Info TextView -->
     <TextView
         android:id="@+id/screen_info"
         android:layout_width="0dp"
@@ -86,5 +89,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/screen_direction"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
