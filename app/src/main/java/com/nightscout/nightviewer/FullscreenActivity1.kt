@@ -308,9 +308,9 @@ class FullscreenActivity1 : AppCompatActivity() {
         Log.d("showinfo", "arrow, delta 끝")
         binding.screenInfo.text = info
         // 사이즈 고정. xml 파일에서 직접 textsize 지정 불가능하게함.
-        binding.screenBg.textSize = pref_bgfont.toFloat()
-        binding.screenDirection.textSize = pref_directionfont.toFloat()
-        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
+//        binding.screenBg.textSize = pref_bgfont.toFloat()
+//        binding.screenDirection.textSize = pref_directionfont.toFloat()
+//        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
 
 
         if (isFullscreen) { hide() }

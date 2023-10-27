@@ -98,26 +98,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="fontsize"
-        app:title="@string/string_fontsize">
-
-        <EditTextPreference
-            app:key="bg_font"
-            app:title="@string/string_fontsizebg"
-            app:defaultValue="200"/>
-
-        <EditTextPreference
-            app:key="direction_font"
-            app:title="@string/string_fontsizedirection"
-            app:defaultValue="100"/>
-
-        <EditTextPreference
-            app:key="timeinfo_font"
-            app:title="@string/string_fontsizetimeinfo"
-            app:defaultValue="30"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         app:key="fontcolor"
         app:title="@string/string_fontcolor">
 

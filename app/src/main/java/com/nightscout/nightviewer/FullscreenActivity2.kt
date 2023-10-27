@@ -314,9 +314,9 @@ class FullscreenActivity2 : AppCompatActivity() {
         binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
         binding.screenInfo.text = info
 
-        binding.screenBg.textSize = pref_bgfont.toFloat()
-        binding.screenDirection.textSize = pref_directionfont.toFloat()
-        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
+//        binding.screenBg.textSize = pref_bgfont.toFloat()
+//        binding.screenDirection.textSize = pref_directionfont.toFloat()
+//        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
 
 
 
