@@ -16,7 +16,6 @@ data class Suggested(
     val bg: Double,
     val COB: Int,
     val IOB: Int,
-    val tick: Int,
     val timestamp: String
 )
 

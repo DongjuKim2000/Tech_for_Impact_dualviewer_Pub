@@ -35,7 +35,8 @@ object SharedPreferencesUtil {
     }
     fun getLatestBGData(context: Context): BG? {
         val datas = getBGDatas(context)
-        Logr.d("lastBGData", datas.toString())
+        datas.last().arrow = getGlucoseTrend(datas) //마지막 arrow를 불러올때 계산하기.
+        //Logr.d("lastBGData", datas.toString())
         return try {
             datas.last()
         } catch (e: NoSuchElementException) { // 리스트가 비어있을 경우

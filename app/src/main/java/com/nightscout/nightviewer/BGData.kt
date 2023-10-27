@@ -61,12 +61,12 @@ class BGData(private val context: Context){
             val iob = data.openaps.suggested.IOB.toString()
 
             //val arrow = JSONObject(result).getJSONObject("delta").getString("display")
-            val delta = data.openaps.suggested.tick.toString()
+
 
 
             val timestamp = convertUtcToKst(data.openaps.suggested.timestamp.toString()) //기준이 UTC 시간이라 KST로 시간 변경
             val basaliob = data.openaps.iob.basaliob.toString()
-            BGList.add(0, BG(bg, timestamp, "XX", delta, iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
+            BGList.add(0, BG(bg, timestamp, "XX", "0", iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
         }
         return BGList
     }
