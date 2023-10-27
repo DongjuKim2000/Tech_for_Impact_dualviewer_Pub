@@ -1,5 +1,14 @@
 package com.nightscout.nightviewer
 
+import android.content.Context
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +47,7 @@ fun calculateDelta(glucoseData: List<BG>): String {
 fun listToString(list: List<String>, delimiter: String = ", "): String {
     return list.joinToString(delimiter)
 }
+
 fun getGlucoseTrend(glucoseData: List<BG>): String {
     // glucoseData의 마지막 요소가 가장 최근의 혈당이라고 가정하고,
     // 길이가 10인 리스트라고 가정합니다.
@@ -80,4 +90,38 @@ fun getGlucoseTrend(glucoseData: List<BG>): String {
         rateOfChange < -3 || changeIn30Mins < -90 -> "⇊"
         else -> "XX"
     }
+}
+
+fun doVibrate(context: Context) {
+    val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE)
+                as VibratorManager
+        vibratorManager.defaultVibrator;
+    } else {
+        context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val vibrationEffect = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE)
+        vibrator.vibrate(vibrationEffect)
+    } else {
+        // 안드로이드 O 이전 버전에서는 deprecated된 메서드를 사용할 수 있습니다.
+        vibrator.vibrate(1000)
+    }
+    return
+}
+
+fun doRingtone(context: Context) {
+    val notification: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+    val ringtone = RingtoneManager.getRingtone(context, notification)
+    ringtone.play()
+}
+
+fun showErrorMessage(context: Context) {
+    val builder = AlertDialog.Builder(context)
+    builder.setTitle("Error")
+    builder.setMessage("인터넷에 연결되어 있지 않습니다. 인터넷 연결 상태를 확인해주세요.")
+    builder.setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
+    val dialog: AlertDialog = builder.create()
+    dialog.show()
 }
