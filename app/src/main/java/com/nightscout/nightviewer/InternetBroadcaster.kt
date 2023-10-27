@@ -12,7 +12,7 @@ import android.widget.Toast
 class InternetBroadcaster : BroadcastReceiver(){
     override fun onReceive(context: Context, intent: Intent) {
         if (!isNetworkConnected(context)) {
-            showErrorMessage()
+            showErrorMessage(context)
         }
     }
     private fun isNetworkConnected(context: Context): Boolean {

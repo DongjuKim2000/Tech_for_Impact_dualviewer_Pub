@@ -39,7 +39,6 @@ class FullscreenActivity2 : AppCompatActivity() {
     private var isFullscreen: Boolean = false
 
     private val internetBroadcaster = InternetBroadcaster()
-    private val intFilter = IntentFilter()
 
     inner class ShowinfoBR : BroadcastReceiver()
     {
@@ -177,7 +176,7 @@ class FullscreenActivity2 : AppCompatActivity() {
 
         // 인터넷 연결 상태를 감지하는 Receiver
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        this.registerReceiver(internetBroadcaster, intFilter)
+        this.registerReceiver(internetBroadcaster, filter)
 
         Log.d("Activity2","onCreate 끝")
 
