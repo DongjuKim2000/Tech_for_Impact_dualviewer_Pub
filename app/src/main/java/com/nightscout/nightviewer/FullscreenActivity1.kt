@@ -340,6 +340,38 @@ class FullscreenActivity1 : AppCompatActivity() {
 
 
         if (isFullscreen) { hide() }
+        //글자색깔변경
+        fun getComplementaryColor(color: Int): Int {
+            val alpha = color shr 24 and 0xFF
+            val red = 255 - (color shr 16 and 0xFF)
+            val green = 255 - (color shr 8 and 0xFF)
+            val blue = 255 - (color and 0xFF)
+            return alpha shl 24 or (red shl 16) or (green shl 8) or blue
+        }
+
+        var fontcolor : Int
+
+        try {
+            val bgInt : Int = current_bgInfo.bg.toInt()
+
+            //일반혈당
+            if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
+                fontcolor = Color.parseColor(pref_fontcolornormal)
+            }
+            else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
+                fontcolor = Color.parseColor(pref_fontcolorhighlow)
+            }
+            else {
+                fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+            }
+        }
+        catch (e: Exception ) {
+            fontcolor = Color.WHITE
+        }
+
+        binding.screenBg.setTextColor(fontcolor)
+        binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
+
 
     }
 
