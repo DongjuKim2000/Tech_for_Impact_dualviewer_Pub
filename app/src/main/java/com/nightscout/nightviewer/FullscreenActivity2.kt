@@ -286,7 +286,7 @@ class FullscreenActivity2 : AppCompatActivity() {
         val bgData = BGData(this)
         val bgInfo = bgData.BGInfo()
         bgData.get_EntireBGInfo()
-        val current_bgInfo = bgData.get_Recent10BGValues()[9]
+        val current_bgInfo = bgInfo.bginfo
         Log.d("current_info", "${current_bgInfo.toString()}")
 
 
@@ -300,35 +300,34 @@ class FullscreenActivity2 : AppCompatActivity() {
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
         info = "$displayTime   $displayMins"
+        if(current_bgInfo!=null){
+            var displayIOB = current_bgInfo.iob
 
-        var displayIOB = current_bgInfo.iob
+            if (current_bgInfo.iob != ""){
+                displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
+                info += displayIOB
+            }
+            var displayCOB = current_bgInfo.cob
 
-        if (current_bgInfo.iob != ""){
-            displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
-            info += displayIOB
+            if (current_bgInfo.cob != ""){
+                displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
+                info += displayCOB
+            }
+            Log.d("showinfo", "iob cob 끝")
+            // xml 구성 관련 부분
+            var  bg_value : String = current_bgInfo.bg
+            var float_bg = bg_value.toFloat()
+            var int_bg = float_bg.toInt()
+            binding.screenBg.text = int_bg.toString()
+            Log.d("showinfo", "bg값 끝")
+
+            binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
+            binding.screenInfo.text = info
+
+            binding.screenBg.textSize = pref_bgfont.toFloat()
+            binding.screenDirection.textSize = pref_directionfont.toFloat()
+            binding.screenInfo.textSize = pref_timeinfofont.toFloat()
         }
-        var displayCOB = current_bgInfo.cob
-
-        if (current_bgInfo.cob != ""){
-            displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
-            info += displayCOB
-        }
-        Log.d("showinfo", "iob cob 끝")
-        // xml 구성 관련 부분
-        var  bg_value : String = current_bgInfo.bg
-        var float_bg = bg_value.toFloat()
-        var int_bg = float_bg.toInt()
-        binding.screenBg.text = int_bg.toString()
-        Log.d("showinfo", "bg값 끝")
-
-        binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
-        binding.screenInfo.text = info
-
-//        binding.screenBg.textSize = pref_bgfont.toFloat()
-//        binding.screenDirection.textSize = pref_directionfont.toFloat()
-//        binding.screenInfo.textSize = pref_timeinfofont.toFloat()
-
-
 
         if (isFullscreen) { hide() }
 
@@ -359,5 +358,6 @@ class FullscreenActivity2 : AppCompatActivity() {
          */
         private const val UI_ANIMATION_DELAY = 300
     }
+
 
 }

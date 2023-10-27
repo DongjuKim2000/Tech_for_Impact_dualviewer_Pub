@@ -94,20 +94,16 @@ class PreferencesActivity : AppCompatActivity(),
         super.onDestroy()
         saveSharedPreference()
 
-        finishAffinity()
-        val intent = Intent(this, FullscreenActivity1::class.java)
-        startActivity(intent)
-        System.exit(0)
 
-        //val i = Intent(this, FullscreenActivity::class.java)
-        //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        //startActivity(i)
-        //val i = Intent(this, FullscreenActivity::class.java)
-        //i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        //startActivity(i)
+        val intent = Intent(this, FullscreenActivity2::class.java)
+        Log.d("pref_act", "새로운 액티비티 시작")
+        startActivity(intent)
+        finish()
+
+        Log.d("pref_act", "exit")
+
 
     }
-
     override fun onSupportNavigateUp(): Boolean {
         finish()
         // or call onBackPressed()
