@@ -26,10 +26,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
-import com.example.dualviewer.GraphThread
-import com.github.mikephil.charting.charts.LineChart
-import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
-import java.text.SimpleDateFormat
 
 open class CommonActivity : AppCompatActivity() {
 
@@ -107,23 +103,6 @@ open class CommonActivity : AppCompatActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if(Build.VERSION.SDK_INT >= 24) {
-            if (isInMultiWindowMode) {
-                Log.d("Activity2", "multi window mode")
-                val i = Intent(this, FullscreenActivity1::class.java)
-                startActivity(i)
-                Log.d("FullscreenActivity","스타트 activity1")
-
-            } else {
-                Log.d("Activity2", "not multi window")
-            }
-        }
-
-
     }
 
     fun toggle() {

@@ -15,7 +15,6 @@ class InternetBroadcaster : BroadcastReceiver(){
         if (isNetworkConnected(context)) {
             if(isConnected == true)
                 return;
-
             isConnected = true
         }
         else{

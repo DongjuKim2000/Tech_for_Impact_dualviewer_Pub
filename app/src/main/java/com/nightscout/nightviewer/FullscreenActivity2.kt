@@ -1,6 +1,4 @@
 package com.nightscout.nightviewer
-import android.annotation.SuppressLint
-import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -66,6 +64,20 @@ class FullscreenActivity2 : CommonActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if(intent?.action == "showinfo")
                 showinfo()
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        if(Build.VERSION.SDK_INT >= 24) {
+            if (isInMultiWindowMode) {
+                Log.d("Activity", "multi window mode")
+                val i = Intent(this, FullscreenActivity1::class.java)
+                startActivity(i)
+                Log.d("FullscreenActivity","스타트 activity1")
+
+            } else {
+                Log.d("Activity2", "not multi window")
+            }
         }
     }
     override fun onDestroy() {
