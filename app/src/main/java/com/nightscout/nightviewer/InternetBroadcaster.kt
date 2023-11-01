@@ -10,9 +10,18 @@ import android.os.Build
 import android.net.NetworkInfo
 import android.widget.Toast
 class InternetBroadcaster : BroadcastReceiver(){
+    private var isConnected: Boolean = false
     override fun onReceive(context: Context, intent: Intent) {
-        if (!isNetworkConnected(context)) {
-            showErrorMessage(context)
+        if (isNetworkConnected(context)) {
+            if(isConnected == true)
+                return;
+
+            isConnected = true
+        }
+        else{
+            if(isConnected == false)
+                return;
+            isConnected = false
         }
     }
     private fun isNetworkConnected(context: Context): Boolean {
