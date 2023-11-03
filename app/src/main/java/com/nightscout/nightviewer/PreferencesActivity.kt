@@ -116,7 +116,7 @@ class PreferencesActivity : AppCompatActivity(),
         val pref_layout = pref.getString("pref_layout", "1")
         val pref_enablenoti = true
         val pref_readfromns = true
-        val ns_url = pref.getString("ns_url", "https://pkd7320591.my.nightscoutpro.com/")
+        val ns_url = pref.getString("ns_url", "defaultURL")
 
         //val units = pref.getString("units", "mgdl")
         val urgent_high_value = pref.getString("urgent_high_value", "260")

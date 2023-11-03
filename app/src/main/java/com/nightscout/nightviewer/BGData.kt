@@ -2,7 +2,6 @@ package com.nightscout.nightviewer
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
@@ -10,7 +9,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 
 class BGData(private val context: Context){
-    private val pref_urlText = prefs.getString("ns_url", "https://pkd7320591.my.nightscoutpro.com")
+    val pref_urlText = prefs.getString("ns_url", "defaultURL")
     //User_Prefs : 기본 Preferences (iob, cob, basal enable 등)
     //BG_db: 혈당 데이터베이스 (Preferences로 구현 sql로도 가능할듯)
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
@@ -53,7 +52,6 @@ class BGData(private val context: Context){
                         Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
             }
-
         }.start()
     }
 
