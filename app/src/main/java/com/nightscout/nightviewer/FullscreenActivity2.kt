@@ -6,28 +6,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.content.SharedPreferences
-import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.dualviewer.GraphThread
 import androidx.core.text.HtmlCompat
+import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
 import java.text.SimpleDateFormat
 // 액티비티1과 유사. 풀스크린 모드
@@ -258,6 +251,7 @@ class FullscreenActivity2 : AppCompatActivity() {
         val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FFFF00").toString()
 
 
+
         val bgData = BGData(this)
         val bgInfo = bgData.BGInfo()
         //bgData.get_EntireBGInfo()
@@ -306,8 +300,13 @@ class FullscreenActivity2 : AppCompatActivity() {
 
         //그래프 표시
         val lineChart: LineChart = findViewById(R.id.lineChart)
-        val thread = GraphThread(lineChart, baseContext)
-        thread.start()
+        val chartEnable = prefs.getBoolean("chart_enable", true)
+        if(chartEnable){
+            val thread = GraphThread(lineChart, baseContext)
+            thread.start()
+        }
+        else
+            lineChart.visibility = View.GONE
 
         if (isFullscreen) { hide() }
         fun getComplementaryColor(color: Int): Int {

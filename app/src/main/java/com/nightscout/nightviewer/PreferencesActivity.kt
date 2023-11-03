@@ -129,6 +129,7 @@ class PreferencesActivity : AppCompatActivity(),
         val iob_enable = pref.getBoolean("iob_enable", false)
         val cob_enable = pref.getBoolean("cob_enable", false)
         val basal_enable = pref.getBoolean("basal_enable", false)
+        val chart_enable = pref.getBoolean("chart_enable", true)
 
         val fontcolornormal = pref.getString("fontcolornormal", "#FCFFFFFF")
         val fontcolorhighlow = pref.getString("fontcolorhighlow", "#FCFFFFFF")
@@ -160,6 +161,7 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putBoolean("iob_enable", iob_enable)
             editor.putBoolean("cob_enable", cob_enable)
             editor.putBoolean("basal_enable", basal_enable)
+            editor.putBoolean("chart_enable", chart_enable)
 
             editor.putString("fontcolornormal", fontcolornormal)
             editor.putString("fontcolorhighlow", fontcolorhighlow)

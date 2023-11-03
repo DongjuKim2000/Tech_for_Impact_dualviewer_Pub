@@ -2,25 +2,21 @@ package com.example.dualviewer
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
-import android.util.Log
+import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.nightscout.nightviewer.SharedPreferencesUtil
+import com.nightscout.nightviewer.TimeGapCalculator
 import com.nightscout.nightviewer.prefs
-import java.lang.ProcessBuilder.Redirect
-import java.util.ArrayList
 
 class GraphThread(private val lineChart: LineChart, private val context: Context): Thread() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
 
 //        val input = Array<Double>(25,{400*Math.random()}) //랜덤 데이터
@@ -44,15 +40,38 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
             lineChart.animateXY(1, 1)
         }
 
-        for (i in 0 until input.size){
+        if(input.size<10){ //10개 미만인 경우 빈 데이터 넣기
+            val sizeSub = 10-input.size
+            for(i in 0 until sizeSub){
+                data.addEntry(Entry(i.toFloat(), 0.toFloat()), 0)
+                data.notifyDataChanged()
+                lineChart.notifyDataSetChanged()
+                lineChart.invalidate()
+            }
+            for(i in input.indices){
+                data.addEntry(Entry((i+sizeSub).toFloat(), input[i].bg.toFloat()), 0)
+                data.notifyDataChanged()
+                lineChart.notifyDataSetChanged()
+                lineChart.invalidate()
+            }
+        }
+        else{
+            for (i in 0 until 10){
 
 //            SystemClock.sleep(1000)
 //            data.addEntry(Entry(i.toFloat(), input[i].toFloat()), 0) //랜덤 데이터
-            data.addEntry(Entry(i.toFloat() , input[i].bg.toFloat()), 0) //bg 데이터
-            data.notifyDataChanged()
-            lineChart.notifyDataSetChanged()
-            lineChart.invalidate()
+
+                if(i!=0 && input[i].time!="" && input[i-1].time!=""){
+                    val timeCalClass = TimeGapCalculator(input[i-1].time, input[i].time)
+                    val minuteGap = timeCalClass.timeGap()
+                }
+                data.addEntry(Entry(i.toFloat() , input[i].bg.toFloat()), 0) //bg 데이터
+                data.notifyDataChanged()
+                lineChart.notifyDataSetChanged()
+                lineChart.invalidate()
+            }
         }
+
 
     }
 

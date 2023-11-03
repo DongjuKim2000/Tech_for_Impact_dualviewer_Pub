@@ -35,6 +35,7 @@
     <string name="string_displayiob">IOB</string>
     <string name="string_displaycob">COB</string>
     <string name="string_displaybasal">Basal</string>
+    <string name="string_displaychart">Chart</string>
 
     <!-- 글자크기 -->
     <string name="string_fontsize">Font Size</string>
