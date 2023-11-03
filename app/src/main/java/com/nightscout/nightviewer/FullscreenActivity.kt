@@ -21,23 +21,28 @@ lateinit var prefs: SharedPreferences
 lateinit var bgprefs: SharedPreferences
 
 class FullscreenActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) { // 초기화. 화면 초기 상태
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        Log.d("FullscreenActivity","onCreate 시작")
         prefs = getSharedPreferences("root_preferences", Context.MODE_PRIVATE)
         bgprefs = getSharedPreferences("prefs_bghistory", MODE_PRIVATE)
+        Log.d("FullscreenActivity", "onCreate 시작")
+        if(prefs.getString("ns_url", "defaultURL")=="defaultURL")
+            showInputTextDialog()
+     
+      
+
+    }
+    override fun onStart() { // 초기화. 화면 초기 상태
+        super.onStart()
+        Log.d("FullscreenActivity","onStart 시작")
 
         //타이머
         WorkManager.getInstance(this).cancelAllWork() // this: 현재클래스
         WorkManager.getInstance(this).enqueue(OneTimeWorkRequest.Builder(TimeWorker::class.java).build())
 
+
         val bgData = BGData(this)
         bgData.initializeBG_db()
-        //bgData.get_EntireBGInfo()
-        //화면선택
-        if(prefs.getString("ns_url", "defaultURL")=="defaultURL")
-            showInputTextDialog()
 
         val pref_layout = prefs.getString ("pref_layout", "2").toString()
         when (pref_layout)
@@ -57,6 +62,7 @@ class FullscreenActivity : AppCompatActivity() {
     }
 
     private fun showInputTextDialog() {
+        Log.d("Textdialog", "url_dial")
         val editText = EditText(this)
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("주소를 입력하세요.")
@@ -65,11 +71,8 @@ class FullscreenActivity : AppCompatActivity() {
                 val inputText = editText.text.toString()
                 if (isValidInput(inputText)) {
                     saveTextToPreference(inputText)
-                } else {
-                    showInputTextDialog()
                 }
-            }
-            .create()
+            }.create()
 
         dialog.show()
     }
@@ -82,8 +85,9 @@ class FullscreenActivity : AppCompatActivity() {
             null
         }
         val ret = (url != null)
-        if(!ret)
-            showErrorMessage(this, "올바르지 않은 URL입니다.")
+        //if(!ret)
+            //showErrorMessage(this, "올바르지 않은 URL입니다.")
+        Log.d("isValid", "${ret.toString()}")
         return ret
     }
 

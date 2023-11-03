@@ -53,9 +53,7 @@ class BGData(private val context: Context){
                         Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
             }
-            else{
-                showErrorMessage(context, "ERROR")
-            }
+
         }.start()
     }
 
@@ -93,7 +91,7 @@ class BGData(private val context: Context){
             null
         }
         if (url == null) {
-            Toast.makeText(context, "데이터를 불러올 수 없습니다. 확인을 누른 후 앱을 종료합니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "데이터를 불러올 수 없습니다. 확인을 누른 후 앱을 종료합니다.", Toast.LENGTH_SHORT).show()
             return null
         }
         val result = URL(url.toString()).readText()
