@@ -6,8 +6,17 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
+import android.text.method.LinkMovementMethod
+import android.util.Log
+import android.view.*
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
@@ -103,6 +112,7 @@ class FullscreenActivity2 : CommonActivity() {
             prefs.getString("fontcolorurgenthighlow", "#FFFF00").toString()
 
 
+
         val bgData = BGData(this)
 
         if(bgData == null)
@@ -159,8 +169,13 @@ class FullscreenActivity2 : CommonActivity() {
 
         //그래프 표시
         val lineChart: LineChart = findViewById(R.id.lineChart)
-        val thread = GraphThread(lineChart, baseContext)
-        thread.start()
+        val chartEnable = prefs.getBoolean("chart_enable", true)
+        if(chartEnable){
+            val thread = GraphThread(lineChart, baseContext)
+            thread.start()
+        }
+        else
+            lineChart.visibility = View.GONE
 
         if (isFullscreen) { hide() }
         fun getComplementaryColor(color: Int): Int {

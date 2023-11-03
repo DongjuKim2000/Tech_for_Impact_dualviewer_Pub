@@ -1,24 +1,28 @@
 package com.nightscout.nightviewer
 
+import android.content.Context
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 import java.net.URL
 import java.text.SimpleDateFormat
-import android.content.Context
-import android.content.SharedPreferences
-import android.widget.Toast
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class BGData(private val context: Context){
-    private val pref_urlText = "https://pkd7320591.my.nightscoutpro.com"
+    val pref_urlText = prefs.getString("ns_url", "defaultURL")
     //User_Prefs : 기본 Preferences (iob, cob, basal enable 등)
     //BG_db: 혈당 데이터베이스 (Preferences로 구현 sql로도 가능할듯)
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
         Log.d("BGData.kt", "initialize 시작")
         Thread{
-            val past10_EntireBGInfo = get_Past10_EntireBGInfo()
-            SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
+            if(get_Recent10BGValues().isEmpty()){
+                val past10_EntireBGInfo = mutableListOf<BG>()
+                SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
+            }
+            else{
+                val past10_EntireBGInfo = get_Recent10BGValues()
+                SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
+            }
         }.start()
     }
 
@@ -42,7 +46,10 @@ class BGData(private val context: Context){
                         Log.d("getEntireBGInfo", "SKIPPED")
                     }
                 } else {
-                    Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
+                    if (SharedPreferencesUtil.getBGDatas(context).isEmpty())
+                        currentbg.saveBG()
+                    else
+                        Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
             }
         }.start()
@@ -51,31 +58,29 @@ class BGData(private val context: Context){
     fun get_Past10_EntireBGInfo():List<BG>{ //과거 10개의 데이터 받아오기. !앱을 처음 켰을때만 실행.
         val BGList = mutableListOf<BG>()
         // Iterate over each object and extract the specified fields
-        val url = URL("${pref_urlText}/api/v1/devicestatus.json")
+        val url = URL("${pref_urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
         val jsonresult = URL(url.toString()).readText()
-        Log.d("get_past10", "${url}")
+        Log.d("get_past10", "${jsonresult}")
 
 
         val gson = Gson()
         val typeToken = object : TypeToken<List<OpenapsData>>() {}.type
         val openapsDataList: List<OpenapsData> = gson.fromJson(jsonresult, typeToken)
         for (data in openapsDataList) {
-            val bg = data.openaps.suggested.bg.toString()
-            val cob = data.openaps.suggested.COB.toString()
-            val iob = data.openaps.suggested.IOB.toString()
+            val iob = data.iob.toString()
+            val bg = data.bgnow.toString()
+            val cob = data.cob.toString()
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val currenttime: Long = System.currentTimeMillis()
+            val currenttimedisplay : String = sdf.format(currenttime)
 
-            //val arrow = JSONObject(result).getJSONObject("delta").getString("display")
-
-
-
-            val timestamp = convertUtcToKst(data.openaps.suggested.timestamp.toString()) //기준이 UTC 시간이라 KST로 시간 변경
-            val basaliob = data.openaps.iob.basaliob.toString()
-            BGList.add(0, BG(bg, timestamp, "XX", "0", iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
+            val basaliob = data.basal.toString()
+            BGList.add(0, BG(bg, currenttimedisplay, "XX", "0", iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
         }
         return BGList
     }
 
-    fun get_BGInfoFromURL(urlText:String): BGInfo?{ //URL을 받아 BGInfo 한개를 리턴
+    fun get_BGInfoFromURL(urlText:String?): BGInfo?{ //URL을 받아 BGInfo 한개를 리턴
         val currenttime: Long = System.currentTimeMillis()
         val url = try{
             URL("${urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
@@ -84,7 +89,7 @@ class BGData(private val context: Context){
             null
         }
         if (url == null) {
-            Toast.makeText(context, "데이터를 불러올 수 없습니다. 확인을 누른 후 앱을 종료합니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "데이터를 불러올 수 없습니다. 확인을 누른 후 앱을 종료합니다.", Toast.LENGTH_SHORT).show()
             return null
         }
         val result = URL(url.toString()).readText()
@@ -116,7 +121,7 @@ class BGData(private val context: Context){
         constructor(){ //현재 저장된 BGINFO 불러오기
             bginfo = SharedPreferencesUtil.getLatestBGData(context)
             if (bginfo == null) {
-                this.bginfo = BG("","","","","","","")
+
             }
         }
         constructor(bg: String, time: String, arrow: String, delta: String, iob: String, cob: String, basal: String){

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.33" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <!-- Second Guideline at 66% of the screen height -->
     <androidx.constraintlayout.widget.Guideline
@@ -22,7 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
 
     <!-- Screen BG TextView -->
     <TextView
@@ -84,11 +91,9 @@
         android:maxLines="2"
         android:text="22:00   15min   🅘 -0.38U   🅒 10.2g   🅑 2.2U/h"
         app:layout_constraintTop_toTopOf="@id/guideline2"
-        app:layout_constraintBottom_toTopOf="@+id/lineChart"
+        app:layout_constraintBottom_toBottomOf="@id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"

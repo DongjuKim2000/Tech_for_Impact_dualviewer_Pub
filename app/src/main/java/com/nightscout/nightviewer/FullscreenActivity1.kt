@@ -6,10 +6,13 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
+import com.example.dualviewer.GraphThread
+import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen1Binding
 import java.text.SimpleDateFormat
-import android.os.CountDownTimer
 
 // 멀티스크린을 위한 액티비티입니다.
 class FullscreenActivity1 : CommonActivity() {
@@ -165,6 +168,16 @@ class FullscreenActivity1 : CommonActivity() {
             binding.screenDirection.textSize = pref_directionfont.toFloat()
             binding.screenInfo.textSize = pref_timeinfofont.toFloat()
         }
+
+        //그래프 표시
+        val lineChart: LineChart = findViewById(R.id.lineChart)
+        val chartEnable = prefs.getBoolean("chart_enable", true)
+        if(chartEnable){
+            val thread = GraphThread(lineChart, baseContext)
+            thread.start()
+        }
+        else
+            lineChart.visibility = View.GONE
 
         if (isFullscreen) { hide() }
 

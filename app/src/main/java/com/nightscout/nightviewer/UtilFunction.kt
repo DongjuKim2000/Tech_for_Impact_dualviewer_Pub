@@ -124,9 +124,7 @@ fun showErrorMessage(context: Context, msg: String) {
     val alertDialog: AlertDialog = AlertDialog.Builder(context)
         .setTitle("Error")
         .setMessage(msg)
-        .setPositiveButton("확인") { dialog, which ->
-            Thread.sleep(2000)
-        }
+        .setPositiveButton("확인", null)
         .create()
     alertDialog.show()
 }
