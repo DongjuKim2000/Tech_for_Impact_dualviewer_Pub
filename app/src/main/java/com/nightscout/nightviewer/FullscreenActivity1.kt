@@ -1,110 +1,21 @@
 package com.nightscout.nightviewer
-import android.annotation.SuppressLint
-import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Html
-import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.*
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.nightscout.nightviewer.databinding.ActivityFullscreen1Binding
 import java.text.SimpleDateFormat
 import android.os.CountDownTimer
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.dualviewer.GraphThread
-import androidx.core.text.HtmlCompat
 
 // 멀티스크린을 위한 액티비티입니다.
-class FullscreenActivity1 : AppCompatActivity() {
+class FullscreenActivity1 : CommonActivity() {
 
     lateinit var binding: ActivityFullscreen1Binding
-    val showinfobr = ShowinfoBR()  //ShowinfoBR() 클래스. 이 프로그램의 유일한 리시버
-    private var updateTimer: CountDownTimer? = null
-    private lateinit var fullscreenContent: ConstraintLayout
-    private val hideHandler = Handler(Looper.myLooper()!!)
-    private var isFullscreen: Boolean = false
-
-    private val internetBroadcaster = InternetBroadcaster()
-
-    inner class ShowinfoBR : BroadcastReceiver()
-    {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            showinfo()
-        }
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // 메뉴 만들고 수행
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // 메뉴에서 고른 항목별 액티비티 실행
-        when (item.itemId) {
-            R.id.menu_preference -> {
-                val i = Intent(this, PreferencesActivity::class.java)
-                startActivity(i) // preference 설정 페이지로 넘어감
-                return true
-            }
-                R.id.menu_about -> {
-                    val dialogView = LayoutInflater.from(this).inflate(R.layout.menu_about_layout, null)
-                    val messageTextView = dialogView.findViewById<TextView>(R.id.about_message)
-                    messageTextView.movementMethod = LinkMovementMethod.getInstance()
-
-                    val about_message: AlertDialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogTheme))
-                        .setPositiveButton("Thank you", null)
-                        .setIcon(R.mipmap.ic_main_round)
-                        .setTitle(R.string.about_title)
-                        .setView(dialogView)
-                        .create()
-                    about_message.show()
-
-                    val positiveButton: Button = about_message.getButton(AlertDialog.BUTTON_POSITIVE)
-                    positiveButton.setTextColor(Color.parseColor("#00ff00"))
-
-                    (about_message.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
-
-                    val htmlMessage = HtmlCompat.fromHtml(getString(R.string.menu_about_message), HtmlCompat.FROM_HTML_MODE_LEGACY)
-                    messageTextView.text = htmlMessage
-                    messageTextView.movementMethod = LinkMovementMethod.getInstance()
-
-                    return true
-                }
-            R.id.menu_exit -> { // 설정 버튼 중 exit(나가기) 누름
-                finish()  // 앱 (완전히) 종료
-                return true
-            }
-            else -> return false // 지정된 버튼이 아닌 다른 곳 누름
-        }
-    }
-
-    override fun onBackPressed() {
-        finish()
-    }
-
-    override fun onOptionsMenuClosed(menu: Menu?) {
-        super.onOptionsMenuClosed(menu)
-    }
+    val showinfobr = ShowinfoBR()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,12 +60,6 @@ class FullscreenActivity1 : AppCompatActivity() {
         Log.d("Activity1","onCreate 끝")
 
     }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        Log.d("Activity1","onPostCreate")
-    }
-
     override fun onResume() {
         Log.d("Activity1","onResume")
         super.onResume()
@@ -181,58 +86,13 @@ class FullscreenActivity1 : AppCompatActivity() {
         try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
 
-
-    private fun toggle() { //터치시 상단바
-        Log.d("toggle", "toggle 작동")
-        if (isFullscreen) {
-            hide()
-        } else {
-            show()
+    inner class ShowinfoBR : BroadcastReceiver()
+    {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if(intent?.action == "showinfo")
+                showinfo()
         }
     }
-
-    private fun hide() {
-
-        // Hide UI first
-        supportActionBar?.hide()
-        //fullscreenContentControls.visibility = View.GONE
-        // Schedule a runnable to remove the status and navigation bar after a delay
-        hideHandler.removeCallbacks(hidePart2Runnable)
-        hideHandler.post(hidePart2Runnable)
-        isFullscreen = false
-    }
-
-    private fun show() {
-
-        // Show the system bar
-        supportActionBar?.show()
-        // Schedule a runnable to display UI elements after a delay
-        hideHandler.removeCallbacks(showPart2Runnable)
-        hideHandler.post(showPart2Runnable)
-        isFullscreen = true
-
-}
-
-    @SuppressLint("InlinedApi")
-    private val hidePart2Runnable = Runnable {
-        // Delayed removal of status and navigation bar
-        if (Build.VERSION.SDK_INT >= 30) {
-            fullscreenContent.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-
-        } else {
-            // Note that some of these constants are new as of API 16 (Jelly Bean)
-            // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
-            fullscreenContent.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-
-        }
-    }
-    private val showPart2Runnable = Runnable {
-        supportActionBar?.show()
-    }
-
-
-
     private fun showinfo() {
 
         //설정
@@ -254,6 +114,10 @@ class FullscreenActivity1 : AppCompatActivity() {
 
 
         val bgData = BGData(this)
+
+        if(bgData == null)
+            finish()
+
         val bgInfo = bgData.BGInfo()
         //bgData.get_EntireBGInfo()
         val current_bgInfo = bgInfo.bginfo
@@ -337,11 +201,6 @@ class FullscreenActivity1 : AppCompatActivity() {
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
-
-    }
-
-    private fun setLineChartInitialization() {
-
 
     }
 

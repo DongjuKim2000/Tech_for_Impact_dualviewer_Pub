@@ -8,6 +8,11 @@ import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 import java.net.URL
 import java.text.SimpleDateFormat
+import android.content.Context
+import android.content.SharedPreferences
+import android.widget.Toast
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class BGData(private val context: Context){
     private val pref_urlText = "https://pkd7320591.my.nightscoutpro.com"
@@ -125,10 +130,7 @@ class BGData(private val context: Context){
         constructor(){ //현재 저장된 BGINFO 불러오기
             bginfo = SharedPreferencesUtil.getLatestBGData(context)
             if (bginfo == null) {
-//                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//                val currenttime: Long = System.currentTimeMillis()
-//                val currenttimedisplay : String = sdf.format(currenttime)
-//                this.bginfo = BG("",currenttimedisplay,"","","","","")
+
             }
         }
         constructor(bg: String, time: String, arrow: String, delta: String, iob: String, cob: String, basal: String){

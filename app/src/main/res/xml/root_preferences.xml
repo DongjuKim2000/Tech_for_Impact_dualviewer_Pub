@@ -28,7 +28,7 @@
             app:key="ns_url"
             app:title="@string/string_nsurl"
             app:dialogTitle="Enter your URL"
-            app:defaultValue="https://{yoursite}.herokuapp.com"
+            app:defaultValue="defaultURL"
             app:dependency="readfromns">
         </EditTextPreference>
 

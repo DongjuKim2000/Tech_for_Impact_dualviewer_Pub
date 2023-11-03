@@ -9,10 +9,13 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.net.NetworkInfo
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+
 class InternetBroadcaster : BroadcastReceiver(){
+
     override fun onReceive(context: Context, intent: Intent) {
-        if (!isNetworkConnected(context)) {
-            showErrorMessage(context)
+        while (!isNetworkConnected(context)) {
+            showErrorMessage(context,"인터넷에 연결되어 있지 않습니다. 인터넷 연결 상태를 확인해주세요.")
         }
     }
     private fun isNetworkConnected(context: Context): Boolean {
