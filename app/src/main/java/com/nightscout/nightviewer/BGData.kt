@@ -10,7 +10,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 
 class BGData(private val context: Context){
-    private val pref_urlText = "https://pkd7320591.my.nightscoutpro.com"
+    private val pref_urlText = prefs.getString("ns_url", "https://pkd7320591.my.nightscoutpro.com")
     //User_Prefs : 기본 Preferences (iob, cob, basal enable 등)
     //BG_db: 혈당 데이터베이스 (Preferences로 구현 sql로도 가능할듯)
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
@@ -54,7 +54,7 @@ class BGData(private val context: Context){
                 }
             }
             else{
-                showErrorMessage(context, "null current BG")
+                showErrorMessage(context, "ERROR")
             }
         }.start()
     }
@@ -84,7 +84,7 @@ class BGData(private val context: Context){
         return BGList
     }
 
-    fun get_BGInfoFromURL(urlText:String): BGInfo?{ //URL을 받아 BGInfo 한개를 리턴
+    fun get_BGInfoFromURL(urlText:String?): BGInfo?{ //URL을 받아 BGInfo 한개를 리턴
         val currenttime: Long = System.currentTimeMillis()
         val url = try{
             URL("${urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
