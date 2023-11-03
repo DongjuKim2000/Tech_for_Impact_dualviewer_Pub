@@ -122,8 +122,10 @@ class FullscreenActivity2 : CommonActivity() {
 
         val bgData = BGData(this)
 
-        if(bgData == null)
+        if(bgData == null) {
+            Log.d("showinfo", "null_bg")
             finish()
+        }
 
         val bgInfo = bgData.BGInfo()
         //bgData.get_EntireBGInfo()

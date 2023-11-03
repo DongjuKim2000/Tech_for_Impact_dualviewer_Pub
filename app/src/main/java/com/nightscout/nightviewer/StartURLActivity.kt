@@ -35,10 +35,7 @@ class StartURLActivity : AppCompatActivity() {
         confirmButton.setOnClickListener(){
             val urlText = urlEditText.text.toString()
             Log.d("first", urlText)
-            val isValidInput = runBlocking {
-                isValidInputAsync(urlText)
-            }
-            if(isValidInput){
+            if(isValidInput(urlText)){
                 with(prefs.edit()) {
                     putString("ns_url", urlText)
                     apply()
