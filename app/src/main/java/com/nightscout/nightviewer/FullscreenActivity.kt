@@ -81,11 +81,11 @@ class FullscreenActivity : AppCompatActivity() {
 //        }
 //    }
 
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean){
-
-        Log.d("Activity", "onMultiWindowModeChanged")
-        super.onMultiWindowModeChanged(isInMultiWindowMode)
-        if (isInMultiWindowMode)
-            Log.d("Activity", "multinow!")
-    }
+//    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean){
+//
+//        Log.d("Activity", "onMultiWindowModeChanged")
+//        super.onMultiWindowModeChanged(isInMultiWindowMode)
+//        if (isInMultiWindowMode)
+//            Log.d("Activity", "multinow!")
+//    }
 }
