@@ -9,11 +9,20 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.net.NetworkInfo
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+
 class InternetBroadcaster : BroadcastReceiver(){
+
     override fun onReceive(context: Context, intent: Intent) {
+        val alertDialog: AlertDialog = AlertDialog.Builder(context)
+            .setTitle("네트워크 연결 실패")
+            .setMessage("네트워크 연결이 되지 않은 상태입니다.")
+            .setNeutralButton("재시도") { dialog, which ->
+                Thread.sleep(2000)
+            }
+            .create()
         while (!isNetworkConnected(context)) {
-            Toast.makeText(context, "네트워크에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
-            Thread.sleep(2000);
+            alertDialog.show()
         }
     }
     private fun isNetworkConnected(context: Context): Boolean {
