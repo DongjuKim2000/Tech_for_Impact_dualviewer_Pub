@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         app:key="pref_ns"
@@ -94,6 +95,12 @@
             app:key="basal_enable"
             app:title="@string/string_displaybasal"
             app:disableDependentsState="false">
+        </SwitchPreference>
+
+        <SwitchPreference
+            app:key="chart_enable"
+            app:title="@string/string_displaychart"
+            android:defaultValue="true">
         </SwitchPreference>
     </PreferenceCategory>
 
