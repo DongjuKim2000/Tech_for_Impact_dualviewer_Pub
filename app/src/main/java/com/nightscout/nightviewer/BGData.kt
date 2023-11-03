@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
+import java.io.FileNotFoundException
 import java.net.URL
 import java.text.SimpleDateFormat
 
@@ -86,13 +87,19 @@ class BGData(private val context: Context){
             URL("${urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
         }
         catch(e: Exception){
-            null
+            return null
         }
         if (url == null) {
             //Toast.makeText(context, "데이터를 불러올 수 없습니다. 확인을 누른 후 앱을 종료합니다.", Toast.LENGTH_SHORT).show()
             return null
         }
-        val result = URL(url.toString()).readText()
+        var result = ""
+        try{
+            result = URL(url.toString()).readText()
+        }catch(e: FileNotFoundException){
+            return null
+        }
+//        val result = URL(url.toString()).readText()
         Log.d("get_bgurl", "${result}")
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currenttimedisplay : String = sdf.format(currenttime)
