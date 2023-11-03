@@ -8,11 +8,6 @@ import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 import java.net.URL
 import java.text.SimpleDateFormat
-import android.content.Context
-import android.content.SharedPreferences
-import android.widget.Toast
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class BGData(private val context: Context){
     private val pref_urlText = "https://pkd7320591.my.nightscoutpro.com"
@@ -59,7 +54,7 @@ class BGData(private val context: Context){
                 }
             }
             else{
-                showErrorMessage(context)
+                showErrorMessage(context, "null current BG")
             }
         }.start()
     }
