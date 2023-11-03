@@ -114,6 +114,10 @@ class FullscreenActivity1 : CommonActivity() {
 
 
         val bgData = BGData(this)
+
+        if(bgData == null)
+            finish()
+
         val bgInfo = bgData.BGInfo()
         //bgData.get_EntireBGInfo()
         val current_bgInfo = bgInfo.bginfo
@@ -197,11 +201,6 @@ class FullscreenActivity1 : CommonActivity() {
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
-
-    }
-
-    private fun setLineChartInitialization() {
-
 
     }
 

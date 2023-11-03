@@ -6,6 +6,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import android.content.Context
 import android.content.SharedPreferences
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -25,21 +26,24 @@ class BGData(private val context: Context){
         Log.d("BGData.kt",  "getEntireData(1개) 시작")
         Thread{
             val currentbg = get_BGInfoFromURL(pref_urlText)
-            currentbg.LogBG()
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val currentBGInfo = get_CurrentBGInfo()
-            if (currentBGInfo != null) {
-                val currentTimeMillis = System.currentTimeMillis()
-                val bgTimeMillis = dateFormat.parse(currentBGInfo.time).time
-                val timeDifferenceInMinutes = ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
+            if(currentbg != null) {
+                currentbg.LogBG()
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                val currentBGInfo = get_CurrentBGInfo()
+                if (currentBGInfo != null) {
+                    val currentTimeMillis = System.currentTimeMillis()
+                    val bgTimeMillis = dateFormat.parse(currentBGInfo.time).time
+                    val timeDifferenceInMinutes =
+                        ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
 
-                if (timeDifferenceInMinutes >= 5) {
-                    currentbg.saveBG()
+                    if (timeDifferenceInMinutes >= 5) {
+                        currentbg.saveBG()
+                    } else {
+                        Log.d("getEntireBGInfo", "SKIPPED")
+                    }
                 } else {
-                    Log.d("getEntireBGInfo", "SKIPPED")
+                    Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
-            } else {
-                Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
             }
         }.start()
     }
@@ -71,9 +75,18 @@ class BGData(private val context: Context){
         return BGList
     }
 
-    fun get_BGInfoFromURL(urlText:String): BGInfo{ //URL을 받아 BGInfo 한개를 리턴
+    fun get_BGInfoFromURL(urlText:String): BGInfo?{ //URL을 받아 BGInfo 한개를 리턴
         val currenttime: Long = System.currentTimeMillis()
-        val url = URL("${urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+        val url = try{
+            URL("${urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+        }
+        catch(e: Exception){
+            null
+        }
+        if (url == null) {
+            Toast.makeText(context, "데이터를 불러올 수 없습니다. 확인을 누른 후 앱을 종료합니다.", Toast.LENGTH_SHORT).show()
+            return null
+        }
         val result = URL(url.toString()).readText()
         Log.d("get_bgurl", "${result}")
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -103,7 +116,7 @@ class BGData(private val context: Context){
         constructor(){ //현재 저장된 BGINFO 불러오기
             bginfo = SharedPreferencesUtil.getLatestBGData(context)
             if (bginfo == null) {
-                //처리 필요
+                this.bginfo = BG("","","","","","","")
             }
         }
         constructor(bg: String, time: String, arrow: String, delta: String, iob: String, cob: String, basal: String){
