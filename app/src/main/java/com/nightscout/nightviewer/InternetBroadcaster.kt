@@ -11,7 +11,7 @@ import android.net.NetworkInfo
 import android.widget.Toast
 class InternetBroadcaster : BroadcastReceiver(){
     override fun onReceive(context: Context, intent: Intent) {
-        while (!isNetworkConnected(context)) {
+        if (!isNetworkConnected(context)) {
             Toast.makeText(context, "네트워크에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
             Thread.sleep(2000);
         }

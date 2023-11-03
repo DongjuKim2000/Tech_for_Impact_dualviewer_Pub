@@ -2,6 +2,8 @@ package com.nightscout.nightviewer
 
 import android.content.Context
 import android.media.RingtoneManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.VibrationEffect
@@ -11,6 +13,8 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 fun convertUtcToKst(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
@@ -57,7 +61,7 @@ fun getGlucoseTrend(glucoseData: List<BG>): String {
 
     // 데이터 개수가 7개보다 작을 경우 "XX"를 반환합니다.
     if (glucoseData.size < 7) {
-        return "!!"
+        return "-"
     }
 
     // Format for parsing timestamps

@@ -20,6 +20,7 @@ class TimeWorker(appContext: Context, workerParams: WorkerParameters) : Worker(a
         getBG()
         Log.d("TimeWorker", "Executed")
         // 1분 후에 다음 작업 예약
+
         val nextWork = OneTimeWorkRequest.Builder(TimeWorker::class.java)
             .setInitialDelay(30, TimeUnit.SECONDS)
             .build()

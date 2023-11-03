@@ -102,99 +102,105 @@ class FullscreenActivity2 : CommonActivity() {
         val pref_fontcolorurgenthighlow =
             prefs.getString("fontcolorurgenthighlow", "#FFFF00").toString()
 
+        try
+            {
+                val bgData = BGData(this)
 
-        val bgData = BGData(this)
+                if (bgData == null)
+                    finish()
 
-        if(bgData == null)
-            finish()
-
-        val bgInfo = bgData.BGInfo()
-        //bgData.get_EntireBGInfo()
-        val current_bgInfo = bgInfo.bginfo
-        Log.d("current_info", "${current_bgInfo.toString()}")
+                val bgInfo = bgData.BGInfo()
+                //bgData.get_EntireBGInfo()
+                val current_bgInfo = bgInfo.bginfo
+                Log.d("current_info", "${current_bgInfo.toString()}")
 
 
-        val currentTime: Long = System.currentTimeMillis() // ms로 반환
+                val currentTime: Long = System.currentTimeMillis() // ms로 반환
 
-        var mins: Long = 0
-        var displayMins: String = ""
-        var info: String = ""
-        var int_bg = 0
-        var sdf = SimpleDateFormat("HH:mm")
-        if (pref_timeformat == "timeformat12") {
-            sdf = SimpleDateFormat("a hh:mm")
-        }
-        val displayTime: String = sdf.format(currentTime)
-        info = "$displayTime   $displayMins"
-        if (current_bgInfo != null) {
-            var displayIOB = current_bgInfo.iob
+                var mins: Long = 0
+                var displayMins: String = ""
+                var info: String = ""
+                var int_bg = 0
+                var sdf = SimpleDateFormat("HH:mm")
+                if (pref_timeformat == "timeformat12") {
+                    sdf = SimpleDateFormat("a hh:mm")
+                }
+                val displayTime: String = sdf.format(currentTime)
+                info = "$displayTime   $displayMins"
+                if (current_bgInfo != null) {
+                    var displayIOB = current_bgInfo.iob
 
-            if (current_bgInfo.iob != "") {
-                displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
-                info += displayIOB
+                    if (current_bgInfo.iob != "") {
+                        displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
+                        info += displayIOB
+                    }
+                    var displayCOB = current_bgInfo.cob
+
+                    if (current_bgInfo.cob != "") {
+                        displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
+                        info += displayCOB
+                    }
+                    Log.d("showinfo", "iob cob 끝")
+                    // xml 구성 관련 부분
+                    var bg_value: String = current_bgInfo.bg
+                    var float_bg = bg_value.toFloat()
+                    int_bg = float_bg.toInt()
+                    binding.screenBg.text = int_bg.toString()
+                    Log.d("showinfo", "bg값 끝")
+
+                    binding.screenDirection.text =
+                        "${current_bgInfo.arrow} ${current_bgInfo.delta}"
+                    binding.screenInfo.text = info
+
+                    binding.screenBg.textSize = pref_bgfont.toFloat()
+                    binding.screenDirection.textSize =
+                        pref_directionfont.toFloat()
+                    binding.screenInfo.textSize = pref_timeinfofont.toFloat()
+                }
+
+                //그래프 표시
+                val lineChart: LineChart = findViewById(R.id.lineChart)
+                val thread = GraphThread(lineChart, baseContext)
+                thread.start()
+
+                if (isFullscreen) {
+                    hide()
+                }
+                fun getComplementaryColor(color: Int): Int {
+                    val alpha = color shr 24 and 0xFF
+                    val red = 255 - (color shr 16 and 0xFF)
+                    val green = 255 - (color shr 8 and 0xFF)
+                    val blue = 255 - (color and 0xFF)
+                    return alpha shl 24 or (red shl 16) or (green shl 8) or blue
+                }
+
+                var fontcolor: Int
+
+                try {
+                    val bgInt: Int = int_bg
+
+                    //일반혈당
+                    if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
+                        fontcolor = Color.parseColor(pref_fontcolornormal)
+                    } else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
+                        fontcolor = Color.parseColor(pref_fontcolorhighlow)
+                    } else {
+                        fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+                    }
+                } catch (e: Exception) {
+                    fontcolor = Color.WHITE
+                }
+                Log.d("color", "${fontcolor.toString()}")
+
+                binding.screenBg.setTextColor(fontcolor)
+                binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
+
             }
-            var displayCOB = current_bgInfo.cob
-
-            if (current_bgInfo.cob != "") {
-                displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
-                info += displayCOB
-            }
-            Log.d("showinfo", "iob cob 끝")
-            // xml 구성 관련 부분
-            var bg_value: String = current_bgInfo.bg
-            var float_bg = bg_value.toFloat()
-            int_bg = float_bg.toInt()
-            binding.screenBg.text = int_bg.toString()
-            Log.d("showinfo", "bg값 끝")
-
-            binding.screenDirection.text =
-                "${current_bgInfo.arrow} ${current_bgInfo.delta}"
-            binding.screenInfo.text = info
-
-            binding.screenBg.textSize = pref_bgfont.toFloat()
-            binding.screenDirection.textSize =
-                pref_directionfont.toFloat()
-            binding.screenInfo.textSize = pref_timeinfofont.toFloat()
+        catch(e:Exception){
+            binding.screenBg.text = "XX"
+            binding.screenDirection.text = "-"
+            binding.screenInfo.text ="No internet"
+            Log.d("binding", "internet")
         }
-
-        //그래프 표시
-        val lineChart: LineChart = findViewById(R.id.lineChart)
-        val thread = GraphThread(lineChart, baseContext)
-        thread.start()
-
-        if (isFullscreen) { hide() }
-        fun getComplementaryColor(color: Int): Int {
-            val alpha = color shr 24 and 0xFF
-            val red = 255 - (color shr 16 and 0xFF)
-            val green = 255 - (color shr 8 and 0xFF)
-            val blue = 255 - (color and 0xFF)
-            return alpha shl 24 or (red shl 16) or (green shl 8) or blue
-        }
-
-        var fontcolor : Int
-
-        try {
-            val bgInt : Int = int_bg
-
-            //일반혈당
-            if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
-                fontcolor = Color.parseColor(pref_fontcolornormal)
-            }
-            else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
-                fontcolor = Color.parseColor(pref_fontcolorhighlow)
-            }
-            else {
-                fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
-            }
-        }
-        catch (e: Exception ) {
-            fontcolor = Color.WHITE
-        }
-        Log.d("color", "${fontcolor.toString()}")
-
-        binding.screenBg.setTextColor(fontcolor)
-        binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
-
-
     }
 }

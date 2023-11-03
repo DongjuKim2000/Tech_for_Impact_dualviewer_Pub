@@ -17,7 +17,7 @@ class BGData(private val context: Context){
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
         Log.d("BGData.kt", "initialize 시작")
         Thread{
-            val past10_EntireBGInfo = get_Past10_EntireBGInfo()
+            val past10_EntireBGInfo = get_Recent10BGValues()
             SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
         }.start()
     }
@@ -45,32 +45,33 @@ class BGData(private val context: Context){
                     Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
             }
+            else{
+                showErrorMessage(context)
+            }
         }.start()
     }
 
     fun get_Past10_EntireBGInfo():List<BG>{ //과거 10개의 데이터 받아오기. !앱을 처음 켰을때만 실행.
         val BGList = mutableListOf<BG>()
         // Iterate over each object and extract the specified fields
-        val url = URL("${pref_urlText}/api/v1/devicestatus.json")
+        val url = URL("${pref_urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
         val jsonresult = URL(url.toString()).readText()
-        Log.d("get_past10", "${url}")
+        Log.d("get_past10", "${jsonresult}")
 
 
         val gson = Gson()
         val typeToken = object : TypeToken<List<OpenapsData>>() {}.type
         val openapsDataList: List<OpenapsData> = gson.fromJson(jsonresult, typeToken)
         for (data in openapsDataList) {
-            val bg = data.openaps.suggested.bg.toString()
-            val cob = data.openaps.suggested.COB.toString()
-            val iob = data.openaps.suggested.IOB.toString()
+            val iob = data.iob.toString()
+            val bg = data.bgnow.toString()
+            val cob = data.cob.toString()
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val currenttime: Long = System.currentTimeMillis()
+            val currenttimedisplay : String = sdf.format(currenttime)
 
-            //val arrow = JSONObject(result).getJSONObject("delta").getString("display")
-
-
-
-            val timestamp = convertUtcToKst(data.openaps.suggested.timestamp.toString()) //기준이 UTC 시간이라 KST로 시간 변경
-            val basaliob = data.openaps.iob.basaliob.toString()
-            BGList.add(0, BG(bg, timestamp, "XX", "0", iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
+            val basaliob = data.basal.toString()
+            BGList.add(0, BG(bg, currenttimedisplay, "XX", "0", iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
         }
         return BGList
     }

@@ -32,7 +32,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         val bgData = BGData(this)
         bgData.initializeBG_db()
-        //bgData.get_EntireBGInfo()
+
         //화면선택
         val pref_layout = prefs.getString ("pref_layout", "2").toString()
         when (pref_layout)
@@ -43,7 +43,7 @@ class FullscreenActivity : AppCompatActivity() {
             }
             "2" -> {val i = Intent(this, FullscreenActivity2::class.java)
                 startActivity(i)
-                Log.d("FullscreenActivity","스타트 activity1")
+                Log.d("FullscreenActivity","스타트 activity2")
             }
 
         }
@@ -51,11 +51,5 @@ class FullscreenActivity : AppCompatActivity() {
         //메인액티비티종료
         finish()
     }
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean){
 
-        Log.d("Activity", "onMultiWindowModeChanged")
-        super.onMultiWindowModeChanged(isInMultiWindowMode)
-        if (isInMultiWindowMode)
-            Log.d("Activity", "multinow!")
-    }
 }

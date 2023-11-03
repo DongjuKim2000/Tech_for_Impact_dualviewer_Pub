@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import android.util.Log
 
+
 object SharedPreferencesUtil {
     private const val PREF_NAME = "BG_db" //Preference Name
     private const val KEY_USERS = "BGdata"
@@ -72,3 +73,7 @@ object Logr {
         }
     }
 }
+
+
+
+
