@@ -13,8 +13,7 @@ var lastrequestdatatime : Long = 0
 var lastrequestalldatatime : Long = 0
 
 class FullscreenActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) { // 초기화. 화면 초기 상태
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         Log.d("FullscreenActivity","onCreate 시작")
 
@@ -23,19 +22,9 @@ class FullscreenActivity : AppCompatActivity() {
         WorkManager.getInstance(this).cancelAllWork() // this: 현재클래스
         WorkManager.getInstance(this).enqueue(OneTimeWorkRequest.Builder(TimeWorker::class.java).build())
 
-//        if(prefs.getString("ns_url", "defaultURL")=="defaultURL")
-//            showInputTextDialog()
-//        val urlText = intent.getStringExtra("urlText")
-//        with(prefs.edit()) {
-//            putString("ns_url", urlText)
-//            apply()
-//        }
-
 
         val bgData = BGData(this)
         bgData.initializeBG_db()
-        //bgData.get_EntireBGInfo()
-        //화면선택
 
 
         val pref_layout = prefs.getString ("pref_layout", "2").toString()
@@ -91,6 +80,7 @@ class FullscreenActivity : AppCompatActivity() {
 //            apply()
 //        }
 //    }
+
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean){
 
         Log.d("Activity", "onMultiWindowModeChanged")
