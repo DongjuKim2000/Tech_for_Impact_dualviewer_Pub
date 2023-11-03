@@ -10,17 +10,10 @@ import android.os.Build
 import android.net.NetworkInfo
 import android.widget.Toast
 class InternetBroadcaster : BroadcastReceiver(){
-    private var isConnected: Boolean = false
     override fun onReceive(context: Context, intent: Intent) {
-        if (isNetworkConnected(context)) {
-            if(isConnected == true)
-                return;
-            isConnected = true
-        }
-        else{
-            if(isConnected == false)
-                return;
-            isConnected = false
+        while (!isNetworkConnected(context)) {
+            Toast.makeText(context, "네트워크에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            Thread.sleep(2000);
         }
     }
     private fun isNetworkConnected(context: Context): Boolean {
