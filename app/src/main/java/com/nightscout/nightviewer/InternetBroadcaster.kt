@@ -14,15 +14,8 @@ import androidx.appcompat.app.AlertDialog
 class InternetBroadcaster : BroadcastReceiver(){
 
     override fun onReceive(context: Context, intent: Intent) {
-        val alertDialog: AlertDialog = AlertDialog.Builder(context)
-            .setTitle("네트워크 연결 실패")
-            .setMessage("네트워크 연결이 되지 않은 상태입니다.")
-            .setNeutralButton("재시도") { dialog, which ->
-                Thread.sleep(2000)
-            }
-            .create()
         while (!isNetworkConnected(context)) {
-            alertDialog.show()
+            showErrorMessage(context,"인터넷에 연결되어 있지 않습니다. 인터넷 연결 상태를 확인해주세요.")
         }
     }
     private fun isNetworkConnected(context: Context): Boolean {

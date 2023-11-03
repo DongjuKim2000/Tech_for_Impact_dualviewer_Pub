@@ -120,11 +120,13 @@ fun doRingtone(context: Context) {
     ringtone.play()
 }
 
-fun showErrorMessage(context: Context) {
-    val builder = AlertDialog.Builder(context)
-    builder.setTitle("Error")
-    builder.setMessage("인터넷에 연결되어 있지 않습니다. 인터넷 연결 상태를 확인해주세요.")
-    builder.setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
-    val dialog: AlertDialog = builder.create()
-    dialog.show()
+fun showErrorMessage(context: Context, msg: String) {
+    val alertDialog: AlertDialog = AlertDialog.Builder(context)
+        .setTitle("Error")
+        .setMessage(msg)
+        .setPositiveButton("확인") { dialog, which ->
+            Thread.sleep(2000)
+        }
+        .create()
+    alertDialog.show()
 }
