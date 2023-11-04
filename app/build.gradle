@@ -7,11 +7,11 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.nightscout.nightviewer"
+        applicationId "com.nightscout.multiviewer"
         minSdk 16
         targetSdk 32
         versionCode 1
-        versionName "1.11"
+        versionName "1.00.231104"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
