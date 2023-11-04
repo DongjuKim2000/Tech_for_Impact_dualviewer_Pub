@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NightViewer</string>
+    <string name="app_name">MultiViewer</string>
     <string name="title_activity_preferences">환경설정</string>
 
     <!-- Menu -->
