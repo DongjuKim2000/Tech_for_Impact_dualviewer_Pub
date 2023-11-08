@@ -95,6 +95,13 @@ class FullscreenActivity2 : CommonActivity() {
         try{unregisterReceiver(showinfobr)} catch (e: Exception){}
         try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
+
+    override fun onBackPressed() {
+        // 현재 액티비티를 종료하고, 앱을 백그라운드로 보냅니다.
+        moveTaskToBack(true)
+        finish()
+    }
+
     private fun showinfo() {
 
         //설정

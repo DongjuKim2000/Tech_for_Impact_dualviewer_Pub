@@ -49,13 +49,13 @@
             android:minWidth="100dp"
             android:minHeight="100dp"
             android:resizeableActivity="true"
-            android:theme="@style/Theme.NightViewer.Fullscreen"></activity>
+            android:theme="@style/Theme.NightViewer.Fullscreen"/>
         <activity
             android:name=".FullscreenActivity2"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:resizeableActivity="true"
-            android:theme="@style/Theme.NightViewer.Fullscreen"></activity>
+            android:theme="@style/Theme.NightViewer.Fullscreen"/>
         <activity
             android:name=".PreferencesActivity"
             android:exported="false"

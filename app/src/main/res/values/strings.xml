@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NightViewer</string>
+    <string name="app_name">MultiViewer</string>
     <string name="title_activity_preferences">Preferences</string>
 
     <!-- Menu -->
@@ -34,7 +34,7 @@
     <string name="string_displayiob">IOB</string>
     <string name="string_displaycob">COB</string>
     <string name="string_displaybasal">Basal</string>
-    <string name="string_displaychart">Chart</string>
+    <string name="string_displaychart" translatable="false">Chart</string>
 
     <!-- 글자크기 -->
     <string name="string_fontsize">Font Size</string>

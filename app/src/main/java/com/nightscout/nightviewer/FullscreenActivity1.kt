@@ -89,6 +89,12 @@ class FullscreenActivity1 : CommonActivity() {
         try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
 
+    override fun onBackPressed() {
+        // 현재 액티비티를 종료하고, 앱을 백그라운드로 보냅니다.
+        moveTaskToBack(true)
+        finish()
+    }
+
     inner class ShowinfoBR : BroadcastReceiver()
     {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -96,6 +102,7 @@ class FullscreenActivity1 : CommonActivity() {
                 showinfo()
         }
     }
+
     private fun showinfo() {
 
         //설정
