@@ -1,30 +1,20 @@
 package com.nightscout.nightviewer
 
 //json 형식에 따라 만들었음.
-data class OpenapsData(
-//    val openaps: Openaps,
-//    val mills: Long
-    val bgnow: String,
-    val delta: String,
+data class GlucoseData(
+    val id: String,
+    val device: String,
+    val date: Long,
+    val dateString: String,
+    val sgv: Int,
+    val delta: Float,
     val direction: String,
-    val buckets:String,
-    val iob:String,
-    val cob:String,
-    val basal:String
-)
-
-data class Openaps(
-    val suggested: Suggested,
-    val iob: Iob
-)
-
-data class Suggested(
-    val bg: Double,
-    val COB: Int,
-    val IOB: Int,
-    val timestamp: String
-)
-
-data class Iob(
-    val basaliob: Int
+    val type: String,
+    val filtered: Int,
+    val unfiltered: Int,
+    val rssi: Int,
+    val noise: Int,
+    val sysTime: String,
+    val utcOffset: Int,
+    val mills: Long
 )
