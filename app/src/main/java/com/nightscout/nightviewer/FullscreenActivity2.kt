@@ -7,16 +7,8 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
-import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.*
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
+import android.view.View
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
@@ -34,6 +26,8 @@ class FullscreenActivity2 : CommonActivity() {
         binding = ActivityFullscreen2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         if (Build.VERSION.SDK_INT >= 26) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.icon)
@@ -42,28 +36,45 @@ class FullscreenActivity2 : CommonActivity() {
         // Set up the user interaction to manually show or hide the system UI.
         fullscreenContent = binding.mainlayout2
         fullscreenContent.setOnClickListener { toggle() }
-
         val filter = IntentFilter()
-        filter.addAction("showinfo") //수신할 action 종류 넣기
-        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
         showinfo()
 
         val updateIntervalMillis: Long = 10000
 
+        var reconnected = true
+        filter.addAction("showinfo") //수신할 action 종류 넣기
+        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
+        registerReceiver(internetBroadcaster, filter)
+
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
             override fun onTick(millisUntilFinished: Long) {
-                showinfo()
+                // 인터넷 연결 상태를 감지하는 Receiver
+                if (!isOnline(this@FullscreenActivity2)) {
+                    showErrorMessage(this@FullscreenActivity2, "인터넷 연결 X")
+
+                    reconnected = false
+                }
+                else {
+                    if (reconnected==false) {
+                        showMessage(this@FullscreenActivity2, "인터넷 연결 재개")
+                    }
+
+                    try{showinfo()
+                        reconnected = true } catch(e:Exception){
+                        reconnected = false
+                        showErrorMessage(this@FullscreenActivity2, "인터넷 연결이 안되어 있습니다")
+                        }
+                    }
             }
             override fun onFinish() {
                 // 타이머가 무한대로 설정되었으므로 onFinish는 호출되지 않음
             }
+
         }
+
         updateTimer?.start()
 
-        // 인터넷 연결 상태를 감지하는 Receiver
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        this.registerReceiver(internetBroadcaster, filter)
 
         Log.d("Activity2","onCreate 끝")
 
@@ -122,8 +133,10 @@ class FullscreenActivity2 : CommonActivity() {
 
         val bgData = BGData(this)
 
-        if(bgData == null)
+        if(bgData == null) {
+            Log.d("showinfo", "null_bg")
             finish()
+        }
 
         val bgInfo = bgData.BGInfo()
         //bgData.get_EntireBGInfo()
@@ -134,7 +147,7 @@ class FullscreenActivity2 : CommonActivity() {
         val currentTime: Long = System.currentTimeMillis() // ms로 반환
 
         var mins: Long = 0
-        var displayMins: String = ""
+//        var displayMins: String = ""
         var info: String = ""
         var int_bg = 0
         var sdf = SimpleDateFormat("HH:mm")
@@ -142,8 +155,17 @@ class FullscreenActivity2 : CommonActivity() {
             sdf = SimpleDateFormat("a hh:mm")
         }
         val displayTime: String = sdf.format(currentTime)
-        info = "$displayTime   $displayMins"
+        info = "$displayTime"
+
         if (current_bgInfo != null) {
+            var displayMins = current_bgInfo.time
+
+            if (current_bgInfo.time != ""){
+                val timeGap = ((currentTime/60000) - TimeCalculator(current_bgInfo.time).time())
+                displayMins = "   $timeGap min"
+                info += displayMins
+            }
+
             var displayIOB = current_bgInfo.iob
 
             if (current_bgInfo.iob != "") {

@@ -17,12 +17,12 @@ class FullscreenActivity : AppCompatActivity() {
         Log.d("FullscreenActivity","onCreate 시작")
         //Firebase
         //타이머
-        WorkManager.getInstance(this).cancelAllWork() // this: 현재클래스
-        WorkManager.getInstance(this).enqueue(OneTimeWorkRequest.Builder(TimeWorker::class.java).build())
-
 
         val bgData = BGData(this)
         bgData.initializeBG_db()
+
+        WorkManager.getInstance(this).cancelAllWork() // this: 현재클래스
+        WorkManager.getInstance(this).enqueue(OneTimeWorkRequest.Builder(TimeWorker::class.java).build())
 
 
         val pref_layout = prefs.getString ("pref_layout", "2").toString()

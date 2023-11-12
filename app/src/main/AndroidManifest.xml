@@ -55,7 +55,7 @@
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:resizeableActivity="true"
-            android:theme="@style/Theme.NightViewer.Fullscreen"/>
+            android:theme="@style/Theme.NightViewer.Fullscreen"></activity>
         <activity
             android:name=".PreferencesActivity"
             android:exported="false"

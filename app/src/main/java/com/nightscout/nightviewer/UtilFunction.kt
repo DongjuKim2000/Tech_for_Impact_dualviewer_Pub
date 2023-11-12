@@ -11,6 +11,9 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+
 
 fun convertUtcToLocal(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
@@ -125,4 +128,23 @@ fun showErrorMessage(context: Context, msg: String) {
         .setPositiveButton("확인", null)
         .create()
     alertDialog.show()
+}
+fun showMessage(context: Context, msg: String) {
+    val alertDialog: AlertDialog = AlertDialog.Builder(context)
+        .setTitle("Connected")
+        .setMessage(msg)
+        .setPositiveButton("확인", null)
+        .create()
+    alertDialog.show()
+}
+fun isOnline(context: Context): Boolean {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+    } else {
+        val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+        return networkInfo.isConnected
+    }
 }

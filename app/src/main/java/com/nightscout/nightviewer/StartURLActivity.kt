@@ -35,10 +35,7 @@ class StartURLActivity : AppCompatActivity() {
         confirmButton.setOnClickListener(){
             val urlText = urlEditText.text.toString()
             Log.d("first", urlText)
-            val isValidInput = runBlocking {
-                isValidInputAsync(urlText)
-            }
-            if(isValidInput){
+            if(isValidInput(urlText)){
                 with(prefs.edit()) {
                     putString("ns_url", urlText)
                     apply()
@@ -88,18 +85,18 @@ class StartURLActivity : AppCompatActivity() {
         }
     }
 
-//    private fun isValidInput(text: String): Boolean {
-//        val url = try{
-//            URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
-//        }
-//        catch(e: Exception){
-//            null
-//        }
-//        val ret = (url != null)
-//        if(!ret)
-//            showErrorMessage(this, "올바르지 않은 URL입니다.")
-//        return ret
-//    }
+    private fun isValidInput(text: String): Boolean {
+        val url = try{
+            URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+        }
+        catch(e: Exception){
+            null
+        }
+        val ret = (url != null)
+        if(!ret)
+            showErrorMessage(this, "올바르지 않은 URL입니다.")
+        return ret
+    }
 
 //    private fun saveTextToPreference(text: String) {
 //        with(prefs.edit()) {
