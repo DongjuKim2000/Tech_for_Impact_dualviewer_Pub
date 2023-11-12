@@ -19,11 +19,11 @@ class BGData(private val context: Context){
             val past10_EntireBGInfo = get_Past10_EntireBGInfo()
             Log.d("initialize", past10_EntireBGInfo.toString())
             SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
-            get_EntireBGInfo()
+            get_EntireBGInfo(isInitial = true)
         }.start()
     }
 
-    fun get_EntireBGInfo() { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
+    fun get_EntireBGInfo(isInitial:Boolean = false) { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
         Log.d("BGData.kt",  "getEntireData(1개) 시작")
         Thread{
             val newbg = get_BGInfoFromURL(pref_urlText)
@@ -36,7 +36,7 @@ class BGData(private val context: Context){
                     val bgTimeMillis = dateFormat.parse(currentBGInfo.time).time
                     val timeDifferenceInMinutes = ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
 
-                    if (currentBGInfo.bg != newbg.bginfo?.bg ?: "" || timeDifferenceInMinutes >=5) {
+                    if (currentBGInfo.bg != (newbg.bginfo?.bg?: "") || timeDifferenceInMinutes >= 5 || isInitial) {
                         newbg.saveBG()
                     } else {
                         Log.d("getEntireBGInfo", "SKIPPED")
@@ -63,11 +63,9 @@ class BGData(private val context: Context){
         val typeToken = object : TypeToken<List<GlucoseData>>() {}.type
         val openapsDataList: List<GlucoseData> = gson.fromJson(jsonresult, typeToken)
         for (data in openapsDataList) {
-            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val currenttime: Long = System.currentTimeMillis()
-            val currenttimedisplay : String = sdf.format(currenttime)
+            val time: String = convertUtcToKst(data.dateString)
             val bg = data.sgv.toString()
-            BGList.add(0, BG(bg, currenttimedisplay, "XX", "0", "None", "None", "None")) //arrow, delta 데이터가 확인불가
+            BGList.add(0, BG(bg, time, "XX", "0", "None", "None", "None")) //arrow, delta 데이터가 확인불가
         }
         val bgList = BGList.dropLast(1)
         return bgList

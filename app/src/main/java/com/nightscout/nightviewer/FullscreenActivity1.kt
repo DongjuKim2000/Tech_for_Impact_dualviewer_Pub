@@ -27,6 +27,9 @@ class FullscreenActivity1 : CommonActivity() {
         Log.d("Activity1","onCreate")
         setContentView(binding.root) // xml 파일 지정
 
+        val filter = IntentFilter()  // 인텐트 지정
+        filter.addAction("showinfo") //수신할 action 종류 넣기
+        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
         if (Build.VERSION.SDK_INT >= 26) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -37,18 +40,33 @@ class FullscreenActivity1 : CommonActivity() {
         fullscreenContent = binding.mainlayout1
         fullscreenContent.setOnClickListener { toggle() }
 
-        val filter = IntentFilter()  // 인텐트 지정
-        filter.addAction("showinfo") //수신할 action 종류 넣기
-        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
         showinfo()
-
+        // 인터넷 연결 상태를 감지하는 Receiver
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(internetBroadcaster, filter)
 
         val updateIntervalMillis: Long = 10000
-
+        var reconnected = true
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
             override fun onTick(millisUntilFinished: Long) {
-                showinfo()
+
+                if (!isOnline(this@FullscreenActivity1)) {
+                    showErrorMessage(this@FullscreenActivity1, "인터넷 연결 X")
+
+                    reconnected = false
+                }
+                else {
+                    if (reconnected==false) {
+                        showMessage(this@FullscreenActivity1, "인터넷 연결 재개")
+                    }
+
+                    try{showinfo()
+                        reconnected = true } catch(e:Exception){
+                        reconnected = false
+                        showErrorMessage(this@FullscreenActivity1, "인터넷 연결이 안되어 있습니다")
+                    }
+                }
             }
             override fun onFinish() {
                 // 타이머가 무한대로 설정되었으므로 onFinish는 호출되지 않음
@@ -56,9 +74,6 @@ class FullscreenActivity1 : CommonActivity() {
         }
         updateTimer?.start()
 
-        // 인터넷 연결 상태를 감지하는 Receiver
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        this.registerReceiver(internetBroadcaster, filter)
 
         Log.d("Activity1","onCreate 끝")
 

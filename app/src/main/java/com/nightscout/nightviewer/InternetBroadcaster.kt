@@ -18,7 +18,7 @@ class InternetBroadcaster : BroadcastReceiver(){
             showErrorMessage(context,"인터넷에 연결되어 있지 않습니다. 인터넷 연결 상태를 확인해주세요.")
         }
     }
-    private fun isNetworkConnected(context: Context): Boolean {
+    fun isNetworkConnected(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             isNetworkAvailable(context)
         } else {
