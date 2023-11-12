@@ -7,16 +7,8 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
-import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.*
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
+import android.view.View
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
@@ -155,7 +147,7 @@ class FullscreenActivity2 : CommonActivity() {
         val currentTime: Long = System.currentTimeMillis() // ms로 반환
 
         var mins: Long = 0
-        var displayMins: String = ""
+//        var displayMins: String = ""
         var info: String = ""
         var int_bg = 0
         var sdf = SimpleDateFormat("HH:mm")
@@ -163,8 +155,17 @@ class FullscreenActivity2 : CommonActivity() {
             sdf = SimpleDateFormat("a hh:mm")
         }
         val displayTime: String = sdf.format(currentTime)
-        info = "$displayTime   $displayMins"
+        info = "$displayTime"
+
         if (current_bgInfo != null) {
+            var displayMins = current_bgInfo.time
+
+            if (current_bgInfo.time != ""){
+                val timeGap = ((currentTime/60000) - TimeCalculator(current_bgInfo.time).time())
+                displayMins = "   $timeGap min"
+                info += displayMins
+            }
+
             var displayIOB = current_bgInfo.iob
 
             if (current_bgInfo.iob != "") {

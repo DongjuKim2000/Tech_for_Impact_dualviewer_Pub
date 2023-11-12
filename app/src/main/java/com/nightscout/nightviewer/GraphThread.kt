@@ -14,7 +14,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.nightscout.nightviewer.SharedPreferencesUtil
-import com.nightscout.nightviewer.TimeAxisValueFormat
 import com.nightscout.nightviewer.TimeCalculator
 import com.nightscout.nightviewer.prefs
 
@@ -65,9 +64,15 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 //            SystemClock.sleep(1000)
 //            data.addEntry(Entry(i.toFloat(), input[i].toFloat()), 0) //랜덤 데이터
 
-                val currentMin = TimeCalculator(input[i].time).time()
+                val currentMin = TimeCalculator(input[i].time).time() % 1000 //숫자가 너무 커서 3자리만 가져옴
                 val tstring = input[i].time
                 Log.d("time", "$tstring, $i: $currentMin")
+                if(i==0){
+                    lineChart.xAxis.axisMinimum = currentMin.toFloat()
+                }
+                if(i==9){
+                    lineChart.xAxis.axisMaximum = currentMin.toFloat()
+                }
                 data.addEntry(Entry(currentMin.toFloat(), input[i].bg.toFloat()), 0) //bg 데이터
                 data.notifyDataChanged()
                 lineChart.notifyDataSetChanged()
@@ -110,7 +115,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         xAxis.apply {
             //x축 그래프 아래에 표시
             position = XAxis.XAxisPosition.BOTTOM
-            valueFormatter = TimeAxisValueFormat()
+//            valueFormatter = TimeAxisValueFormat()
         }
 
         val urgentHighValue = prefs.getString("urgent_high_value", "260")
