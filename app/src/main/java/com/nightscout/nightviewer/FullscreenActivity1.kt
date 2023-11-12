@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen1Binding
@@ -41,8 +42,12 @@ class FullscreenActivity1 : CommonActivity() {
         filter.addAction("showinfo") //수신할 action 종류 넣기
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
-        showinfo()
 
+
+        val charview = prefs.getBoolean("chart_enable", true)
+        adjustGuidelineBasedOnChartEnable()
+
+        showinfo()
 
         val updateIntervalMillis: Long = 10000
 
@@ -103,6 +108,15 @@ class FullscreenActivity1 : CommonActivity() {
         }
     }
 
+
+    private fun adjustGuidelineBasedOnChartEnable() {
+        val chartEnable = prefs.getBoolean("chart_enable", true)
+        val layoutParams = binding.guideline3.layoutParams as ConstraintLayout.LayoutParams
+
+        layoutParams.guidePercent = if (chartEnable) 0.6f else 1f
+        binding.guideline3.layoutParams = layoutParams
+    }
+
     private fun showinfo() {
 
         //설정
@@ -122,6 +136,8 @@ class FullscreenActivity1 : CommonActivity() {
         val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FCFFFFFF").toString()
 
 
+
+        adjustGuidelineBasedOnChartEnable()
 
         val bgData = BGData(this)
 
