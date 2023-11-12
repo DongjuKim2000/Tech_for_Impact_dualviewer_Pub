@@ -16,39 +16,34 @@ class BGData(private val context: Context){
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
         Log.d("BGData.kt", "initialize 시작")
         Thread{
-            if(get_Recent10BGValues().isEmpty()){
-                val past10_EntireBGInfo = mutableListOf<BG>()
-                SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
-            }
-            else{
-                val past10_EntireBGInfo = get_Recent10BGValues()
-                SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
-            }
+            val past10_EntireBGInfo = get_Past10_EntireBGInfo()
+            Log.d("initialize", past10_EntireBGInfo.toString())
+            SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
+            get_EntireBGInfo()
         }.start()
     }
 
     fun get_EntireBGInfo() { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
         Log.d("BGData.kt",  "getEntireData(1개) 시작")
         Thread{
-            val currentbg = get_BGInfoFromURL(pref_urlText)
-            if(currentbg != null) {
-                currentbg.LogBG()
+            val newbg = get_BGInfoFromURL(pref_urlText)
+            if(newbg != null) {
+                newbg.LogBG()
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                 val currentBGInfo = get_CurrentBGInfo()
                 if (currentBGInfo != null) {
                     val currentTimeMillis = System.currentTimeMillis()
                     val bgTimeMillis = dateFormat.parse(currentBGInfo.time).time
-                    val timeDifferenceInMinutes =
-                        ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
+                    val timeDifferenceInMinutes = ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
 
-                    if (timeDifferenceInMinutes >= 5) {
-                        currentbg.saveBG()
+                    if (currentBGInfo.bg != newbg.bginfo?.bg ?: "" || timeDifferenceInMinutes >=5) {
+                        newbg.saveBG()
                     } else {
                         Log.d("getEntireBGInfo", "SKIPPED")
                     }
                 } else {
                     if (SharedPreferencesUtil.getBGDatas(context).isEmpty())
-                        currentbg.saveBG()
+                        newbg.saveBG()
                     else
                         Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
@@ -59,26 +54,23 @@ class BGData(private val context: Context){
     fun get_Past10_EntireBGInfo():List<BG>{ //과거 10개의 데이터 받아오기. !앱을 처음 켰을때만 실행.
         val BGList = mutableListOf<BG>()
         // Iterate over each object and extract the specified fields
-        val url = URL("${pref_urlText}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+        val url = URL("${pref_urlText}/api/v1/entries.json")
         val jsonresult = URL(url.toString()).readText()
         Log.d("get_past10", "${jsonresult}")
 
 
         val gson = Gson()
-        val typeToken = object : TypeToken<List<OpenapsData>>() {}.type
-        val openapsDataList: List<OpenapsData> = gson.fromJson(jsonresult, typeToken)
+        val typeToken = object : TypeToken<List<GlucoseData>>() {}.type
+        val openapsDataList: List<GlucoseData> = gson.fromJson(jsonresult, typeToken)
         for (data in openapsDataList) {
-            val iob = data.iob.toString()
-            val bg = data.bgnow.toString()
-            val cob = data.cob.toString()
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             val currenttime: Long = System.currentTimeMillis()
             val currenttimedisplay : String = sdf.format(currenttime)
-
-            val basaliob = data.basal.toString()
-            BGList.add(0, BG(bg, currenttimedisplay, "XX", "0", iob, cob, basaliob)) //arrow, delta 데이터가 확인불가
+            val bg = data.sgv.toString()
+            BGList.add(0, BG(bg, currenttimedisplay, "XX", "0", "None", "None", "None")) //arrow, delta 데이터가 확인불가
         }
-        return BGList
+        val bgList = BGList.dropLast(1)
+        return bgList
     }
 
     fun get_BGInfoFromURL(urlText:String?): BGInfo?{ //URL을 받아 BGInfo 한개를 리턴
