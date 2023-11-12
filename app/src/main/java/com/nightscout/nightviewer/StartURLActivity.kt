@@ -85,18 +85,18 @@ class StartURLActivity : AppCompatActivity() {
         }
     }
 
-//    private fun isValidInput(text: String): Boolean {
-//        val url = try{
-//            URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
-//        }
-//        catch(e: Exception){
-//            null
-//        }
-//        val ret = (url != null)
-//        if(!ret)
-//            showErrorMessage(this, "올바르지 않은 URL입니다.")
-//        return ret
-//    }
+    private fun isValidInput(text: String): Boolean {
+        val url = try{
+            URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+        }
+        catch(e: Exception){
+            null
+        }
+        val ret = (url != null)
+        if(!ret)
+            showErrorMessage(this, "올바르지 않은 URL입니다.")
+        return ret
+    }
 
 //    private fun saveTextToPreference(text: String) {
 //        with(prefs.edit()) {
