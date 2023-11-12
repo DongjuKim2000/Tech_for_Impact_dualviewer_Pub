@@ -63,11 +63,9 @@ class BGData(private val context: Context){
         val typeToken = object : TypeToken<List<GlucoseData>>() {}.type
         val openapsDataList: List<GlucoseData> = gson.fromJson(jsonresult, typeToken)
         for (data in openapsDataList) {
-            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val currenttime: Long = System.currentTimeMillis()
-            val currenttimedisplay : String = sdf.format(currenttime)
+            val time: String = convertUtcToKst(data.dateString)
             val bg = data.sgv.toString()
-            BGList.add(0, BG(bg, currenttimedisplay, "XX", "0", "None", "None", "None")) //arrow, delta 데이터가 확인불가
+            BGList.add(0, BG(bg, time, "XX", "0", "None", "None", "None")) //arrow, delta 데이터가 확인불가
         }
         val bgList = BGList.dropLast(1)
         return bgList
