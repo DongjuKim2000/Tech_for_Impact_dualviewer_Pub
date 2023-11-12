@@ -3,6 +3,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -43,8 +44,6 @@ class FullscreenActivity1 : CommonActivity() {
         registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
 
-
-        val charview = prefs.getBoolean("chart_enable", true)
         adjustGuidelineBasedOnChartEnable()
 
         showinfo()
@@ -110,22 +109,25 @@ class FullscreenActivity1 : CommonActivity() {
     }
 
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        adjustGuidelineBasedOnChartEnable()
+    }
+
     private fun adjustGuidelineBasedOnChartEnable() {
         val chartEnable = prefs.getBoolean("chart_enable", true)
         val layoutParams = binding.guideline3.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.guidePercent = if (chartEnable) 0.6f else 1f
-        binding.guideline3.layoutParams = layoutParams
 
-        // LineChart의 가시성도 업데이트
-        binding.lineChart.visibility = if (chartEnable) View.VISIBLE else View.GONE
-
-        // chartEnable이 true일 때만 그래프 스레드 시작
-        if (chartEnable) {
-            val thread = GraphThread(binding.lineChart, baseContext)
-            thread.start()
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val layoutParams = binding.guideline1.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.guidePercent = if (chartEnable) 0.4f else 1f // 가로 모드일 때
+            binding.guideline1.layoutParams = layoutParams
+        } else {
+            val layoutParams = binding.guideline3.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.guidePercent = if (chartEnable) 0.6f else 1f // 세로 모드일 때
+            binding.guideline3.layoutParams = layoutParams
         }
     }
-
 
     private fun showinfo() {
 

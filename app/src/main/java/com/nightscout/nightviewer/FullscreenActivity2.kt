@@ -21,6 +21,7 @@ import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
 import java.text.SimpleDateFormat
+import android.content.res.Configuration
 // 풀스크린 모드
 class FullscreenActivity2 : CommonActivity() {
 
@@ -104,11 +105,26 @@ class FullscreenActivity2 : CommonActivity() {
         finish()
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        adjustGuidelineBasedOnChartEnable()
+    }
+
     private fun adjustGuidelineBasedOnChartEnable() {
         val chartEnable = prefs.getBoolean("chart_enable", true)
         val layoutParams = binding.guideline3.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.guidePercent = if (chartEnable) 0.6f else 1f
-        binding.guideline3.layoutParams = layoutParams
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val layoutParams = binding.guideline1.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.guidePercent = if (chartEnable) 0.4f else 1f // 가로 모드일 때
+            binding.guideline1.layoutParams = layoutParams
+        } else {
+            val layoutParams = binding.guideline3.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.guidePercent = if (chartEnable) 0.6f else 1f // 세로 모드일 때
+            binding.guideline3.layoutParams = layoutParams
+        }
+
+
 
         // LineChart의 가시성도 업데이트
         binding.lineChart.visibility = if (chartEnable) View.VISIBLE else View.GONE
