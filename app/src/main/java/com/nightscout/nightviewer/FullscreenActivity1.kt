@@ -69,6 +69,7 @@ class FullscreenActivity1 : CommonActivity() {
 
     }
     override fun onResume() {
+        adjustGuidelineBasedOnChartEnable()
         Log.d("Activity1","onResume")
         super.onResume()
         if(Build.VERSION.SDK_INT >= 24) {
@@ -112,10 +113,19 @@ class FullscreenActivity1 : CommonActivity() {
     private fun adjustGuidelineBasedOnChartEnable() {
         val chartEnable = prefs.getBoolean("chart_enable", true)
         val layoutParams = binding.guideline3.layoutParams as ConstraintLayout.LayoutParams
-
         layoutParams.guidePercent = if (chartEnable) 0.6f else 1f
         binding.guideline3.layoutParams = layoutParams
+
+        // LineChart의 가시성도 업데이트
+        binding.lineChart.visibility = if (chartEnable) View.VISIBLE else View.GONE
+
+        // chartEnable이 true일 때만 그래프 스레드 시작
+        if (chartEnable) {
+            val thread = GraphThread(binding.lineChart, baseContext)
+            thread.start()
+        }
     }
+
 
     private fun showinfo() {
 
@@ -137,7 +147,7 @@ class FullscreenActivity1 : CommonActivity() {
 
 
 
-        adjustGuidelineBasedOnChartEnable()
+
 
         val bgData = BGData(this)
 
@@ -195,6 +205,7 @@ class FullscreenActivity1 : CommonActivity() {
         //그래프 표시
         val lineChart: LineChart = findViewById(R.id.lineChart)
         val chartEnable = prefs.getBoolean("chart_enable", true)
+        adjustGuidelineBasedOnChartEnable()
         if(chartEnable){
             val thread = GraphThread(lineChart, baseContext)
             thread.start()
