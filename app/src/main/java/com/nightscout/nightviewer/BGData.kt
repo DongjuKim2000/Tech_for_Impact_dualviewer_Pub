@@ -19,11 +19,11 @@ class BGData(private val context: Context){
             val past10_EntireBGInfo = get_Past10_EntireBGInfo()
             Log.d("initialize", past10_EntireBGInfo.toString())
             SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
-            get_EntireBGInfo()
+            get_EntireBGInfo(isInitial = true)
         }.start()
     }
 
-    fun get_EntireBGInfo() { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
+    fun get_EntireBGInfo(isInitial:Boolean = false) { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
         Log.d("BGData.kt",  "getEntireData(1개) 시작")
         Thread{
             val newbg = get_BGInfoFromURL(pref_urlText)
@@ -36,7 +36,7 @@ class BGData(private val context: Context){
                     val bgTimeMillis = dateFormat.parse(currentBGInfo.time).time
                     val timeDifferenceInMinutes = ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
 
-                    if (currentBGInfo.bg != newbg.bginfo?.bg ?: "" || timeDifferenceInMinutes >=5) {
+                    if (currentBGInfo.bg != (newbg.bginfo?.bg?: "") || timeDifferenceInMinutes >= 5 || isInitial) {
                         newbg.saveBG()
                     } else {
                         Log.d("getEntireBGInfo", "SKIPPED")
