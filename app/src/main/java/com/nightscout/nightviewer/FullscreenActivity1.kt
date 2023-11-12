@@ -153,16 +153,25 @@ class FullscreenActivity1 : CommonActivity() {
         val currentTime : Long = System.currentTimeMillis() // ms로 반환
 
         var mins: Long = 0
-        var displayMins: String = ""
+
         var info : String = ""
       
         var int_bg =0
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
-        info = "$displayTime   $displayMins"
+//        var displayMins: String = ""
+        info = "$displayTime"
 
         if(current_bgInfo!=null){
+            var displayMins = current_bgInfo.time
+
+            if (current_bgInfo.time != ""){
+                val timeGap = ((currentTime/60000) - TimeCalculator(current_bgInfo.time).time())%1000
+                displayMins = "   $timeGap min"
+                info += displayMins
+            }
+
             var displayIOB = current_bgInfo.iob
 
             if (current_bgInfo.iob != ""){
