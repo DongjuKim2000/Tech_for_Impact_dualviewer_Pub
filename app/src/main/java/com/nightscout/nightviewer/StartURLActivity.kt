@@ -20,6 +20,7 @@ class StartURLActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_urlactivity)
+        supportActionBar?.hide()
         prefs = getSharedPreferences("root_preferences", Context.MODE_PRIVATE)
         bgprefs = getSharedPreferences("prefs_bghistory", MODE_PRIVATE)
 
