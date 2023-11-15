@@ -65,7 +65,7 @@ class BGData(private val context: Context){
             val time: String = convertUnixTimeToDateTime(data.mills)
             val bg = data.sgv.toString()
             val id = data._id
-            BGList.add(0, BG(bg, time, "XX", "0", "None", "None", "None", id)) //arrow, delta 데이터가 확인불가
+            BGList.add(0, BG(bg, time, "-", "-", "-", "-", "-", id)) //arrow, delta 데이터가 확인불가
         }
         val bgList = BGList.dropLast(1)
         return bgList
