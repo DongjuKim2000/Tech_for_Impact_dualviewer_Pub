@@ -40,7 +40,7 @@ class FullscreenActivity2 : CommonActivity() {
 
         showinfo()
 
-        val updateIntervalMillis: Long = 10000
+        val updateIntervalMillis: Long = 5000
 
         var reconnected = true
         filter.addAction("showinfo") //수신할 action 종류 넣기
@@ -180,7 +180,7 @@ class FullscreenActivity2 : CommonActivity() {
             }
             var displayBasal = current_bgInfo.basal
             if (current_bgInfo.basal != "") {
-                displayCOB = "   \uD83C\uDD51{current_bgInfo.basal}"
+                displayCOB = "   \uD83C\uDD51${current_bgInfo.basal}"
                 info += displayCOB
             }
             Log.d("showinfo", "iob cob 끝")
