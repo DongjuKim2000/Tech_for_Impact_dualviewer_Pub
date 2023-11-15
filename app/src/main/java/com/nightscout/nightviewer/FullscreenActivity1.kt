@@ -138,10 +138,9 @@ class FullscreenActivity1 : CommonActivity() {
         val pref_fontcolorhighlow = prefs.getString ("fontcolorhighlow", "#FCFFFFFF").toString()
         val pref_fontcolorurgenthighlow = prefs.getString ("fontcolorurgenthighlow", "#FCFFFFFF").toString()
 
-        val IOBEnable = prefs.getBoolean("iob_enable", false)
-        val COBEnable = prefs.getBoolean("cob_enable", false)
-        val BasalEnable = prefs.getBoolean("basal_enable", false)
-
+        val IOBEnable = prefs.getBoolean("iob_enable", true)
+        val COBEnable = prefs.getBoolean("cob_enable", true)
+        val BasalEnable = prefs.getBoolean("basal_enable", true)
 
         val bgData = BGData(this)
 

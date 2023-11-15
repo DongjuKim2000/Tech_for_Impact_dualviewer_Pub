@@ -137,9 +137,9 @@ class PreferencesActivity : AppCompatActivity(),
         val urgent_low_value = pref.getString("urgent_low_value", "55")
 
         val pref_timeformat = pref.getString("preftimeformat", "timeformat24")
-        val iob_enable = pref.getBoolean("iob_enable", false)
-        val cob_enable = pref.getBoolean("cob_enable", false)
-        val basal_enable = pref.getBoolean("basal_enable", false)
+        val iob_enable = pref.getBoolean("iob_enable", true)
+        val cob_enable = pref.getBoolean("cob_enable", true)
+        val basal_enable = pref.getBoolean("basal_enable", true)
         val chart_enable = pref.getBoolean("chart_enable", true)
         val vibrate_enable = pref.getBoolean("vibrate_enable", true)
         val ringtone_enable = pref.getBoolean("ringtone_enable", true)

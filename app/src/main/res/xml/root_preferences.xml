@@ -82,19 +82,22 @@
         <SwitchPreference
             app:key="iob_enable"
             app:title="@string/string_displayiob"
-            app:disableDependentsState="false">
+            app:disableDependentsState="false"
+            android:defaultValue="true">
         </SwitchPreference>
 
         <SwitchPreference
             app:key="cob_enable"
             app:title="@string/string_displaycob"
-            app:disableDependentsState="false">
+            app:disableDependentsState="false"
+            android:defaultValue="true">
         </SwitchPreference>
 
         <SwitchPreference
             app:key="basal_enable"
             app:title="@string/string_displaybasal"
-            app:disableDependentsState="false">
+            app:disableDependentsState="false"
+            android:defaultValue="true">
         </SwitchPreference>
 
         <SwitchPreference
