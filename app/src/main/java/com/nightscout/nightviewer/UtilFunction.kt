@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-
+import java.time.Instant
 
 fun convertUtcToLocal(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
@@ -26,7 +26,11 @@ fun convertUtcToLocal(utcTimestamp: String): String {
     sdfLocal.timeZone = lcoaltimeZone
     return sdfLocal.format(localCalendar.time)
 }
-
+fun convertUnixTimeToDateTime(unixTime: Long): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    sdf.timeZone = TimeZone.getDefault() // 시스템의 로컬 시간대를 사용
+    return sdf.format(Date(unixTime))
+}
 fun calculateDelta(glucoseData: List<BG>): String {
     // 최소한 두 개의 BG 항목이 필요
     if (glucoseData.size < 2) {
