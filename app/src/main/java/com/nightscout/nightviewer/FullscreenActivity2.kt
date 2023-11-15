@@ -129,8 +129,11 @@ class FullscreenActivity2 : CommonActivity() {
         val pref_timeinfofont = prefs.getString("timeinfo_font", "30")?.toFloat() ?: 30f
         val pref_fontcolornormal = prefs.getString("fontcolornormal", "#FCFFFFFF").toString()
         val pref_fontcolorhighlow = prefs.getString("fontcolorhighlow", "#FF0000").toString()
-        val pref_fontcolorurgenthighlow =
-            prefs.getString("fontcolorurgenthighlow", "#FFFF00").toString()
+        val pref_fontcolorurgenthighlow = prefs.getString("fontcolorurgenthighlow", "#FFFF00").toString()
+
+        val IOBEnable = prefs.getBoolean("iob_enable", false)
+        val COBEnable = prefs.getBoolean("cob_enable", false)
+        val BasalEnable = prefs.getBoolean("basal_enable", false)
 
 
 
@@ -171,20 +174,20 @@ class FullscreenActivity2 : CommonActivity() {
 
             var displayIOB = current_bgInfo.iob
 
-            if (current_bgInfo.iob != "") {
+            if ((current_bgInfo.iob != "")&&IOBEnable){
                 displayIOB = "   \uD83C\uDD58${current_bgInfo.iob}U"
                 info += displayIOB
             }
             var displayCOB = current_bgInfo.cob
 
-            if (current_bgInfo.cob != "") {
+            if ((current_bgInfo.cob != "")&&COBEnable){
                 displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
                 info += displayCOB
             }
             var displayBasal = current_bgInfo.basal
-            if (current_bgInfo.basal != "") {
-                displayCOB = "   \uD83C\uDD51${current_bgInfo.basal}"
-                info += displayCOB
+            if ((current_bgInfo.basal != "")&&BasalEnable) {
+                displayBasal = "   \uD83C\uDD51${current_bgInfo.basal}"
+                info += displayBasal
             }
             Log.d("showinfo", "iob cob 끝")
             // xml 구성 관련 부분
