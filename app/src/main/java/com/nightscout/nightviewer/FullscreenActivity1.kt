@@ -46,7 +46,7 @@ class FullscreenActivity1 : CommonActivity() {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
         registerReceiver(internetBroadcaster, filter)
 
-        val updateIntervalMillis: Long = 10000
+        val updateIntervalMillis: Long = 5000
         var reconnected = true
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
             override fun onTick(millisUntilFinished: Long) {

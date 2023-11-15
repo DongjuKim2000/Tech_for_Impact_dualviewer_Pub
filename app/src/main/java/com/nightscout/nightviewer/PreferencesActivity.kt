@@ -120,12 +120,13 @@ class PreferencesActivity : AppCompatActivity(),
     }
 
     private fun saveSharedPreference() {
-        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val pref = prefs
 
         val pref_layout = pref.getString("pref_layout", "1")
         val pref_enablenoti = true
         val pref_readfromns = true
         val ns_url = url_text
+
 
         Log.d("pref_act", "${ns_url}")
 
