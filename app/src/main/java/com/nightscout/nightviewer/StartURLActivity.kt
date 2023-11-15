@@ -40,7 +40,7 @@ class StartURLActivity : AppCompatActivity() {
 
             if(isValidInput(urlText)){
                 with(prefs.edit()) {
-                    putString("ns_url", urlText)
+                    putString("ns_url", url_text)
                     apply()
                 }
                 Log.d("starturl", "${url_text}")
@@ -60,8 +60,14 @@ class StartURLActivity : AppCompatActivity() {
 
 
     private suspend fun isValidInputAsync(text: String): Boolean {
+        if (text.isNotEmpty() ){
+            if(text.last()=='/'){
+                url_text =text.dropLast(1)
+            }
+            else url_text = text
+        }
         val url = try {
-            URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+            URL("${url_text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
 
         } catch (e: Exception) {
             null
@@ -76,6 +82,7 @@ class StartURLActivity : AppCompatActivity() {
 
         if (url == null) {
             showErrorMessage(this, "올바르지 않은 URL입니다.")
+            Log.d("starturl", "incorrect")
             return false
         } else {
             var isValid = false
@@ -83,7 +90,7 @@ class StartURLActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val bgInfo = getBgInfoAsync(url.toString())
-                    isValid = bgInfo != null
+                    isValid = (bgInfo != null)
                     if (!isValid) {
                         runOnUiThread {
                             showErrorMessage(this@StartURLActivity, "올바르지 않은 URL입니다.")
@@ -99,8 +106,15 @@ class StartURLActivity : AppCompatActivity() {
     }
 
     private fun isValidInput(text: String): Boolean {
+        if (text.isNotEmpty() ){
+            if(text.last()=='/'){
+            url_text =text.dropLast(1)
+            }
+            else url_text = text
+        }
+        Log.d("url_text", "${url_text}")
         val url = try{
-            URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+            URL("${url_text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
         }
         catch(e: Exception){
             null
@@ -111,10 +125,4 @@ class StartURLActivity : AppCompatActivity() {
         return ret
     }
 
-//    private fun saveTextToPreference(text: String) {
-//        with(prefs.edit()) {
-//            putString("ns_url", text)
-//            apply()
-//        }
-//    }
 }

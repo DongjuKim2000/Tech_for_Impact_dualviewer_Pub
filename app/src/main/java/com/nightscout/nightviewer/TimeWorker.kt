@@ -21,7 +21,7 @@ class TimeWorker(appContext: Context, workerParams: WorkerParameters) : Worker(a
         if (isOnline(applicationContext)) {
             getBG()
         }
-        else {
+
 
             // 1분 후에 다음 작업 예약
             val nextWork = OneTimeWorkRequest.Builder(TimeWorker::class.java)
@@ -33,7 +33,7 @@ class TimeWorker(appContext: Context, workerParams: WorkerParameters) : Worker(a
                 ExistingWorkPolicy.REPLACE, // 동일한 이름을 사용할 경우 대체
                 nextWork
             )
-        }
+
         return Result.success()
     }
 
