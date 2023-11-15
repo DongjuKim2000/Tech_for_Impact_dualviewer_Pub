@@ -26,6 +26,9 @@ class FullscreenActivity2 : CommonActivity() {
 
     lateinit var binding: ActivityFullscreen2Binding
     val showinfobr = ShowinfoBR()
+
+    private var alarmed: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -201,12 +204,19 @@ class FullscreenActivity2 : CommonActivity() {
             //일반혈당
             if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
                 fontcolor = Color.parseColor(pref_fontcolornormal)
+                alarmed = false
             }
             else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
                 fontcolor = Color.parseColor(pref_fontcolorhighlow)
+                if(!alarmed){
+                    playNotificationSound(this)
+                    doVibrate(this)
+                }
             }
             else {
                 fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+                playNotificationSound(this)
+                doVibrate(this)
             }
         }
         catch (e: Exception ) {
