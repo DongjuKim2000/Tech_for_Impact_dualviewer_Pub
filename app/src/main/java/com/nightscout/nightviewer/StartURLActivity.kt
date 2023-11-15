@@ -8,10 +8,10 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.net.URL
 lateinit var prefs: SharedPreferences
 lateinit var bgprefs: SharedPreferences
@@ -29,6 +29,7 @@ class StartURLActivity : AppCompatActivity() {
             finish()
         }
 
+
         val urlEditText = findViewById<EditText>(R.id.urlEditText)
         val confirmButton = findViewById<Button>(R.id.confirmButton)
 
@@ -36,6 +37,8 @@ class StartURLActivity : AppCompatActivity() {
             val urlText = urlEditText.text.toString()
             Log.d("first", urlText)
             if(isValidInput(urlText)){
+                val pref = PreferenceManager.getDefaultSharedPreferences(this)
+                pref.edit().putString("ns_url", urlText)
                 with(prefs.edit()) {
                     putString("ns_url", urlText)
                     apply()
