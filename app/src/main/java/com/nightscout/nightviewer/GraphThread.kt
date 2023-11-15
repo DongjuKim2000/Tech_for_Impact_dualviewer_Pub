@@ -61,17 +61,14 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         }
         else{
             for (i in 0 until 10){
-
-
-                val currentMin = TimeCalculator(input[i].time).time()
+                val currentMin = ((TimeCalculator(input[i].time).time()/5)*5)%1000
                 if(i==0){
                     lineChart.xAxis.axisMinimum = currentMin.toFloat()
                 }
                 if(i==9){
                     lineChart.xAxis.axisMaximum = currentMin.toFloat()
                 }
-                Log.d("graph", "$currentMin, ${currentMin.toDouble()}, ${currentMin.toDouble().toFloat()}")
-//                data.addEntry(Entry(currentMin.toDouble().toFloat(), input[i].bg.toFloat()), 0) //bg 데이터
+                data.addEntry(Entry(currentMin.toFloat(), input[i].bg.toFloat()), 0) //bg 데이터
                 data.notifyDataChanged()
                 lineChart.notifyDataSetChanged()
                 lineChart.invalidate()
@@ -122,6 +119,8 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
         val urgentLineColor = prefs.getString("chartlinecolorurgenthighlow", "#FCFF0000")
+
+        Log.d("prefValue", "$urgentHighValue, $highLimitValue, $lowLimitValue, $urgentLowValue")
 
         //주의 혈당 기준선
         val lowLimit = LimitLine(lowLimitValue?.toFloat() ?: 80f, lowLimitValue).apply {

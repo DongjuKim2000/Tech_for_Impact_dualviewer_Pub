@@ -120,7 +120,7 @@ class PreferencesActivity : AppCompatActivity(),
     }
 
     private fun saveSharedPreference() {
-        val pref = prefs
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
 
         val pref_layout = pref.getString("pref_layout", "1")
         val pref_enablenoti = true
