@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MultiViewer</string>
+    <string name="app_name">BG MultiViewer</string>
     <string name="title_activity_preferences">Preferences</string>
 
     <!-- Menu -->
