@@ -42,7 +42,10 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
             lineChart.animateXY(1, 1)
         }
 
-        if(input.size<10){ //10개 미만인 경우 빈 데이터 넣기
+        if(input.isEmpty()){
+
+        }
+        else if(input.size<10){ //10개 미만인 경우 빈 데이터 넣기
             val sizeSub = 10-input.size
             val startMin = ((TimeCalculator(input[0].time).time()/5)*5)%1000
             for(i in 0 until sizeSub){
