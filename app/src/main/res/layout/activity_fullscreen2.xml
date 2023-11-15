@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.0" />
 
     <!-- First Guideline at 33% of the screen height -->
     <androidx.constraintlayout.widget.Guideline
@@ -49,11 +49,6 @@
         android:keepScreenOn="true"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-
-        android:background="@drawable/text_view_border"
-        android:layout_marginTop="6dp"
-
-
         android:gravity="center"
         android:includeFontPadding="false"
         android:autoSizeTextType="uniform"
@@ -113,8 +108,6 @@
         android:id="@+id/lineChart"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/text_view_border"
-        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
