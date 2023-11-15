@@ -227,6 +227,8 @@ class FullscreenActivity2 : CommonActivity() {
 
         try {
             val bgInt : Int = int_bg
+            val vibrateEnable = prefs.getBoolean("vibrate_enable", true)
+            val ringtoneEnable = prefs.getBoolean("ringtone_enable", true)
 
             //일반혈당
             if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
@@ -236,14 +238,18 @@ class FullscreenActivity2 : CommonActivity() {
             else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
                 fontcolor = Color.parseColor(pref_fontcolorhighlow)
                 if(!alarmed){
-                    playNotificationSound(this)
-                    doVibrate(this)
+                    if(ringtoneEnable)
+                        playNotificationSound(this)
+                    if(vibrateEnable)
+                        doVibrate(this)
                 }
             }
             else {
                 fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
-                playNotificationSound(this)
-                doVibrate(this)
+                if(ringtoneEnable)
+                    playNotificationSound(this)
+                if(vibrateEnable)
+                    doVibrate(this)
             }
         }
         catch (e: Exception ) {
