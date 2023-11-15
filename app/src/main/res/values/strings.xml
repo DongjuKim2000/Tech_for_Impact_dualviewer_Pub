@@ -17,6 +17,7 @@
     <string name="string_enablenoti">Enable Notification</string>
     <string name="string_readfromns">Read from Nightscout</string>
     <string name="string_nsurl">Nightscout URL</string>
+    <string name="default_ns_url">DefaultURL</string>
 
     <!-- 혈당 -->
     <string name="string_bg">Glucose</string>

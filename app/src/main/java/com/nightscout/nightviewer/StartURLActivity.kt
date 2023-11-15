@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
 import java.net.URL
 lateinit var prefs: SharedPreferences
 lateinit var bgprefs: SharedPreferences
-
+var url_text = "defaultURL"
 class StartURLActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +36,14 @@ class StartURLActivity : AppCompatActivity() {
         confirmButton.setOnClickListener(){
             val urlText = urlEditText.text.toString()
             Log.d("first", urlText)
+            url_text = urlText
+
             if(isValidInput(urlText)){
                 with(prefs.edit()) {
                     putString("ns_url", urlText)
                     apply()
                 }
+                Log.d("starturl", "${url_text}")
                 val intent = Intent(this, FullscreenActivity::class.java)
 //                intent.putExtra("urlText", urlText)
                 startActivity(intent)
@@ -50,6 +53,7 @@ class StartURLActivity : AppCompatActivity() {
 
     }
 
+
     private suspend fun getBgInfoAsync(url: String): BGData.BGInfo? {
         return BGData(this).get_BGInfoFromURL(url)
     }
@@ -58,9 +62,17 @@ class StartURLActivity : AppCompatActivity() {
     private suspend fun isValidInputAsync(text: String): Boolean {
         val url = try {
             URL("${text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
+
         } catch (e: Exception) {
             null
         }
+        Log.d("isvalid", "${text.toString()}")
+
+
+        val editor = prefs.edit()
+        editor.putString("ns_url", url_text)
+        editor.apply()
+
 
         if (url == null) {
             showErrorMessage(this, "올바르지 않은 URL입니다.")
