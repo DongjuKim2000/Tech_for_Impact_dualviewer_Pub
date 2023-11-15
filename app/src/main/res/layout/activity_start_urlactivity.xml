@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartURLActivity">
+    tools:context=".StartURLActivity"
+    android:background="@drawable/diagonal_pattern">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
@@ -39,6 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         android:fontFamily="@font/eastarjet_medium"
+        android:textColor="@color/Black"
         android:gravity="center_horizontal" />
 
     <TextView
@@ -53,6 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         android:fontFamily="@font/eastarjet_heavy"
+        android:textColor="@color/Black"
         android:gravity="center_horizontal" />
 
     <EditText
@@ -77,7 +80,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline1"
+        android:background="#FFB6C1"
         android:fontFamily="@font/eastarjet_heavy"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
