@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.net.URL
 lateinit var prefs: SharedPreferences
 lateinit var bgprefs: SharedPreferences
@@ -39,18 +40,27 @@ class StartURLActivity : AppCompatActivity() {
             Log.d("first", urlText)
             url_text = urlText
 
-            if(isValidInput(urlText)){
-                val pref = PreferenceManager.getDefaultSharedPreferences(this)
-                pref.edit().putString("ns_url", urlText)
-                with(prefs.edit()) {
-                    putString("ns_url", url_text)
-                    apply()
+            if(isValidInput(urlText)) {
+                val isValidInput = runBlocking {
+                    isValidInputAsync(urlText)
                 }
-                Log.d("starturl", "${url_text}")
-                val intent = Intent(this, FullscreenActivity::class.java)
-//                intent.putExtra("urlText", urlText)
-                startActivity(intent)
-                finish()
+
+
+                if (isValidInput) {
+                    val pref = PreferenceManager.getDefaultSharedPreferences(this)
+                    pref.edit().putString("ns_url", urlText)
+                    with(prefs.edit()) {
+                        putString("ns_url", url_text)
+                        apply()
+                    }
+                    Log.d("starturl", "${url_text}")
+                    val intent = Intent(this, FullscreenActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                else{
+                    showErrorMessage(this, "올바르지 않은 URL입니다.")
+                }
             }
         }
 
