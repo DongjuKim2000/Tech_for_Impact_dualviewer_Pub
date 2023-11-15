@@ -141,6 +141,8 @@ class PreferencesActivity : AppCompatActivity(),
         val cob_enable = pref.getBoolean("cob_enable", false)
         val basal_enable = pref.getBoolean("basal_enable", false)
         val chart_enable = pref.getBoolean("chart_enable", true)
+        val vibrate_enable = pref.getBoolean("vibrate_enable", true)
+        val ringtone_enable = pref.getBoolean("ringtone_enable", true)
 
         val fontcolornormal = pref.getString("fontcolornormal", "#FCFFFFFF")
         val fontcolorhighlow = pref.getString("fontcolorhighlow", "#FCFFFFFF")
@@ -174,6 +176,8 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putBoolean("cob_enable", cob_enable)
             editor.putBoolean("basal_enable", basal_enable)
             editor.putBoolean("chart_enable", chart_enable)
+            editor.putBoolean("vibrate_enable", vibrate_enable)
+            editor.putBoolean("ringtone_enable", ringtone_enable)
 
             editor.putString("fontcolornormal", fontcolornormal)
             editor.putString("fontcolorhighlow", fontcolorhighlow)

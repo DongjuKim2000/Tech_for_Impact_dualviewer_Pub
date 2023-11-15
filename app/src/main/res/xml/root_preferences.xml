@@ -102,6 +102,19 @@
             app:title="@string/string_displaychart"
             android:defaultValue="true">
         </SwitchPreference>
+
+        <SwitchPreference
+            app:key="vibrate_enable"
+            app:title="Vibrate"
+            android:defaultValue="true">
+        </SwitchPreference>
+
+        <SwitchPreference
+            app:key="ringtone_enable"
+            app:title="Ringtone"
+            android:defaultValue="true">
+        </SwitchPreference>
+
     </PreferenceCategory>
 
     <PreferenceCategory
