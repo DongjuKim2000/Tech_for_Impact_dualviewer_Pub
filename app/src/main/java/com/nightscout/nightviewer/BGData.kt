@@ -19,11 +19,11 @@ class BGData(private val context: Context){
             val past10_EntireBGInfo = get_Past10_EntireBGInfo()
             Log.d("initialize", past10_EntireBGInfo.toString())
             SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
-            get_EntireBGInfo(isInitial = true)
+            get_EntireBGInfo()
         }.start()
     }
 
-    fun get_EntireBGInfo(isInitial:Boolean = false) { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
+    fun get_EntireBGInfo() { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
         Log.d("BGData.kt",  "getEntireData(1개) 시작")
         Thread{
             val newbg = get_BGInfoFromURL(pref_urlText)
@@ -35,8 +35,7 @@ class BGData(private val context: Context){
                     val currentTimeMillis = System.currentTimeMillis()
                     val bgTimeMillis = dateFormat.parse(currentBGInfo.time).time
                     val timeDifferenceInMinutes = ((currentTimeMillis - bgTimeMillis) / (1000 * 60)).toInt()
-
-                    if (currentBGInfo.bg != (newbg.bginfo?.bg?: "") || timeDifferenceInMinutes >= 5 || isInitial) {
+                    if (currentBGInfo.id != newbg.bginfo?.id ){
                         newbg.saveBG()
                     } else {
                         Log.d("getEntireBGInfo", "SKIPPED")
@@ -63,9 +62,10 @@ class BGData(private val context: Context){
         val typeToken = object : TypeToken<List<GlucoseData>>() {}.type
         val openapsDataList: List<GlucoseData> = gson.fromJson(jsonresult, typeToken)
         for (data in openapsDataList) {
-            val time: String = convertUtcToLocal(data.dateString)
+            val time: String = convertUnixTimeToDateTime(data.mills)
             val bg = data.sgv.toString()
-            BGList.add(0, BG(bg, time, "XX", "0", "None", "None", "None")) //arrow, delta 데이터가 확인불가
+            val id = data._id
+            BGList.add(0, BG(bg, time, "XX", "0", "None", "None", "None", id)) //arrow, delta 데이터가 확인불가
         }
         val bgList = BGList.dropLast(1)
         return bgList
@@ -95,14 +95,16 @@ class BGData(private val context: Context){
         val currenttimedisplay : String = sdf.format(currenttime)
         //추후 try except 기능 추가 필요
         val bg = JSONObject(result).getJSONObject("bgnow").getString("last")
-        val time = currenttimedisplay
+        val time_UTXmills = JSONObject(result).getJSONObject("bgnow").getJSONArray("sgvs").getJSONObject(0).getLong("mills")
+        val time_LOCAL = convertUnixTimeToDateTime(time_UTXmills)
         val delta = JSONObject(result).getJSONObject("delta").getString("display")
         val arrow = JSONObject(result).getJSONObject("direction").getString("label")
         val iob = JSONObject(result).getJSONObject("iob").getString("display")
         val cob = JSONObject(result).getJSONObject("cob").getString("display")
         val basal = JSONObject(result).getJSONObject("basal").getString("display")
-        Log.d("get_bgurl", "done")
-        return BGInfo(bg, time, arrow, delta, iob, cob, basal)
+        val id = JSONObject(result).getJSONObject("bgnow").getJSONArray("sgvs").getJSONObject(0).getString("_id")
+        Log.d("get_bgurl", "$id ,$basal")
+        return BGInfo(bg, time_LOCAL, arrow, delta, iob, cob, basal, id)
     }
 
     fun get_CurrentBGInfo(): BG?{ //return 값 null가능
@@ -121,8 +123,8 @@ class BGData(private val context: Context){
 
             }
         }
-        constructor(bg: String, time: String, arrow: String, delta: String, iob: String, cob: String, basal: String){
-            this.bginfo = BG(bg,time,arrow,delta,iob,cob,basal)
+        constructor(bg: String, time: String, arrow: String, delta: String, iob: String, cob: String, basal: String, id: String){
+            this.bginfo = BG(bg,time,arrow,delta,iob,cob,basal,id)
         }
         fun saveBG(){ //현재 BG 저장하기
             bginfo?.let { SharedPreferencesUtil.addBGData(context, it) }

@@ -15,8 +15,6 @@ class FullscreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         Log.d("FullscreenActivity","onCreate 시작")
-        //Firebase
-        //타이머
 
         val bgData = BGData(this)
         bgData.initializeBG_db()

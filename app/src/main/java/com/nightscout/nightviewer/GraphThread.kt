@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.nightscout.nightviewer.SharedPreferencesUtil
+import com.nightscout.nightviewer.TimeAxisValueFormat
 import com.nightscout.nightviewer.TimeCalculator
 import com.nightscout.nightviewer.prefs
 
@@ -60,13 +61,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         }
         else{
             for (i in 0 until 10){
-
-//            SystemClock.sleep(1000)
-//            data.addEntry(Entry(i.toFloat(), input[i].toFloat()), 0) //랜덤 데이터
-
-                val currentMin = TimeCalculator(input[i].time).time() % 1000 //숫자가 너무 커서 3자리만 가져옴
-                val tstring = input[i].time
-                Log.d("time", "$tstring, $i: $currentMin")
+                val currentMin = ((TimeCalculator(input[i].time).time()/5)*5)%1000
                 if(i==0){
                     lineChart.xAxis.axisMinimum = currentMin.toFloat()
                 }
@@ -79,8 +74,6 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
                 lineChart.invalidate()
             }
         }
-
-
     }
 
     private fun runOnUiThread(action: () -> Unit) {
@@ -106,7 +99,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         lineChart.apply {
             //오른쪽 y축 안보이게
             axisRight.isEnabled = false
-            xAxis.isEnabled = false
+//            xAxis.isEnabled = false
             setTouchEnabled(false)
             legend.isEnabled = false //라벨 없애기
             description.isEnabled = false //설명 없애기
@@ -115,7 +108,8 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         xAxis.apply {
             //x축 그래프 아래에 표시
             position = XAxis.XAxisPosition.BOTTOM
-//            valueFormatter = TimeAxisValueFormat()
+            valueFormatter = TimeAxisValueFormat()
+            textColor = Color.WHITE
         }
 
         val urgentHighValue = prefs.getString("urgent_high_value", "260")
@@ -125,6 +119,8 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
         val urgentLineColor = prefs.getString("chartlinecolorurgenthighlow", "#FCFF0000")
+
+        Log.d("prefValue", "$urgentHighValue, $highLimitValue, $lowLimitValue, $urgentLowValue")
 
         //주의 혈당 기준선
         val lowLimit = LimitLine(lowLimitValue?.toFloat() ?: 80f, lowLimitValue).apply {

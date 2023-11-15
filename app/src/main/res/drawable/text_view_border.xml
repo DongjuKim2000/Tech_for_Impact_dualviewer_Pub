@@ -1,0 +1,10 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:inset="0dp"> <!-- 여기에서 inset 값을 조정하여 간격을 설정합니다. -->
+
+    <shape>
+        <solid android:color="#00FFFFFF"/> <!-- 투명 배경 -->
+        <stroke android:width="2dp" android:color="#4B0082"/> <!-- 테두리 색상과 두께 -->
+        <corners android:radius="4dp"/> <!-- 모서리 둥글기 -->
+    </shape>
+
+</inset>

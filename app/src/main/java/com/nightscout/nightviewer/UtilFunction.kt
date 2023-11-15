@@ -1,6 +1,9 @@
 package com.nightscout.nightviewer
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -8,12 +11,11 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-
+import java.time.Instant
 
 fun convertUtcToLocal(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
@@ -26,7 +28,11 @@ fun convertUtcToLocal(utcTimestamp: String): String {
     sdfLocal.timeZone = lcoaltimeZone
     return sdfLocal.format(localCalendar.time)
 }
-
+fun convertUnixTimeToDateTime(unixTime: Long): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    sdf.timeZone = TimeZone.getDefault() // 시스템의 로컬 시간대를 사용
+    return sdf.format(Date(unixTime))
+}
 fun calculateDelta(glucoseData: List<BG>): String {
     // 최소한 두 개의 BG 항목이 필요
     if (glucoseData.size < 2) {
@@ -98,27 +104,22 @@ fun getGlucoseTrend(glucoseData: List<BG>): String {
 
 fun doVibrate(context: Context) {
     val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE)
-                as VibratorManager
-        vibratorManager.defaultVibrator;
+        context.getSystemService(Vibrator::class.java)
     } else {
         context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     }
-
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val vibrationEffect = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE)
-        vibrator.vibrate(vibrationEffect)
+        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
     } else {
-        // 안드로이드 O 이전 버전에서는 deprecated된 메서드를 사용할 수 있습니다.
         vibrator.vibrate(1000)
     }
-    return
 }
 
-fun doRingtone(context: Context) {
-    val notification: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-    val ringtone = RingtoneManager.getRingtone(context, notification)
-    ringtone.play()
+fun playNotificationSound(context: Context, notification: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) {
+    notification?.let {
+        val ringtone: Ringtone = RingtoneManager.getRingtone(context, it)
+        ringtone.play()
+    }
 }
 
 fun showErrorMessage(context: Context, msg: String) {

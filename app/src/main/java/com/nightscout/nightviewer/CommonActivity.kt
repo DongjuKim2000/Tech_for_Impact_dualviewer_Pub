@@ -86,7 +86,7 @@ open class CommonActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_exit -> {
-                finish()
+                onBackPressed()
                 return true
             }
             else -> return false

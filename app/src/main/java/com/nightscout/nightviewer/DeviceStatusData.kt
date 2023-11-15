@@ -2,7 +2,7 @@ package com.nightscout.nightviewer
 
 //json 형식에 따라 만들었음.
 data class GlucoseData(
-    val id: String,
+    val _id: String,
     val device: String,
     val date: Long,
     val dateString: String,
