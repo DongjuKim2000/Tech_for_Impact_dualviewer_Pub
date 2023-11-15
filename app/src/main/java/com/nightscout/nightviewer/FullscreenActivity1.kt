@@ -29,6 +29,9 @@ class FullscreenActivity1 : CommonActivity() {
         Log.d("Activity1","onCreate")
         setContentView(binding.root) // xml 파일 지정
 
+        val filter = IntentFilter()  // 인텐트 지정
+        filter.addAction("showinfo") //수신할 action 종류 넣기
+        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
         if (Build.VERSION.SDK_INT >= 26) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -39,18 +42,33 @@ class FullscreenActivity1 : CommonActivity() {
         fullscreenContent = binding.mainlayout1
         fullscreenContent.setOnClickListener { toggle() }
 
-        val filter = IntentFilter()  // 인텐트 지정
-        filter.addAction("showinfo") //수신할 action 종류 넣기
-        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
 
         showinfo()
+        // 인터넷 연결 상태를 감지하는 Receiver
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(internetBroadcaster, filter)
 
-
-        val updateIntervalMillis: Long = 10000
-
+        val updateIntervalMillis: Long = 5000
+        var reconnected = true
         updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
             override fun onTick(millisUntilFinished: Long) {
-                showinfo()
+
+                if (!isOnline(this@FullscreenActivity1)) {
+                    showErrorMessage(this@FullscreenActivity1, "인터넷 연결 X")
+
+                    reconnected = false
+                }
+                else {
+                    if (reconnected==false) {
+                        showMessage(this@FullscreenActivity1, "인터넷 연결 재개")
+                    }
+
+                    try{showinfo()
+                        reconnected = true } catch(e:Exception){
+                        reconnected = false
+                        showErrorMessage(this@FullscreenActivity1, "인터넷 연결이 안되어 있습니다")
+                    }
+                }
             }
             override fun onFinish() {
                 // 타이머가 무한대로 설정되었으므로 onFinish는 호출되지 않음
@@ -58,9 +76,6 @@ class FullscreenActivity1 : CommonActivity() {
         }
         updateTimer?.start()
 
-        // 인터넷 연결 상태를 감지하는 Receiver
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        this.registerReceiver(internetBroadcaster, filter)
 
         Log.d("Activity1","onCreate 끝")
 
@@ -140,16 +155,25 @@ class FullscreenActivity1 : CommonActivity() {
         val currentTime : Long = System.currentTimeMillis() // ms로 반환
 
         var mins: Long = 0
-        var displayMins: String = ""
+
         var info : String = ""
       
         var int_bg =0
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
-        info = "$displayTime   $displayMins"
+//        var displayMins: String = ""
+        info = "$displayTime"
 
         if(current_bgInfo!=null){
+            var displayMins = current_bgInfo.time
+
+            if (current_bgInfo.time != ""){
+                val timeGap = ((currentTime/60000) - TimeCalculator(current_bgInfo.time).time())%1000
+                displayMins = "   $timeGap min"
+                info += displayMins
+            }
+
             var displayIOB = current_bgInfo.iob
 
             if (current_bgInfo.iob != ""){

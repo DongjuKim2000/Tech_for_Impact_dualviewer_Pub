@@ -5,17 +5,21 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.nightscout.nightviewer.SharedPreferencesUtil
-import com.nightscout.nightviewer.TimeGapCalculator
+import com.nightscout.nightviewer.TimeAxisValueFormat
+import com.nightscout.nightviewer.TimeCalculator
 import com.nightscout.nightviewer.prefs
 
 class GraphThread(private val lineChart: LineChart, private val context: Context): Thread() {
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
 
@@ -58,21 +62,21 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         else{
             for (i in 0 until 10){
 
-//            SystemClock.sleep(1000)
-//            data.addEntry(Entry(i.toFloat(), input[i].toFloat()), 0) //랜덤 데이터
 
-                if(i!=0 && input[i].time!="" && input[i-1].time!=""){
-                    val timeCalClass = TimeGapCalculator(input[i-1].time, input[i].time)
-                    val minuteGap = timeCalClass.timeGap()
+                val currentMin = TimeCalculator(input[i].time).time()
+                if(i==0){
+                    lineChart.xAxis.axisMinimum = currentMin.toFloat()
                 }
-                data.addEntry(Entry(i.toFloat() , input[i].bg.toFloat()), 0) //bg 데이터
+                if(i==9){
+                    lineChart.xAxis.axisMaximum = currentMin.toFloat()
+                }
+                Log.d("graph", "$currentMin, ${currentMin.toDouble()}, ${currentMin.toDouble().toFloat()}")
+//                data.addEntry(Entry(currentMin.toDouble().toFloat(), input[i].bg.toFloat()), 0) //bg 데이터
                 data.notifyDataChanged()
                 lineChart.notifyDataSetChanged()
                 lineChart.invalidate()
             }
         }
-
-
     }
 
     private fun runOnUiThread(action: () -> Unit) {
@@ -98,17 +102,18 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         lineChart.apply {
             //오른쪽 y축 안보이게
             axisRight.isEnabled = false
-            xAxis.isEnabled = false
+//            xAxis.isEnabled = false
             setTouchEnabled(false)
             legend.isEnabled = false //라벨 없애기
             description.isEnabled = false //설명 없애기
         }
 
-//        xAxis.apply {
-//            //x축 그래프 아래에 표시
-//            position = XAxis.XAxisPosition.BOTTOM
-//            valueFormatter = IndexAxisValueFormatter(List_localDatestr)
-//        }
+        xAxis.apply {
+            //x축 그래프 아래에 표시
+            position = XAxis.XAxisPosition.BOTTOM
+            valueFormatter = TimeAxisValueFormat()
+            textColor = Color.WHITE
+        }
 
         val urgentHighValue = prefs.getString("urgent_high_value", "260")
         val highLimitValue = prefs.getString("high_value", "180")

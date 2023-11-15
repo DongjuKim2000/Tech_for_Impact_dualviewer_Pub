@@ -23,6 +23,7 @@ class PreferencesActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         setContentView(R.layout.preferences_activity)
+
         if (savedInstanceState == null) { // 시작화면
             supportFragmentManager
                 .beginTransaction()
@@ -38,6 +39,14 @@ class PreferencesActivity : AppCompatActivity(),
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            val nsUrlPreference = findPreference<EditTextPreference>("ns_url")
+            nsUrlPreference?.text = prefs.getString("ns_url", url_text)
+
+            Log.d("createPref", "${nsUrlPreference?.text}")
+
+
+            // 숫자 패드 띄우기
 
             val numberPreference1: EditTextPreference? = findPreference("urgent_high_value")
             numberPreference1?.setOnBindEditTextListener { editText ->
@@ -111,12 +120,15 @@ class PreferencesActivity : AppCompatActivity(),
     }
 
     private fun saveSharedPreference() {
-        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val pref = prefs
 
         val pref_layout = pref.getString("pref_layout", "1")
         val pref_enablenoti = true
         val pref_readfromns = true
-        val ns_url = pref.getString("ns_url", "defaultURL")
+        val ns_url = url_text
+
+
+        Log.d("pref_act", "${ns_url}")
 
         //val units = pref.getString("units", "mgdl")
         val urgent_high_value = pref.getString("urgent_high_value", "260")
@@ -150,6 +162,7 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putBoolean("enablenoti", pref_enablenoti)
             editor.putBoolean("readfromns", pref_readfromns)
             editor.putString("ns_url", ns_url)
+            Log.d("pref_act_editor", "${ns_url}")
 
             editor.putString("urgent_high_value", urgent_high_value)
             editor.putString("high_value", high_value)

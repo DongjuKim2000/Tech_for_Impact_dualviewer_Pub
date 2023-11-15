@@ -11,20 +11,16 @@ var ChartValueDateTime = ArrayList<Long>()
 var ChartValue = ArrayList<Int>()
 var lastrequestdatatime : Long = 0
 var lastrequestalldatatime : Long = 0
-
 class FullscreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         Log.d("FullscreenActivity","onCreate 시작")
 
-
-        //타이머
-        WorkManager.getInstance(this).cancelAllWork() // this: 현재클래스
-        WorkManager.getInstance(this).enqueue(OneTimeWorkRequest.Builder(TimeWorker::class.java).build())
-
-
         val bgData = BGData(this)
         bgData.initializeBG_db()
+
+        WorkManager.getInstance(this).cancelAllWork() // this: 현재클래스
+        WorkManager.getInstance(this).enqueue(OneTimeWorkRequest.Builder(TimeWorker::class.java).build())
 
 
         val pref_layout = prefs.getString ("pref_layout", "2").toString()

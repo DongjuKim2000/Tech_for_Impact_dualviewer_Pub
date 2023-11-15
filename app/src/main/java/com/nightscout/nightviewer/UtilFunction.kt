@@ -13,21 +13,26 @@ import android.os.VibratorManager
 import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import java.time.Instant
 
-fun convertUtcToKst(utcTimestamp: String): String {
+fun convertUtcToLocal(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
     sdfUtc.timeZone = TimeZone.getTimeZone("UTC")
-
+    val lcoaltimeZone = TimeZone.getDefault()
     val utcDate = sdfUtc.parse(utcTimestamp)
-    val kstCalendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
-    kstCalendar.time = utcDate
-
-    val sdfKst = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-    sdfKst.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-
-    return sdfKst.format(kstCalendar.time)
+    val localCalendar = Calendar.getInstance(lcoaltimeZone)
+    localCalendar.time = utcDate
+    val sdfLocal = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+    sdfLocal.timeZone = lcoaltimeZone
+    return sdfLocal.format(localCalendar.time)
 }
-
+fun convertUnixTimeToDateTime(unixTime: Long): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    sdf.timeZone = TimeZone.getDefault() // 시스템의 로컬 시간대를 사용
+    return sdf.format(Date(unixTime))
+}
 fun calculateDelta(glucoseData: List<BG>): String {
     // 최소한 두 개의 BG 항목이 필요
     if (glucoseData.size < 2) {
@@ -124,4 +129,23 @@ fun showErrorMessage(context: Context, msg: String) {
         .setPositiveButton("확인", null)
         .create()
     alertDialog.show()
+}
+fun showMessage(context: Context, msg: String) {
+    val alertDialog: AlertDialog = AlertDialog.Builder(context)
+        .setTitle("Connected")
+        .setMessage(msg)
+        .setPositiveButton("확인", null)
+        .create()
+    alertDialog.show()
+}
+fun isOnline(context: Context): Boolean {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+    } else {
+        val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+        return networkInfo.isConnected
+    }
 }
