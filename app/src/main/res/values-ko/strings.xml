@@ -18,6 +18,7 @@
     <string name="string_enablenoti">상단알림 활성화</string>
     <string name="string_readfromns">Nightscout에서 읽기</string>
     <string name="string_nsurl">Nightscout 주소</string>
+    <string name="default_ns_url">DefaultURL</string>
 
     <!-- 혈당 -->
     <string name="string_bg">혈당</string>

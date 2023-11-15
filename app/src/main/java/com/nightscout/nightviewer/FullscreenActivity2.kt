@@ -178,6 +178,11 @@ class FullscreenActivity2 : CommonActivity() {
                 displayCOB = "   \uD83C\uDD52${current_bgInfo.cob}g"
                 info += displayCOB
             }
+            var displayBasal = current_bgInfo.basal
+            if (current_bgInfo.basal != "") {
+                displayCOB = "   \uD83C\uDD51{current_bgInfo.basal}"
+                info += displayCOB
+            }
             Log.d("showinfo", "iob cob 끝")
             // xml 구성 관련 부분
             var bg_value: String = current_bgInfo.bg
