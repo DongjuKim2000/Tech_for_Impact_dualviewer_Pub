@@ -10,11 +10,6 @@ data class GlucoseData(
     val delta: Float,
     val direction: String,
     val type: String,
-    val filtered: Int,
-    val unfiltered: Int,
-    val rssi: Int,
-    val noise: Int,
     val sysTime: String,
-    val utcOffset: Int,
     val mills: Long
 )
