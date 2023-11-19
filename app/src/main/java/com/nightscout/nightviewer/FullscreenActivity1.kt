@@ -20,7 +20,7 @@ class FullscreenActivity1 : CommonActivity() {
     lateinit var binding: ActivityFullscreen1Binding
     val showinfobr = ShowinfoBR()
 
-    private var alarmed: Boolean = false
+    private var prev_alarm: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -222,7 +222,7 @@ class FullscreenActivity1 : CommonActivity() {
             return alpha shl 24 or (red shl 16) or (green shl 8) or blue
         }
 
-        var fontcolor : Int
+        var fontcolor : Int = Color.WHITE
 
         try {
 
@@ -231,31 +231,26 @@ class FullscreenActivity1 : CommonActivity() {
             val ringtoneEnable = prefs.getBoolean("ringtone_enable", true)
 
             //일반혈당
-            if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
-                fontcolor = Color.parseColor(pref_fontcolornormal)
-                alarmed = false
-            }
-            else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
-                fontcolor = Color.parseColor(pref_fontcolorhighlow)
-                if(!alarmed){
-                    if(ringtoneEnable)
+            if(current_bgInfo != null && prev_alarm != current_bgInfo.time) {
+                if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
+                    fontcolor = Color.parseColor(pref_fontcolornormal)
+                } else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
+                    fontcolor = Color.parseColor(pref_fontcolorhighlow)
+                    if (ringtoneEnable)
                         playNotificationSound(this)
-                    if(vibrateEnable)
+                    if (vibrateEnable)
+                        doVibrate(this)
+                } else {
+                    fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+                    if (ringtoneEnable)
+                        playNotificationSound(this)
+                    if (vibrateEnable)
                         doVibrate(this)
                 }
-                alarmed = true
-            }
-            else {
-                fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
-                if(ringtoneEnable)
-                    playNotificationSound(this)
-                if(vibrateEnable)
-                    doVibrate(this)
+                prev_alarm = current_bgInfo.time
             }
         }
-        catch (e: Exception ) {
-            fontcolor = Color.WHITE
-        }
+        catch (e: Exception ) {}
 
         Log.d("color", "${fontcolor.toString()}")
 
