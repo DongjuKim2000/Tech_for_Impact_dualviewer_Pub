@@ -155,7 +155,7 @@ class FullscreenActivity2 : CommonActivity() {
         var mins: Long = 0
 //        var displayMins: String = ""
         var info: String = ""
-        var int_bg = 0
+        var int_bg = 100
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12") {
             sdf = SimpleDateFormat("a hh:mm")

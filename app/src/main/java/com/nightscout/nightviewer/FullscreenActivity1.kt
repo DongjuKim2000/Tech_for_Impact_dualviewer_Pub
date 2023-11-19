@@ -160,7 +160,7 @@ class FullscreenActivity1 : CommonActivity() {
 
         var info : String = ""
       
-        var int_bg =0
+        var int_bg = 100
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
