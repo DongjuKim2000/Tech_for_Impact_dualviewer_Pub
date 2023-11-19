@@ -9,10 +9,10 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.nightscout.nightviewer.databinding.ActivityFullscreenBinding
+import com.nightscout.nightviewer.databinding.RootScreenBinding
 
 
-private lateinit var binding: ActivityFullscreenBinding
+private lateinit var binding: RootScreenBinding
 
 class PreferencesActivity : AppCompatActivity(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -20,7 +20,7 @@ class PreferencesActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityFullscreenBinding.inflate(layoutInflater)
+        binding = RootScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setContentView(R.layout.preferences_activity)
@@ -115,7 +115,7 @@ class PreferencesActivity : AppCompatActivity(),
         saveSharedPreference()
 
 
-        val intent = Intent(this, FullscreenActivity2::class.java)
+        val intent = Intent(this, SingleviewActivity::class.java)
         Log.d("pref_act", "새로운 액티비티 시작")
         startActivity(intent)
         finish()
