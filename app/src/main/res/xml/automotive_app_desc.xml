@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<automotiveApp>
+    <!-- 여기에 사용할 기능을 선언합니다. -->
+    <!-- 예: 미디어 앱을 지원할 경우 -->
+    <uses name="media"/>
+
+    <!-- 다양한 기능을 지원할 수 있습니다. -->
+    <!-- <uses name="navigation"/>
+         <uses name="messaging"/> -->
+
+    <!-- 다른 설정을 추가할 수 있습니다. -->
+    <!-- <meta-data android:name="some_key" android:value="some_value"/> -->
+</automotiveApp>

@@ -9,14 +9,9 @@
 
     <!-- 일반 -->
     <string name="string_general">General</string>
-    <string name="string_layout">Layout</string>
-    <string name="string_layout1">Landscape 1</string>
-    <string name="string_layout2">Landscape 2</string>
-    <string name="string_layout3">Landscape 3(Classic)</string>
-    <string name="string_layout4">Portrait 1</string>
     <string name="string_enablenoti">Enable Notification</string>
     <string name="string_readfromns">Read from Nightscout</string>
-    <string name="string_nsurl">Nightscout URL</string>
+    <string name="string_nsurl">Nightscout URL reset</string>
     <string name="default_ns_url">DefaultURL</string>
 
     <!-- 혈당 -->
@@ -35,7 +30,12 @@
     <string name="string_displayiob">IOB</string>
     <string name="string_displaycob">COB</string>
     <string name="string_displaybasal">Basal</string>
-    <string name="string_displaychart" translatable="false">Chart</string>
+    <string name="string_displaychart">Chart</string>
+
+    <!--알람-->
+    <string name="string_alarm">Alarm</string>
+    <string name="string_vibrate">Vibrate</string>
+    <string name="string_ringtone">Ringtone</string>
 
     <!-- 글자크기 -->
     <string name="string_fontsize">Font Size</string>
@@ -49,18 +49,16 @@
     <string name="string_fontcolorhighlow">High|Low</string>
     <string name="string_fontcolorurgenthighlow">Urgent High|Low</string>
 
-    <!-- 차트혈당 -->
-    <string name="string_chartbgpoint">Chart BG</string>
-    <string name="string_chartbgcolornormal">In-range Color</string>
-    <string name="string_chartbgcolorhighlow">High|Low Color</string>
-    <string name="string_chartbgcolorurgenthighlow">Urgent High|Low Color</string>
-    <string name="string_chartbgpointsize">BG Point Size</string>
 
-    <!-- 차트라인 -->
-    <string name="string_chartline">Chart Line</string>
+    <!-- 차트설정 -->
+    <string name="string_chartdisplay">Chart Display</string>
+    <string name="string_chartbgpointsize">BG Point Size</string>
     <string name="string_chartlinecolorhighlow">High|Low Color</string>
     <string name="string_chartlinecolorurgenthighlow">Urgent High|Low Color</string>
     <string name="string_chartlinewidth">Line Width</string>
+    <string name="string_xaxis_enable">Time Label Enable</string>
+    <string name="string_chartBG_max">Chart BG maximum</string>
+    <string name="string_chartBG_min">Chart BG minimum</string>
 
     <!-- 색상 -->
     <string name="string_white">White</string>
