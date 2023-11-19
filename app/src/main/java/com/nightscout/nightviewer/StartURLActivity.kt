@@ -41,6 +41,8 @@ class StartURLActivity : AppCompatActivity() {
 
         val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById(R.id.text2))
 
+        findViewById<TextView>(R.id.text2).alpha = 0f
+
         fun startAnimation(textView: TextView) {
             textView.apply {
                 alpha = 0f
