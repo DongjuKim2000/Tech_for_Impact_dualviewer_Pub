@@ -36,7 +36,6 @@ class PreferencesActivity : AppCompatActivity(),
         PreferenceManager.getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
     }
-
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -172,7 +171,6 @@ class PreferencesActivity : AppCompatActivity(),
     private fun saveSharedPreference() {
         val pref = PreferenceManager.getDefaultSharedPreferences(this)
 
-        val pref_layout = pref.getString("pref_layout", "1")
         val pref_enablenoti = true
         val pref_readfromns = true
         val ns_url = url_text
@@ -211,7 +209,6 @@ class PreferencesActivity : AppCompatActivity(),
         binding.apply {
             //val sharedPreference =  getSharedPreferences("root_preferences",MODE_PRIVATE)
             var editor = prefs.edit()
-            editor.putString("pref_layout", pref_layout)
             editor.putBoolean("enablenoti", pref_enablenoti)
             editor.putBoolean("readfromns", pref_readfromns)
             editor.putString("ns_url", ns_url)

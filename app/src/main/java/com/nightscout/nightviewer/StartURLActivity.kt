@@ -1,12 +1,20 @@
 package com.nightscout.nightviewer
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +39,44 @@ class StartURLActivity : AppCompatActivity() {
             finish()
         }
 
+        val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById(R.id.text2))
+
+        findViewById<TextView>(R.id.text2).alpha = 0f
+
+        fun startAnimation(textView: TextView) {
+            textView.apply {
+                alpha = 0f
+                translationY = -100f
+            }
+
+            val alphaAnimation = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f).apply {
+                duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            }
+
+            val translateAnimation = ObjectAnimator.ofFloat(textView, "translationY", -100f, 0f).apply {
+                duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            }
+
+            AnimatorSet().apply {
+                playTogether(alphaAnimation, translateAnimation)
+                addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator?) {}
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        val nextIndex = textViews.indexOf(textView) + 1
+                        if (nextIndex < textViews.size) {
+                            startAnimation(textViews[nextIndex])
+                        }
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {}
+
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                })
+                start()
+            }
+        }
+        startAnimation(textViews[0])
 
         val urlEditText = findViewById<EditText>(R.id.urlEditText)
         val confirmButton = findViewById<Button>(R.id.confirmButton)
