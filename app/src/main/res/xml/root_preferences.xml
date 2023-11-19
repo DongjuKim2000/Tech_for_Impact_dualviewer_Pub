@@ -144,60 +144,6 @@
             app:defaultValue="#FCFFFFFF"/>
     </PreferenceCategory>
 
-<!--    <PreferenceCategory-->
-<!--        app:key="chartbgpoint"-->
-<!--        app:title="@string/string_chartbgpoint">-->
-
-<!--        <ListPreference-->
-<!--            app:key="chartbgcolornormal"-->
-<!--            app:title="@string/string_chartbgcolornormal"-->
-<!--            app:entries="@array/pref_color"-->
-<!--            app:entryValues="@array/pref_color_code"-->
-<!--            app:defaultValue="#FC00FF00"/>-->
-
-<!--        <ListPreference-->
-<!--            app:key="chartbgcolorhighlow"-->
-<!--            app:title="@string/string_chartbgcolorhighlow"-->
-<!--            app:entries="@array/pref_color"-->
-<!--            app:entryValues="@array/pref_color_code"-->
-<!--            app:defaultValue="#FCFFFF00"/>-->
-
-<!--        <ListPreference-->
-<!--            app:key="chartbgcolorurgenthighlow"-->
-<!--            app:title="@string/string_chartbgcolorurgenthighlow"-->
-<!--            app:entries="@array/pref_color"-->
-<!--            app:entryValues="@array/pref_color_code"-->
-<!--            app:defaultValue="#FCFF0000"/>-->
-
-<!--        <EditTextPreference-->
-<!--            app:key="chartbgpointsize"-->
-<!--            app:title="@string/string_chartbgpointsize"-->
-<!--            app:defaultValue="5"/>-->
-<!--    </PreferenceCategory>-->
-
-<!--    <PreferenceCategory-->
-<!--        app:key="chartline"-->
-<!--        app:title="@string/string_chartline">-->
-
-<!--        <ListPreference-->
-<!--            app:key="chartlinecolorhighlow"-->
-<!--            app:title="@string/string_chartlinecolorhighlow"-->
-<!--            app:entries="@array/pref_color"-->
-<!--            app:entryValues="@array/pref_color_code"-->
-<!--            app:defaultValue="#FCFFFF00"/>-->
-
-<!--        <ListPreference-->
-<!--            app:key="chartlinecolorurgenthighlow"-->
-<!--            app:title="@string/string_chartlinecolorurgenthighlow"-->
-<!--            app:entries="@array/pref_color"-->
-<!--            app:entryValues="@array/pref_color_code"-->
-<!--            app:defaultValue="#FCFF0000"/>-->
-
-<!--        <EditTextPreference-->
-<!--            app:key="chartlinewidth"-->
-<!--            app:title="@string/string_chartlinewidth"-->
-<!--            app:defaultValue="1"/>-->
-<!--    </PreferenceCategory>-->
 
     <PreferenceCategory
         app:key="chartsetting"
