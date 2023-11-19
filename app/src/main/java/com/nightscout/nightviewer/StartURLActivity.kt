@@ -38,8 +38,13 @@ class StartURLActivity : AppCompatActivity() {
 
         val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById(R.id.text2))
 
+        textViews.forEach {
+            it.alpha = 0f
+            it.translationY = -100f
+        }
+
         fun createAnimationSet(): AnimationSet {
-            val alphaAnimation = AlphaAnimation(1.0f, 0.0f).apply {
+            val alphaAnimation = AlphaAnimation(0.0f, 1.0f).apply {
                 duration = 1000L // 애니메이션 지속 시간 설정 (1초)
             }
 
@@ -50,6 +55,7 @@ class StartURLActivity : AppCompatActivity() {
             return AnimationSet(false).apply {
                 addAnimation(alphaAnimation)
                 addAnimation(translateAnimation)
+                fillAfter = true
             }
         }
 
