@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
@@ -94,15 +95,30 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         val xAxis = lineChart.xAxis
         val yAxisLeft = lineChart.axisLeft
 
+        val urgentHighValue = prefs.getString("urgent_high_value", "260")
+        val highLimitValue = prefs.getString("high_value", "180")
+        val lowLimitValue = prefs.getString("low_value", "80")
+        val urgentLowValue = prefs.getString("urgent_low_value", "55")
+
+        val BGpointSize = prefs.getString("chartbgpointsize", "4")
+        val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
+        val urgentLineColor = prefs.getString("chartlinecolorurgenthighlow", "#FCFF0000")
+        val chartLineWidth = prefs.getString("chartlinewidth", "1")
+        val xaxisEnable = prefs.getBoolean("xaxis_enable", true)
+        val chartBGMax = prefs.getString("chartBG_max", "400")
+        val chartBGMin = prefs.getString("chartBG_min", "40")
+
         dataset.apply {
             color = Color.WHITE //그래프 선 색
             lineWidth = 0f
             valueTextSize = 0f //값 출력 안되도록
             setCircleColor(Color.WHITE)
             circleHoleColor = Color.WHITE
-            circleRadius = 4f
+            circleRadius = BGpointSize?.toFloat() ?: 4f
 
         }
+
+        Log.d("graph", xaxisEnable.toString())
 
         lineChart.apply {
             //오른쪽 y축 안보이게
@@ -110,6 +126,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
             setTouchEnabled(false)
             legend.isEnabled = false //라벨 없애기
             description.isEnabled = false //설명 없애기
+            xAxis.isEnabled = xaxisEnable
         }
 
         xAxis.apply {
@@ -118,16 +135,6 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
             valueFormatter = TimeAxisValueFormat()
             textColor = Color.WHITE
         }
-
-        val urgentHighValue = prefs.getString("urgent_high_value", "260")
-        val highLimitValue = prefs.getString("high_value", "180")
-        val lowLimitValue = prefs.getString("low_value", "80")
-        val urgentLowValue = prefs.getString("urgent_low_value", "55")
-
-        val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
-        val urgentLineColor = prefs.getString("chartlinecolorurgenthighlow", "#FCFF0000")
-        val chartLineWidth = prefs.getString("chartlinewidth", "1")
-
 
         //주의 혈당 기준선
         val lowLimit = LimitLine(lowLimitValue?.toFloat() ?: 80f, lowLimitValue).apply {
@@ -158,8 +165,8 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         }
 
         yAxisLeft.apply {
-            axisMaximum = 400.toFloat() //y축 최댓값
-            axisMinimum = 40.toFloat() //y축 최솟값
+            axisMaximum = chartBGMax?.toFloat()?: 400f //y축 최댓값
+            axisMinimum = chartBGMin?.toFloat()?: 40f //y축 최솟값
             setDrawLabels(false) //레이블 비활성화
             setDrawAxisLine(false) //축 비활성화
             setDrawGridLines(false) //그리드 비활성화

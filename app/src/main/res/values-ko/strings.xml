@@ -10,14 +10,9 @@
 
     <!-- 일반 -->
     <string name="string_general">일반</string>
-    <string name="string_layout">레이아웃</string>
-    <string name="string_layout1">가로1</string>
-    <string name="string_layout2">가로2</string>
-    <string name="string_layout3">가로3(클래식)</string>
-    <string name="string_layout4">세로1</string>
     <string name="string_enablenoti">상단알림 활성화</string>
     <string name="string_readfromns">Nightscout에서 읽기</string>
-    <string name="string_nsurl">Nightscout 주소</string>
+    <string name="string_nsurl">Nightscout 주소 재설정</string>
     <string name="default_ns_url">DefaultURL</string>
 
     <!-- 혈당 -->
@@ -36,6 +31,12 @@
     <string name="string_displayiob">IOB</string>
     <string name="string_displaycob">COB</string>
     <string name="string_displaybasal">Basal</string>
+    <string name="string_displaychart">차트 활성화</string>
+
+    <!--알람-->
+    <string name="string_alarm">알람</string>
+    <string name="string_vibrate">진동</string>
+    <string name="string_ringtone">알림음</string>
 
     <!-- 글자크기 -->
     <string name="string_fontsize">글자 크기</string>
@@ -50,17 +51,27 @@
     <string name="string_fontcolorurgenthighlow">위험고저혈당</string>
 
     <!-- 차트혈당 -->
-    <string name="string_chartbgpoint">차트 혈당</string>
-    <string name="string_chartbgcolornormal">일반혈당 색상</string>
-    <string name="string_chartbgcolorhighlow">고저혈당 색상</string>
-    <string name="string_chartbgcolorurgenthighlow">위험고저혈당 색상</string>
-    <string name="string_chartbgpointsize">혈당포인트 크기</string>
+<!--    <string name="string_chartbgpoint">차트 혈당</string>-->
+<!--    <string name="string_chartbgcolornormal">일반혈당 색상</string>-->
+<!--    <string name="string_chartbgcolorhighlow">고저혈당 색상</string>-->
+<!--    <string name="string_chartbgcolorurgenthighlow">위험고저혈당 색상</string>-->
+<!--    <string name="string_chartbgpointsize">혈당포인트 크기</string>-->
 
     <!-- 차트라인 -->
-    <string name="string_chartline">차트 고저혈당선</string>
+<!--    <string name="string_chartline">차트 고저혈당선</string>-->
+<!--    <string name="string_chartlinecolorhighlow">고저혈당 색상</string>-->
+<!--    <string name="string_chartlinecolorurgenthighlow">위험고저혈당 색상</string>-->
+<!--    <string name="string_chartlinewidth">선두께</string>-->
+
+    <!-- 차트설정 -->
+    <string name="string_chartdisplay">차트 설정</string>
+    <string name="string_chartbgpointsize">혈당포인트 크기</string>
     <string name="string_chartlinecolorhighlow">고저혈당 색상</string>
     <string name="string_chartlinecolorurgenthighlow">위험고저혈당 색상</string>
     <string name="string_chartlinewidth">선두께</string>
+    <string name="string_xaxis_enable">시간 레이블 활성화</string>
+    <string name="string_chartBG_max">그래프 혈당 최댓값</string>
+    <string name="string_chartBG_min">그래프 혈당 최솟값</string>
 
     <!-- 색상 -->
     <string name="string_white">흰색</string>
