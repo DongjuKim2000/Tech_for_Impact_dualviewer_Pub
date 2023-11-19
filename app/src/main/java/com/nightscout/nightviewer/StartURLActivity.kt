@@ -1,5 +1,8 @@
 package com.nightscout.nightviewer
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -38,48 +41,40 @@ class StartURLActivity : AppCompatActivity() {
 
         val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById(R.id.text2))
 
-        textViews.forEach {
-            it.alpha = 0f
-            it.translationY = -100f
-        }
+        fun startAnimation(textView: TextView) {
+            textView.apply {
+                alpha = 0f
+                translationY = -100f
+            }
 
-        fun createAnimationSet(): AnimationSet {
-            val alphaAnimation = AlphaAnimation(0.0f, 1.0f).apply {
+            val alphaAnimation = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f).apply {
                 duration = 1000L // 애니메이션 지속 시간 설정 (1초)
             }
 
-            val translateAnimation = TranslateAnimation(0f, 0f, 0f, 100f).apply {
+            val translateAnimation = ObjectAnimator.ofFloat(textView, "translationY", -100f, 0f).apply {
                 duration = 1000L // 애니메이션 지속 시간 설정 (1초)
             }
 
-            return AnimationSet(false).apply {
-                addAnimation(alphaAnimation)
-                addAnimation(translateAnimation)
-                fillAfter = true
+            AnimatorSet().apply {
+                playTogether(alphaAnimation, translateAnimation)
+                addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator?) {}
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        val nextIndex = textViews.indexOf(textView) + 1
+                        if (nextIndex < textViews.size) {
+                            startAnimation(textViews[nextIndex])
+                        }
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {}
+
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                })
+                start()
             }
         }
-
-        var i = 0
-        val animationListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {}
-
-            override fun onAnimationEnd(animation: Animation?) {
-                i++
-                if (i < textViews.size) {
-                    val nextAnimationSet = createAnimationSet()
-                    nextAnimationSet.setAnimationListener(this)
-                    textViews[i].startAnimation(nextAnimationSet)
-                }
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {}
-        }
-
-        // 첫 번째 텍스트뷰에 애니메이션 적용
-        val animationSet = createAnimationSet()
-        animationSet.setAnimationListener(animationListener)
-        textViews[0].startAnimation(animationSet)
-
+        startAnimation(textViews[0])
 
         val urlEditText = findViewById<EditText>(R.id.urlEditText)
         val confirmButton = findViewById<Button>(R.id.confirmButton)
