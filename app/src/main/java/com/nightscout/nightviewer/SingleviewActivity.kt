@@ -237,7 +237,8 @@ class SingleviewActivity : CommonActivity() {
         catch (e: Exception ) {Log.d("color", "color exception")}
         Log.d("color", "${fontcolor.toString()}")
         Log.d("highlowcolor", "${pref_fontcolorhighlow.toString()}")
-        Log.d("high value", "${pref_highvalue.toString()}")
+        Log.d(
+            "high value", "${pref_highvalue.toString()}")
         Log.d("bg value", "${int_bg.toString()}")
 
         binding.screenBg.setTextColor(fontcolor)
