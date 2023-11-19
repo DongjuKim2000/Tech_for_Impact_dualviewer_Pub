@@ -36,35 +36,42 @@ class StartURLActivity : AppCompatActivity() {
             finish()
         }
 
-        // 텍스트뷰 배열 생성
-        val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById<TextView>(R.id.text2))
-        // 애니메이션셋 생성
-        val alphaAnimation = AlphaAnimation(1.0f, 0.0f).apply {
-            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+        val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById(R.id.text2))
+
+        fun createAnimationSet(): AnimationSet {
+            val alphaAnimation = AlphaAnimation(1.0f, 0.0f).apply {
+                duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            }
+
+            val translateAnimation = TranslateAnimation(0f, 0f, 0f, 100f).apply {
+                duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            }
+
+            return AnimationSet(false).apply {
+                addAnimation(alphaAnimation)
+                addAnimation(translateAnimation)
+            }
         }
 
-        val translateAnimation = TranslateAnimation(0f, 0f, 0f, 100f).apply {
-            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
-        }
-
-        val animationSet = AnimationSet(false).apply {
-            addAnimation(alphaAnimation)
-            addAnimation(translateAnimation)
-        }
-
-        // 애니메이션 리스너 설정
         var i = 0
-        animationSet.setAnimationListener(object : Animation.AnimationListener {
+        val animationListener = object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
+
             override fun onAnimationEnd(animation: Animation?) {
                 i++
                 if (i < textViews.size) {
-                    textViews[i].startAnimation(animationSet)
+                    val nextAnimationSet = createAnimationSet()
+                    nextAnimationSet.setAnimationListener(this)
+                    textViews[i].startAnimation(nextAnimationSet)
                 }
             }
-            override fun onAnimationRepeat(animation: Animation?) {}
-        })
 
+            override fun onAnimationRepeat(animation: Animation?) {}
+        }
+
+        // 첫 번째 텍스트뷰에 애니메이션 적용
+        val animationSet = createAnimationSet()
+        animationSet.setAnimationListener(animationListener)
         textViews[0].startAnimation(animationSet)
 
 
