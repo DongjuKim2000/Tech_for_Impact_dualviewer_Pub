@@ -149,3 +149,10 @@ fun isOnline(context: Context): Boolean {
         return networkInfo.isConnected
     }
 }
+fun try_catch_withLambdaFun(lambdaFun:(String) -> String, p:String, default:String = "--"): String{
+    return try{
+        lambdaFun(p)
+    }catch(e:Exception){
+        default
+    }
+}
