@@ -40,10 +40,20 @@ class PreferencesActivity : AppCompatActivity(),
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-            val nsUrlPreference = findPreference<EditTextPreference>("ns_url")
-            nsUrlPreference?.text = prefs.getString("ns_url", url_text)
+            val nsUrlPreference:Preference? = findPreference<EditTextPreference>("ns_url")
 
-            Log.d("createPref", "${nsUrlPreference?.text}")
+
+            nsUrlPreference?.setOnPreferenceClickListener {
+                // 새로운 액티비티 시작
+                var editor = prefs.edit()
+                editor.putString("ns_url", "defaultURL")
+                editor.apply()
+                val intent = Intent(activity, StartURLActivity::class.java)
+                startActivity(intent)
+                true // 이벤트 처리 완료
+            }
+
+
 
 
             // 숫자 패드 띄우기

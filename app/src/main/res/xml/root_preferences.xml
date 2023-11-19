@@ -24,13 +24,12 @@
             app:disableDependentsState="false">
         </SwitchPreference>
 
-        <EditTextPreference
+        <Preference
             app:key="ns_url"
             app:title="@string/string_nsurl"
-            app:dialogTitle="Enter your URL"
             app:defaultValue="@string/default_ns_url" >
             <!--app:dependency="readfromns">  -->
-        </EditTextPreference>
+        </Preference>
 
     </PreferenceCategory>
 
