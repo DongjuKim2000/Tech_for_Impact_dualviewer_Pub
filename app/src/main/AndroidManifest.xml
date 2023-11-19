@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FullscreenActivity"
+            android:name=".InitializeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleTop"
@@ -48,7 +48,7 @@
 <!--            </intent-filter>-->
         </activity>
         <activity
-            android:name=".FullscreenActivity1"
+            android:name=".MultiviewActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:minWidth="100dp"
@@ -56,7 +56,7 @@
             android:resizeableActivity="true"
             android:theme="@style/Theme.NightViewer.Fullscreen"/>
         <activity
-            android:name=".FullscreenActivity2"
+            android:name=".SingleviewActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:resizeableActivity="true"

@@ -1,26 +1,21 @@
 package com.nightscout.nightviewer
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
-import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
+import com.nightscout.nightviewer.databinding.SingleviewScreenBinding
 import java.text.SimpleDateFormat
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 
 // 풀스크린 모드
-class FullscreenActivity2 : CommonActivity() {
+class SingleviewActivity : CommonActivity() {
 
-    lateinit var binding: ActivityFullscreen2Binding
+    lateinit var binding: SingleviewScreenBinding
 
     private var prev_alarm: String = ""
 
@@ -29,7 +24,7 @@ class FullscreenActivity2 : CommonActivity() {
 
         Log.d("Activity2","onCreate")
 
-        binding = ActivityFullscreen2Binding.inflate(layoutInflater)
+        binding = SingleviewScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
@@ -52,20 +47,20 @@ class FullscreenActivity2 : CommonActivity() {
         lifecycleScope.launchWhenStarted {
             Data_Courutine(applicationContext).dataFlow.collect { newData ->
                 // 여기에서 newData를 활용하여 화면에 업데이트
-                if (!isOnline(this@FullscreenActivity2)) {
-                    showErrorMessage(this@FullscreenActivity2, "인터넷 연결 X")
+                if (!isOnline(this@SingleviewActivity)) {
+                    showErrorMessage(this@SingleviewActivity, "인터넷 연결 X")
 
                     reconnected = false
                 }
                 else {
                     if (reconnected==false) {
-                        showMessage(this@FullscreenActivity2, "인터넷 연결 재개")
+                        showMessage(this@SingleviewActivity, "인터넷 연결 재개")
                     }
 
                     try{showinfo(newData)
                         reconnected = true } catch(e:Exception){
                         reconnected = false
-                        showErrorMessage(this@FullscreenActivity2, "인터넷 연결이 안되어 있습니다")
+                        showErrorMessage(this@SingleviewActivity, "인터넷 연결이 안되어 있습니다")
                     }
                 }
             }
@@ -81,7 +76,7 @@ class FullscreenActivity2 : CommonActivity() {
         if(Build.VERSION.SDK_INT >= 24) {
             if (isInMultiWindowMode) {
                 Log.d("Activity", "multi window mode")
-                val i = Intent(this, FullscreenActivity1::class.java)
+                val i = Intent(this, MultiviewActivity::class.java)
                 startActivity(i)
                 Log.d("FullscreenActivity","스타트 activity1")
 

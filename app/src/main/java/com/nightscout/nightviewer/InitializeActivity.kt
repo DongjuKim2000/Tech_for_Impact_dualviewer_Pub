@@ -11,7 +11,7 @@ var ChartValueDateTime = ArrayList<Long>()
 var ChartValue = ArrayList<Int>()
 var lastrequestdatatime : Long = 0
 var lastrequestalldatatime : Long = 0
-class FullscreenActivity : AppCompatActivity() {
+class InitializeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         Log.d("FullscreenActivity","onCreate 시작")
@@ -26,11 +26,11 @@ class FullscreenActivity : AppCompatActivity() {
         val pref_layout = prefs.getString ("pref_layout", "2").toString()
         when (pref_layout)
         {
-            "1" -> {val i = Intent(this, FullscreenActivity1::class.java)
+            "1" -> {val i = Intent(this, MultiviewActivity::class.java)
                 startActivity(i)
                 Log.d("FullscreenActivity","스타트 activity1")
             }
-            "2" -> {val i = Intent(this, FullscreenActivity2::class.java)
+            "2" -> {val i = Intent(this, SingleviewActivity::class.java)
                 startActivity(i)
                 Log.d("FullscreenActivity","스타트 activity1")
             }
