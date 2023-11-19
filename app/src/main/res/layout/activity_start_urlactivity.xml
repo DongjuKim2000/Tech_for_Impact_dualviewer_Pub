@@ -66,23 +66,27 @@
         android:inputType="text"
         android:maxLines="1"
         android:text=""
+        android:background="#FFFFFF"
         android:textColor="@color/Black"
+        android:textColorHint="#A9A9A9"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:fontFamily="@font/eastarjet_demilight"/>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/confirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#4B0082"
+        android:fontFamily="@font/eastarjet_heavy"
         android:text="시작하기"
+        android:textColor="@color/White"
+        android:textColorHighlight="@color/Blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline1"
-        android:background="#FFB6C1"
-        android:fontFamily="@font/eastarjet_heavy"/>
-
+        app:layout_constraintTop_toTopOf="@id/guideline1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
