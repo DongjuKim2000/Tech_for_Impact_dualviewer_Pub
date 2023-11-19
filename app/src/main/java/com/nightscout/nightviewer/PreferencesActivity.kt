@@ -79,6 +79,35 @@ class PreferencesActivity : AppCompatActivity(),
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
             }
 
+            numberPreference1?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val urgentHighValue = newValue.toString().toInt()
+                val highValue = numberPreference2?.text?.toInt() ?: 0
+                urgentHighValue >= highValue
+            }
+
+            numberPreference2?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val urgentHighValue = numberPreference1?.text?.toInt() ?: 0
+                val highValue = newValue.toString().toInt()
+                val lowValue = numberPreference3?.text?.toInt() ?: 0
+
+                highValue in lowValue..urgentHighValue
+            }
+
+            numberPreference3?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val highValue = numberPreference2?.text?.toInt() ?: 0
+                val lowValue = newValue.toString().toInt()
+                val urgentLowValue = numberPreference4?.text?.toInt() ?: 0
+
+                lowValue in urgentLowValue..highValue
+            }
+
+            numberPreference4?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val lowValue = numberPreference3?.text?.toInt() ?: 0
+                val urgentLowValue = newValue.toString().toInt()
+
+                lowValue >= urgentLowValue
+            }
+
             val numberPreference5: EditTextPreference? = findPreference("bg_font")
             numberPreference5?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
