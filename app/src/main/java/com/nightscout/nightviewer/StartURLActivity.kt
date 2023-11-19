@@ -5,8 +5,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +35,37 @@ class StartURLActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        // 텍스트뷰 배열 생성
+        val textViews = arrayOf(findViewById<TextView>(R.id.text1), findViewById<TextView>(R.id.text2))
+        // 애니메이션셋 생성
+        val alphaAnimation = AlphaAnimation(1.0f, 0.0f).apply {
+            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+        }
+
+        val translateAnimation = TranslateAnimation(0f, 0f, 0f, 100f).apply {
+            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+        }
+
+        val animationSet = AnimationSet(false).apply {
+            addAnimation(alphaAnimation)
+            addAnimation(translateAnimation)
+        }
+
+        // 애니메이션 리스너 설정
+        var i = 0
+        animationSet.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                i++
+                if (i < textViews.size) {
+                    textViews[i].startAnimation(animationSet)
+                }
+            }
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        textViews[0].startAnimation(animationSet)
 
 
         val urlEditText = findViewById<EditText>(R.id.urlEditText)

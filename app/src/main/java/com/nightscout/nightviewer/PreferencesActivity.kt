@@ -6,6 +6,7 @@ import android.text.InputType
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.nightscout.nightviewer.databinding.ActivityFullscreenBinding
@@ -35,7 +36,6 @@ class PreferencesActivity : AppCompatActivity(),
         PreferenceManager.getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
     }
-
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -66,6 +66,35 @@ class PreferencesActivity : AppCompatActivity(),
             val numberPreference4: EditTextPreference? = findPreference("urgent_low_value")
             numberPreference4?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+
+            numberPreference1?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val urgentHighValue = newValue.toString().toInt()
+                val highValue = numberPreference2?.text?.toInt() ?: 0
+                urgentHighValue >= highValue
+            }
+
+            numberPreference2?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val urgentHighValue = numberPreference1?.text?.toInt() ?: 0
+                val highValue = newValue.toString().toInt()
+                val lowValue = numberPreference3?.text?.toInt() ?: 0
+
+                highValue in lowValue..urgentHighValue
+            }
+
+            numberPreference3?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val highValue = numberPreference2?.text?.toInt() ?: 0
+                val lowValue = newValue.toString().toInt()
+                val urgentLowValue = numberPreference4?.text?.toInt() ?: 0
+
+                lowValue in urgentLowValue..highValue
+            }
+
+            numberPreference4?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                val lowValue = numberPreference3?.text?.toInt() ?: 0
+                val urgentLowValue = newValue.toString().toInt()
+
+                lowValue >= urgentLowValue
             }
 
             val numberPreference5: EditTextPreference? = findPreference("bg_font")
