@@ -230,6 +230,15 @@ class MultiviewActivity : CommonActivity() {
                 }
                 prev_alarm = current_bgInfo.time
             }
+            else if(current_bgInfo != null){
+                if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
+                    fontcolor = Color.parseColor(pref_fontcolornormal)
+                } else if (pref_lowvalue<= bgInt && bgInt <= pref_highvalue) {
+                    fontcolor = Color.parseColor(pref_fontcolorhighlow)
+                } else {
+                    fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+                }
+            }
         }
         catch (e: Exception ) {}
 

@@ -134,14 +134,14 @@
             app:title="@string/string_fontcolorhighlow"
             app:entries="@array/pref_color"
             app:entryValues="@array/pref_color_code"
-            app:defaultValue="#FCFFFFFF"/>
+            app:defaultValue="#FCFFFF00"/>
 
         <ListPreference
             app:key="fontcolorurgenthighlow"
             app:title="@string/string_fontcolorurgenthighlow"
             app:entries="@array/pref_color"
             app:entryValues="@array/pref_color_code"
-            app:defaultValue="#FCFFFFFF"/>
+            app:defaultValue="#FCFF0000"/>
     </PreferenceCategory>
 
 

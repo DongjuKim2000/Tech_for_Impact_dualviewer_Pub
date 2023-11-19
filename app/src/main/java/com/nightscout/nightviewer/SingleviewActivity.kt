@@ -207,7 +207,7 @@ class SingleviewActivity : CommonActivity() {
             if(current_bgInfo != null && prev_alarm != current_bgInfo.time) {
                 if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
                     fontcolor = Color.parseColor(pref_fontcolornormal)
-                } else if (pref_urgentlowvalue <= bgInt && bgInt <= pref_urgenthighvalue) {
+                } else if (pref_lowvalue<= bgInt && bgInt <= pref_highvalue) {
                     fontcolor = Color.parseColor(pref_fontcolorhighlow)
                     if (ringtoneEnable)
                         playNotificationSound(this)
@@ -222,9 +222,24 @@ class SingleviewActivity : CommonActivity() {
                 }
                 prev_alarm = current_bgInfo.time
             }
+            else if(current_bgInfo != null){
+                if (pref_lowvalue <= bgInt && bgInt <= pref_highvalue) {
+                    fontcolor = Color.parseColor(pref_fontcolornormal)
+                } else if (pref_lowvalue<= bgInt && bgInt <= pref_highvalue) {
+                    fontcolor = Color.parseColor(pref_fontcolorhighlow)
+                } else {
+                    fontcolor = Color.parseColor(pref_fontcolorurgenthighlow)
+                }
+            }
+
+
         }
-        catch (e: Exception ) {}
+        catch (e: Exception ) {Log.d("color", "color exception")}
         Log.d("color", "${fontcolor.toString()}")
+        Log.d("highlowcolor", "${pref_fontcolorhighlow.toString()}")
+        Log.d(
+            "high value", "${pref_highvalue.toString()}")
+        Log.d("bg value", "${int_bg.toString()}")
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
