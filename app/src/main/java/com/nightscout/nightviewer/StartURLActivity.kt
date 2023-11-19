@@ -26,7 +26,7 @@ class StartURLActivity : AppCompatActivity() {
         bgprefs = getSharedPreferences("prefs_bghistory", MODE_PRIVATE)
 
         if(prefs.getString("ns_url", "defaultURL")!="defaultURL"){
-            val intent = Intent(this, FullscreenActivity::class.java)
+            val intent = Intent(this, InitializeActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -54,7 +54,7 @@ class StartURLActivity : AppCompatActivity() {
                         apply()
                     }
                     Log.d("starturl", "${url_text}")
-                    val intent = Intent(this, FullscreenActivity::class.java)
+                    val intent = Intent(this, InitializeActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
