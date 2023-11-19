@@ -103,6 +103,16 @@ class PreferencesActivity : AppCompatActivity(),
             numberPreference9?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
             }
+
+            val numberPreference10: EditTextPreference? = findPreference("chartBG_max")
+            numberPreference10?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+
+            val numberPreference11: EditTextPreference? = findPreference("chartBG_min")
+            numberPreference11?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
         }
     }
 
@@ -152,6 +162,7 @@ class PreferencesActivity : AppCompatActivity(),
         val cob_enable = pref.getBoolean("cob_enable", true)
         val basal_enable = pref.getBoolean("basal_enable", true)
         val chart_enable = pref.getBoolean("chart_enable", true)
+
         val vibrate_enable = pref.getBoolean("vibrate_enable", true)
         val ringtone_enable = pref.getBoolean("ringtone_enable", true)
 
@@ -159,14 +170,14 @@ class PreferencesActivity : AppCompatActivity(),
         val fontcolorhighlow = pref.getString("fontcolorhighlow", "#FCFFFFFF")
         val fontcolorurgenthighlow = pref.getString("fontcolorurgenthighlow", "#FCFFFFFF")
 
-        val chartbgcolornormal = pref.getString("chartbgcolornormal", "#FC00FF00")
-        val chartbgcolorhighlow = pref.getString("chartbgcolorhighlow", "#FCFFFF00")
-        val chartbgcolorurgenthighlow = pref.getString("chartbgcolorurgenthighlow", "#FCFF0000")
-        val chartbgpointsize = pref.getString("chartbgpointsize", "5")
-
+        val chartbgpointsize = pref.getString("chartbgpointsize", "4")
         val chartlinecolorhighlow = pref.getString("chartlinecolorhighlow", "#FCFFFF00")
         val chartlinecolorurgenthighlow = pref.getString("chartlinecolorurgenthighlow", "#FCFF0000")
         val chartlinewidth = pref.getString("chartlinewidth", "1")
+        val xaxis_enable = pref.getBoolean("chart_xaxis_enable", true)
+        val chartBGMax = pref.getString("chartBG_max", "400")
+        val chartBGMin = pref.getString("chartBG_min", "40")
+
 
         binding.apply {
             //val sharedPreference =  getSharedPreferences("root_preferences",MODE_PRIVATE)
@@ -187,6 +198,7 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putBoolean("cob_enable", cob_enable)
             editor.putBoolean("basal_enable", basal_enable)
             editor.putBoolean("chart_enable", chart_enable)
+
             editor.putBoolean("vibrate_enable", vibrate_enable)
             editor.putBoolean("ringtone_enable", ringtone_enable)
 
@@ -194,14 +206,14 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putString("fontcolorhighlow", fontcolorhighlow)
             editor.putString("fontcolorurgenthighlow", fontcolorurgenthighlow)
 
-            editor.putString("chartbgcolornormal", chartbgcolornormal)
-            editor.putString("chartbgcolorhighlow", chartbgcolorhighlow)
-            editor.putString("chartbgcolorurgenthighlow", chartbgcolorurgenthighlow)
-            editor.putString("chartbgpointsize", chartbgpointsize)
 
+            editor.putString("chartbgpointsize", chartbgpointsize)
             editor.putString("chartlinecolorhighlow", chartlinecolorhighlow)
             editor.putString("chartlinecolorurgenthighlow", chartlinecolorurgenthighlow)
             editor.putString("chartlinewidth", chartlinewidth)
+            editor.putBoolean("xaxis_enable", xaxis_enable)
+            editor.putString("chartBG_max", chartBGMax)
+            editor.putString("chartBG_min", chartBGMin)
 
             editor.apply()
             //log.d("설정변경 : ","${ns_url} ${pref_layout} ${iob_enable} ${cob_enable} ${basal_enable}" )
