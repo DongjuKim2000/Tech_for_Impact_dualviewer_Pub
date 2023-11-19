@@ -1,5 +1,4 @@
 package com.nightscout.nightviewer
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -13,11 +12,15 @@ import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.ActivityFullscreen2Binding
 import java.text.SimpleDateFormat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+
 // 풀스크린 모드
 class FullscreenActivity2 : CommonActivity() {
 
     lateinit var binding: ActivityFullscreen2Binding
-    val showinfobr = ShowinfoBR()
 
     private var prev_alarm: String = ""
 
@@ -41,18 +44,14 @@ class FullscreenActivity2 : CommonActivity() {
         fullscreenContent.setOnClickListener { toggle() }
         val filter = IntentFilter()
 
-        showinfo()
-
         val updateIntervalMillis: Long = 5000
 
         var reconnected = true
         filter.addAction("showinfo") //수신할 action 종류 넣기
-        registerReceiver(showinfobr, filter) //브로드캐스트리시버 등록
         registerReceiver(internetBroadcaster, filter)
-
-        updateTimer = object : CountDownTimer(Long.MAX_VALUE, updateIntervalMillis) {
-            override fun onTick(millisUntilFinished: Long) {
-                // 인터넷 연결 상태를 감지하는 Receiver
+        lifecycleScope.launchWhenStarted {
+            Data_Courutine(applicationContext).dataFlow.collect { newData ->
+                // 여기에서 newData를 활용하여 화면에 업데이트
                 if (!isOnline(this@FullscreenActivity2)) {
                     showErrorMessage(this@FullscreenActivity2, "인터넷 연결 X")
 
@@ -63,32 +62,20 @@ class FullscreenActivity2 : CommonActivity() {
                         showMessage(this@FullscreenActivity2, "인터넷 연결 재개")
                     }
 
-                    try{showinfo()
+                    try{showinfo(newData)
                         reconnected = true } catch(e:Exception){
                         reconnected = false
                         showErrorMessage(this@FullscreenActivity2, "인터넷 연결이 안되어 있습니다")
-                        }
                     }
+                }
             }
-            override fun onFinish() {
-                // 타이머가 무한대로 설정되었으므로 onFinish는 호출되지 않음
-            }
-
         }
-
-        updateTimer?.start()
 
 
         Log.d("Activity2","onCreate 끝")
 
     }
-    inner class ShowinfoBR : BroadcastReceiver()
-    {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if(intent?.action == "showinfo")
-                showinfo()
-        }
-    }
+
     override fun onResume() {
         super.onResume()
         if(Build.VERSION.SDK_INT >= 24) {
@@ -104,9 +91,8 @@ class FullscreenActivity2 : CommonActivity() {
         }
     }
     override fun onDestroy() {
-        Log.d("Activity2","onDetroy  시작")
+        Log.d("Activity2","onDestroy  시작")
         super.onDestroy()
-        try{unregisterReceiver(showinfobr)} catch (e: Exception){}
         try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
 
@@ -116,7 +102,7 @@ class FullscreenActivity2 : CommonActivity() {
         finish()
     }
 
-    private fun showinfo() {
+    private fun showinfo(current_bgInfo: BG?) {
 
         //설정
         val pref_timeformat = prefs.getString("preftimeformat", "timeformat24")
@@ -136,17 +122,6 @@ class FullscreenActivity2 : CommonActivity() {
         val BasalEnable = prefs.getBoolean("basal_enable", true)
 
 
-
-        val bgData = BGData(this)
-
-        if(bgData == null) {
-            Log.d("showinfo", "null_bg")
-            finish()
-        }
-
-        val bgInfo = bgData.BGInfo()
-        //bgData.get_EntireBGInfo()
-        val current_bgInfo = bgInfo.bginfo
         Log.d("current_info", "${current_bgInfo.toString()}")
 
 
