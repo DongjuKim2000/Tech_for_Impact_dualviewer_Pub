@@ -55,7 +55,7 @@
         android:autoSizeMinTextSize="10sp"
         android:autoSizeMaxTextSize="10000sp"
         android:maxLines="1"
-        android:text="150"
+        android:text=" "
         app:layout_constraintTop_toTopOf="@id/guideline"
         app:layout_constraintBottom_toTopOf="@id/guideline1"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:keepScreenOn="true"
-        android:text="→ -5"
+        android:text="로딩중"
         android:maxLines="1"
         android:textColor="@android:color/white"
         android:padding="3sp"
@@ -98,7 +98,7 @@
         android:padding="3sp"
         android:autoSizeTextType="uniform"
         android:maxLines="2"
-        android:text="22:00   15min   🅘 -0.38U   🅒 10.2g   🅑 2.2U/h"
+        android:text=" "
         app:layout_constraintTop_toTopOf="@id/guideline2"
         app:layout_constraintBottom_toBottomOf="@id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,8 +121,8 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="16dp">
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
 
 
     </LinearLayout>

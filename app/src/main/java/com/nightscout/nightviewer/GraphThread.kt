@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
@@ -23,8 +22,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
     @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
 
-//        val input = Array<Double>(25,{400*Math.random()}) //랜덤 데이터
-        val input = SharedPreferencesUtil.getBGDatas(context) //bg 데이터 리스트 가져오기
+        val input = SharedPreferencesUtil.getRecent10BGValues(context) //bg 데이터 리스트 가져오기
         // Entry 배열 생성
         var entries: ArrayList<Entry> = ArrayList()
         // Entry 배열 초기값 입력
@@ -44,16 +42,28 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
             lineChart.animateXY(1, 1)
         }
 
-        if(input.size<10){ //10개 미만인 경우 빈 데이터 넣기
+        if(input.isEmpty()){
+
+        }
+        else if(input.size<10){ //10개 미만인 경우 빈 데이터 넣기
             val sizeSub = 10-input.size
+            val startMin = ((TimeCalculator(input[0].time).time()/5)*5)%1000
             for(i in 0 until sizeSub){
-                data.addEntry(Entry(i.toFloat(), 0.toFloat()), 0)
+                val currentMin = startMin - 5*(sizeSub-i)
+                if(i==0){
+                    lineChart.xAxis.axisMinimum = currentMin.toFloat()
+                }
+                data.addEntry(Entry(currentMin.toFloat(), 0.toFloat()), 0)
                 data.notifyDataChanged()
                 lineChart.notifyDataSetChanged()
                 lineChart.invalidate()
             }
             for(i in input.indices){
-                data.addEntry(Entry((i+sizeSub).toFloat(), input[i].bg.toFloat()), 0)
+                val currentMin = ((TimeCalculator(input[i].time).time()/5)*5)%1000
+                if(i==(input.size-1)){
+                    lineChart.xAxis.axisMaximum = currentMin.toFloat()
+                }
+                data.addEntry(Entry(currentMin.toFloat(), input[i].bg.toFloat()), 0)
                 data.notifyDataChanged()
                 lineChart.notifyDataSetChanged()
                 lineChart.invalidate()
@@ -86,10 +96,8 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         dataset.apply {
             color = Color.WHITE //그래프 선 색
-//            lineWidth = 2f //그래프 선 두께
             lineWidth = 0f
             valueTextSize = 0f //값 출력 안되도록
-//            setDrawCircles(false) //그래프 점에 동그라미 없앰
             setCircleColor(Color.WHITE)
             circleHoleColor = Color.WHITE
             circleRadius = 4f
@@ -99,7 +107,6 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         lineChart.apply {
             //오른쪽 y축 안보이게
             axisRight.isEnabled = false
-//            xAxis.isEnabled = false
             setTouchEnabled(false)
             legend.isEnabled = false //라벨 없애기
             description.isEnabled = false //설명 없애기
@@ -119,18 +126,18 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
         val urgentLineColor = prefs.getString("chartlinecolorurgenthighlow", "#FCFF0000")
+        val chartLineWidth = prefs.getString("chartlinewidth", "1")
 
-        Log.d("prefValue", "$urgentHighValue, $highLimitValue, $lowLimitValue, $urgentLowValue")
 
         //주의 혈당 기준선
         val lowLimit = LimitLine(lowLimitValue?.toFloat() ?: 80f, lowLimitValue).apply {
-            lineWidth = 1f
+            lineWidth = chartLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(limitLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
         }
         val highLimit = LimitLine(highLimitValue?.toFloat() ?: 180f, highLimitValue).apply {
-            lineWidth = 1f
+            lineWidth = chartLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(limitLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
@@ -138,13 +145,13 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         //위험 혈당 기준선
         val urgentLow = LimitLine(urgentLowValue?.toFloat() ?: 55f, urgentLowValue).apply {
-            lineWidth = 1f
+            lineWidth = chartLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(urgentLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
         }
         val urgentHigh = LimitLine(urgentHighValue?.toFloat() ?: 260f, urgentHighValue).apply {
-            lineWidth = 1f
+            lineWidth = chartLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(urgentLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
