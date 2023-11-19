@@ -50,18 +50,6 @@
     <string name="string_fontcolorhighlow">고저혈당</string>
     <string name="string_fontcolorurgenthighlow">위험고저혈당</string>
 
-    <!-- 차트혈당 -->
-<!--    <string name="string_chartbgpoint">차트 혈당</string>-->
-<!--    <string name="string_chartbgcolornormal">일반혈당 색상</string>-->
-<!--    <string name="string_chartbgcolorhighlow">고저혈당 색상</string>-->
-<!--    <string name="string_chartbgcolorurgenthighlow">위험고저혈당 색상</string>-->
-<!--    <string name="string_chartbgpointsize">혈당포인트 크기</string>-->
-
-    <!-- 차트라인 -->
-<!--    <string name="string_chartline">차트 고저혈당선</string>-->
-<!--    <string name="string_chartlinecolorhighlow">고저혈당 색상</string>-->
-<!--    <string name="string_chartlinecolorurgenthighlow">위험고저혈당 색상</string>-->
-<!--    <string name="string_chartlinewidth">선두께</string>-->
 
     <!-- 차트설정 -->
     <string name="string_chartdisplay">차트 설정</string>

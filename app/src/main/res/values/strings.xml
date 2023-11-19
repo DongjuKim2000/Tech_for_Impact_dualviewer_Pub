@@ -49,18 +49,6 @@
     <string name="string_fontcolorhighlow">High|Low</string>
     <string name="string_fontcolorurgenthighlow">Urgent High|Low</string>
 
-    <!-- 차트혈당 -->
-<!--    <string name="string_chartbgpoint">Chart BG</string>-->
-<!--    <string name="string_chartbgcolornormal">In-range Color</string>-->
-<!--    <string name="string_chartbgcolorhighlow">High|Low Color</string>-->
-<!--    <string name="string_chartbgcolorurgenthighlow">Urgent High|Low Color</string>-->
-<!--    <string name="string_chartbgpointsize">BG Point Size</string>-->
-
-    <!-- 차트라인 -->
-<!--    <string name="string_chartline">Chart Line</string>-->
-<!--    <string name="string_chartlinecolorhighlow">High|Low Color</string>-->
-<!--    <string name="string_chartlinecolorurgenthighlow">Urgent High|Low Color</string>-->
-<!--    <string name="string_chartlinewidth">Line Width</string>-->
 
     <!-- 차트설정 -->
     <string name="string_chartdisplay">Chart Display</string>
