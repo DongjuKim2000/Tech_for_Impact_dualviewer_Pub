@@ -5,13 +5,6 @@
         app:key="pref_ns"
         app:title="@string/string_general">
 
-        <ListPreference
-            app:key="pref_layout"
-            app:title="@string/string_layout"
-            app:entries="@array/LayoutEntries"
-            app:entryValues="@array/LayoutValues"
-            app:defaultValue="1"/>
-
         <SwitchPreference
             app:title="@string/string_enablenoti"
             app:key="enablenoti"
@@ -105,15 +98,21 @@
             android:defaultValue="true">
         </SwitchPreference>
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="alarm"
+        app:title="@string/string_alarm">
+
         <SwitchPreference
             app:key="vibrate_enable"
-            app:title="Vibrate"
+            app:title="@string/string_vibrate"
             android:defaultValue="true">
         </SwitchPreference>
 
         <SwitchPreference
             app:key="ringtone_enable"
-            app:title="Ringtone"
+            app:title="@string/string_ringtone"
             android:defaultValue="true">
         </SwitchPreference>
 
@@ -145,40 +144,15 @@
             app:defaultValue="#FCFFFFFF"/>
     </PreferenceCategory>
 
+
     <PreferenceCategory
-        app:key="chartbgpoint"
-        app:title="@string/string_chartbgpoint">
-
-        <ListPreference
-            app:key="chartbgcolornormal"
-            app:title="@string/string_chartbgcolornormal"
-            app:entries="@array/pref_color"
-            app:entryValues="@array/pref_color_code"
-            app:defaultValue="#FC00FF00"/>
-
-        <ListPreference
-            app:key="chartbgcolorhighlow"
-            app:title="@string/string_chartbgcolorhighlow"
-            app:entries="@array/pref_color"
-            app:entryValues="@array/pref_color_code"
-            app:defaultValue="#FCFFFF00"/>
-
-        <ListPreference
-            app:key="chartbgcolorurgenthighlow"
-            app:title="@string/string_chartbgcolorurgenthighlow"
-            app:entries="@array/pref_color"
-            app:entryValues="@array/pref_color_code"
-            app:defaultValue="#FCFF0000"/>
+        app:key="chartsetting"
+        app:title="@string/string_chartdisplay">
 
         <EditTextPreference
             app:key="chartbgpointsize"
             app:title="@string/string_chartbgpointsize"
-            app:defaultValue="5"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        app:key="chartline"
-        app:title="@string/string_chartline">
+            app:defaultValue="4"/>
 
         <ListPreference
             app:key="chartlinecolorhighlow"
@@ -198,6 +172,23 @@
             app:key="chartlinewidth"
             app:title="@string/string_chartlinewidth"
             app:defaultValue="1"/>
+
+        <SwitchPreference
+            app:key="chart_xaxis_enable"
+            app:title="@string/string_xaxis_enable"
+            android:defaultValue="true">
+        </SwitchPreference>
+
+        <EditTextPreference
+            app:key="chartBG_max"
+            app:title="@string/string_chartBG_max"
+            app:defaultValue="400"/>
+
+        <EditTextPreference
+            app:key="chartBG_min"
+            app:title="@string/string_chartBG_min"
+            app:defaultValue="40"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
