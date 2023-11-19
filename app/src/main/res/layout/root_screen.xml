@@ -5,5 +5,5 @@
     android:layout_height="match_parent"
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.NightViewer.FullscreenContainer"
-    tools:context=".FullscreenActivity">
+    tools:context=".InitializeActivity">
 </androidx.constraintlayout.widget.ConstraintLayout>
