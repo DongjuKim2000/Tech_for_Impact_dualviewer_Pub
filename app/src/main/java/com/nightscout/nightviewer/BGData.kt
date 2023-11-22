@@ -1,7 +1,6 @@
 package com.nightscout.nightviewer
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
@@ -14,21 +13,21 @@ class BGData(private val context: Context){
     //User_Prefs : 기본 Preferences (iob, cob, basal enable 등)
     //BG_db: 혈당 데이터베이스 (Preferences로 구현 sql로도 가능할듯)
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
-        Log.d("BGData.kt", "initialize 시작")
+//        Log.d("BGData.kt", "initialize 시작")
         Thread{
             val past10_EntireBGInfo = get_Past10_EntireBGInfo()
-            Log.d("initialize", past10_EntireBGInfo.toString())
+//            Log.d("initialize", past10_EntireBGInfo.toString())
             SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
             get_EntireBGInfo()
         }.start()
     }
 
     fun get_EntireBGInfo() { //bg, time, delta, arrow, iob, cob, basal 데이터 전부 받기.
-        Log.d("BGData.kt",  "getEntireData(1개) 시작")
+//        Log.d("BGData.kt",  "getEntireData(1개) 시작")
         Thread{
             val newbg = get_BGInfoFromURL(pref_urlText)
             if(newbg != null) {
-                newbg.LogBG()
+//                newbg.LogBG()
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                 val currentBGInfo = get_CurrentBGInfo()
                 if (currentBGInfo != null) {
@@ -38,13 +37,13 @@ class BGData(private val context: Context){
                     if (currentBGInfo.id != newbg.bginfo?.id ){
                         newbg.saveBG()
                     } else {
-                        Log.d("getEntireBGInfo", "SKIPPED")
+//                        Log.d("getEntireBGInfo", "SKIPPED")
                     }
                 } else {
                     if (SharedPreferencesUtil.getBGDatas(context).isEmpty())
                         newbg.saveBG()
-                    else
-                        Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
+//                    else
+//                        Log.d("getEntireBGInfo", "BG 데이터를 가져오지 못했습니다.")
                 }
             }
         }.start()
@@ -55,7 +54,7 @@ class BGData(private val context: Context){
         // Iterate over each object and extract the specified fields
         val url = URL("${pref_urlText}/api/v1/entries.json")
         val jsonresult = URL(url.toString()).readText()
-        Log.d("get_past10", "${jsonresult}")
+//        Log.d("get_past10", "${jsonresult}")
 
 
         val gson = Gson()
@@ -90,7 +89,7 @@ class BGData(private val context: Context){
             return null
         }
 //        val result = URL(url.toString()).readText()
-        Log.d("get_bgurl", "${result}")
+//        Log.d("get_bgurl", "${result}")
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currenttimedisplay : String = sdf.format(currenttime)
         //추후 try except 기능 추가 필요
@@ -103,7 +102,7 @@ class BGData(private val context: Context){
         val cob = try_catch_withLambdaFun({result:String -> JSONObject(result).getJSONObject("cob").getString("display")}, result)
         val basal = try_catch_withLambdaFun({result:String -> JSONObject(result).getJSONObject("basal").getString("display")}, result)
         val id = try_catch_withLambdaFun({result:String -> JSONObject(result).getJSONObject("bgnow").getJSONArray("sgvs").getJSONObject(0).getString("_id")}, result)
-        Log.d("get_bgurl", "$id ,$basal")
+//        Log.d("get_bgurl", "$id ,$basal")
         return BGInfo(bg, time_LOCAL, arrow, delta, iob, cob, basal, id)
     }
 
@@ -129,8 +128,8 @@ class BGData(private val context: Context){
         fun saveBG(){ //현재 BG 저장하기
             bginfo?.let { SharedPreferencesUtil.addBGData(context, it) }
         }
-        fun LogBG(){ //받아온 데이터 Log
-            Log.d("BGData.kt", this.bginfo.toString())
-        }
+//        fun LogBG(){ //받아온 데이터 Log
+//            Log.d("BGData.kt", this.bginfo.toString())
+//        }
     }
 }

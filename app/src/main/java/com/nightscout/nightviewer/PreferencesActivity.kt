@@ -3,7 +3,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -45,9 +44,9 @@ class PreferencesActivity : AppCompatActivity(),
 
             nsUrlPreference?.setOnPreferenceClickListener {
                 // 새로운 액티비티 시작
-                var editor = prefs.edit()
-                editor.putString("ns_url", "defaultURL")
-                editor.apply()
+//                var editor = prefs.edit()
+//                editor.putString("ns_url", "defaultURL")
+//                editor.apply()
                 val intent = Intent(activity, StartURLActivity::class.java)
                 startActivity(intent)
                 true // 이벤트 처리 완료
@@ -152,14 +151,9 @@ class PreferencesActivity : AppCompatActivity(),
         super.onDestroy()
         saveSharedPreference()
 
-
         val intent = Intent(this, SingleviewActivity::class.java)
-        Log.d("pref_act", "새로운 액티비티 시작")
         startActivity(intent)
         finish()
-
-        Log.d("pref_act", "exit")
-
 
     }
     override fun onSupportNavigateUp(): Boolean {
@@ -175,8 +169,6 @@ class PreferencesActivity : AppCompatActivity(),
         val pref_readfromns = true
         val ns_url = url_text
 
-
-        Log.d("pref_act", "${ns_url}")
 
         //val units = pref.getString("units", "mgdl")
         val urgent_high_value = pref.getString("urgent_high_value", "260")
@@ -212,7 +204,6 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putBoolean("enablenoti", pref_enablenoti)
             editor.putBoolean("readfromns", pref_readfromns)
             editor.putString("ns_url", ns_url)
-            Log.d("pref_act_editor", "${ns_url}")
 
             editor.putString("urgent_high_value", urgent_high_value)
             editor.putString("high_value", high_value)
@@ -242,7 +233,6 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putString("chartBG_min", chartBGMin)
 
             editor.apply()
-            //log.d("설정변경 : ","${ns_url} ${pref_layout} ${iob_enable} ${cob_enable} ${basal_enable}" )
         }
     }
 }
