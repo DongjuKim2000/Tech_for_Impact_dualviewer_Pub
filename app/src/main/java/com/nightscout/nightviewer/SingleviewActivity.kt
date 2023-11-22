@@ -64,8 +64,8 @@ class SingleviewActivity : CommonActivity() {
                     }
 
                     try{showinfo(newData)
-                        fadeOut.cancel()
-                        binding.screenDirection.alpha = 1.00f
+                        //fadeOut.cancel()
+                        //binding.screenDirection.alpha = 1.00f
                         reconnected = true } catch(e:Exception){
                         reconnected = false
                         showErrorMessage(this@SingleviewActivity, "인터넷 연결이 안되어 있습니다")
