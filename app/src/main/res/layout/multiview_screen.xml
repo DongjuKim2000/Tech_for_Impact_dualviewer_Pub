@@ -8,6 +8,13 @@
     android:theme="@style/ThemeOverlay.NightViewer.FullscreenContainer"
     android:resizeableActivity="true">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
+
     <!-- First Guideline at 33% of the screen height -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
