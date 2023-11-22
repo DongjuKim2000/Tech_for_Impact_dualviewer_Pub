@@ -75,7 +75,7 @@ open class CommonActivity : AppCompatActivity() {
                 about_message.show()
 
                 val positiveButton: Button = about_message.getButton(AlertDialog.BUTTON_POSITIVE)
-                positiveButton.setTextColor(Color.parseColor("#00ff00"))
+                positiveButton.setTextColor(Color.parseColor("#000000"))
 
                 (about_message.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
 
