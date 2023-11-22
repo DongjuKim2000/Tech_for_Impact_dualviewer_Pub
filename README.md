@@ -75,6 +75,8 @@ MIT 라이센스를 기본으로 합니다. 누구나 사용, 수정 및 재배�
 ## 연락처
 문제 발생 및 추가사항 문의는 skipper080837@gmail.com로 메일 남겨주시기 바랍니다.
 
+
+
 ## Driving Blood Glucose Viewer
 ### Introducing the BG Multiviewer App for Blood Glucose Monitoring
 
