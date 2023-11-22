@@ -22,12 +22,9 @@ class MultiviewActivity : CommonActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = MultiviewScreenBinding.inflate(layoutInflater) //??
-
         setContentView(binding.root) // xml 파일 지정
-
-        val filter = IntentFilter()  // 인텐트 지정
-        filter.addAction("showinfo") //수신할 action 종류 넣기
 
         val fadeOut = ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
             duration = 1000L // 애니메이션 지속 시간 설정 (1초)
@@ -35,6 +32,9 @@ class MultiviewActivity : CommonActivity() {
             repeatMode = ObjectAnimator.REVERSE // 애니메이션 반복 모드를 REVERSE로 설정
         }
         fadeOut.start()
+
+        val filter = IntentFilter()  // 인텐트 지정
+        filter.addAction("showinfo") //수신할 action 종류 넣기
 
         if (Build.VERSION.SDK_INT >= 26) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)

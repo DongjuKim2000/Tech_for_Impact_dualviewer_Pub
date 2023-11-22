@@ -24,10 +24,15 @@ class SingleviewActivity : CommonActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = SingleviewScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val fadeOut = ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
+            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            repeatCount = ObjectAnimator.INFINITE // 애니메이션 반복 횟수를 무한으로 설정
+            repeatMode = ObjectAnimator.REVERSE // 애니메이션 반복 모드를 REVERSE로 설정
+        }
+        fadeOut.start()
 
 
         if (Build.VERSION.SDK_INT >= 26) {
@@ -39,13 +44,6 @@ class SingleviewActivity : CommonActivity() {
         fullscreenContent = binding.mainlayout2
         fullscreenContent.setOnClickListener { toggle() }
         val filter = IntentFilter()
-
-        val fadeOut = ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
-            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
-            repeatCount = ObjectAnimator.INFINITE // 애니메이션 반복 횟수를 무한으로 설정
-            repeatMode = ObjectAnimator.REVERSE // 애니메이션 반복 모드를 REVERSE로 설정
-        }
-        fadeOut.start()
 
         val updateIntervalMillis: Long = 5000
 
