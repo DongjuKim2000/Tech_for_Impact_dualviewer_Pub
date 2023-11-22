@@ -4,7 +4,7 @@
 화면 분할, 팝업시에도 비율에 따라 적절하게 정보를 표시해줍니다. 위험 혈당 범위를 설정할 수 있고, 위험 혈당 범위를 넘어가면 표시되는 데이터의 색이 바뀌고 진동과 알림음이 울립니다. 데이터는 5분마다 갱신됩니다.
 현재 Nightscout에서 받아오는 데이터만 지원하고 있습니다.
 
-![Screenshot_20231122-214134_BG MultiViewer](https://github.com/DongjuKim2000/Tech_for_Impact_dualviewer_Pub/assets/108735558/2e57c935-b6cf-47f1-8742-27eca8fd6786)
+
 
 
 
