@@ -15,6 +15,8 @@
 ## 화면
 
 
+## LICENSE
+
 
 This is an Android app designed for type 1 diabetes patients (with pancreatic failure), which displays real-time blood sugar levels. By entering the Nightscout address, it fetches blood sugar data and displays blood sugar values and records as a dot graph, proportionate to the screen ratio.
 It appropriately displays information according to the screen split and pop-up ratio. You can set a dangerous blood sugar range, and if the blood sugar level exceeds this range, the color of the displayed data changes and vibrations and alerts sound. Data is updated every 5 minutes.
