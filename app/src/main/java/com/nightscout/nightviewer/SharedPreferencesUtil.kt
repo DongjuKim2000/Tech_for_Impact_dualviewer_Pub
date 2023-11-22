@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import android.util.Log
 
 object SharedPreferencesUtil {
     private const val PREF_NAME = "BG_db" //Preference Name
@@ -17,7 +16,6 @@ object SharedPreferencesUtil {
         val json = gson.toJson(lastNEntries)
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         sharedPreferences.edit().putString(KEY_USERS, json).apply()
-        Logr.d("saveBGDatas", BGdatas.toString())
     }
 
     fun addBGData(context: Context, BGData: BG) { //하나의 BGData를 저장
@@ -56,14 +54,4 @@ object SharedPreferencesUtil {
         return recent10BGs
     }
 
-}
-object Logr {
-    fun d(tag: String, msg: String) {
-        if(msg.length > 100) {
-            Log.d(tag, msg.substring(0, 100))
-            Logr.d(tag, msg.substring(100))
-        } else {
-            Log.d(tag, msg)
-        }
-    }
 }

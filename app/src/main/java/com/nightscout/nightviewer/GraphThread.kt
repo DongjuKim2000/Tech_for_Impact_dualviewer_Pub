@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
@@ -117,8 +116,6 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
             circleRadius = BGpointSize?.toFloat() ?: 4f
 
         }
-
-        Log.d("graph", xaxisEnable.toString())
 
         lineChart.apply {
             //오른쪽 y축 안보이게

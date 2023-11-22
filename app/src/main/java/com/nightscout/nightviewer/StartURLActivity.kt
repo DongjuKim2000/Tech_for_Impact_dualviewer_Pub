@@ -7,11 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -24,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 import java.net.URL
 lateinit var prefs: SharedPreferences
 lateinit var bgprefs: SharedPreferences
-var url_text = "defaultURL"
+lateinit var url_text :String
 class StartURLActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +27,7 @@ class StartURLActivity : AppCompatActivity() {
         supportActionBar?.hide()
         prefs = getSharedPreferences("root_preferences", Context.MODE_PRIVATE)
         bgprefs = getSharedPreferences("prefs_bghistory", MODE_PRIVATE)
+        url_text = prefs.getString("ns_url", "defaultURL")?: "defaultURL"
 
         if(prefs.getString("ns_url", "defaultURL")!="defaultURL"){
             val intent = Intent(this, InitializeActivity::class.java)
@@ -83,7 +79,6 @@ class StartURLActivity : AppCompatActivity() {
 
         confirmButton.setOnClickListener(){
             val urlText = urlEditText.text.toString()
-            Log.d("first", urlText)
             url_text = urlText
 
             if(isValidInput(urlText)) {
@@ -99,7 +94,6 @@ class StartURLActivity : AppCompatActivity() {
                         putString("ns_url", url_text)
                         apply()
                     }
-                    Log.d("starturl", "${url_text}")
                     val intent = Intent(this, InitializeActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -131,8 +125,6 @@ class StartURLActivity : AppCompatActivity() {
         } catch (e: Exception) {
             null
         }
-        Log.d("isvalid", "${text.toString()}")
-
 
         val editor = prefs.edit()
         editor.putString("ns_url", url_text)
@@ -141,7 +133,6 @@ class StartURLActivity : AppCompatActivity() {
 
         if (url == null) {
             showErrorMessage(this, "올바르지 않은 URL입니다.")
-            Log.d("starturl", "incorrect")
             return false
         } else {
             var isValid = false
@@ -171,7 +162,6 @@ class StartURLActivity : AppCompatActivity() {
             }
             else url_text = text
         }
-        Log.d("url_text", "${url_text}")
         val url = try{
             URL("${url_text}/api/v2/properties/bgnow,delta,direction,buckets,iob,cob,basal")
         }

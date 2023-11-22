@@ -4,8 +4,8 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.constraintlayout.widget.Guideline
 import androidx.lifecycle.lifecycleScope
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
@@ -23,7 +23,6 @@ class MultiviewActivity : CommonActivity() {
         super.onCreate(savedInstanceState)
         binding = MultiviewScreenBinding.inflate(layoutInflater) //??
 
-        Log.d("Activity1","onCreate")
         setContentView(binding.root) // xml 파일 지정
 
         val filter = IntentFilter()  // 인텐트 지정
@@ -67,21 +66,18 @@ class MultiviewActivity : CommonActivity() {
         }
 
 
-        Log.d("Activity1","onCreate 끝")
-
     }
     override fun onResume() {
-        Log.d("Activity1","onResume")
         super.onResume()
         if(Build.VERSION.SDK_INT >= 24) {
             if (isInMultiWindowMode) {
-                Log.d("Activity1", "multi window mode")
-                Log.d("FullscreenActivity","스타트 activity1")
+//                Log.d("Activity1", "multi window mode")
+//                Log.d("FullscreenActivity","스타트 activity1")
 
             } else {
                 val i = Intent(this, SingleviewActivity::class.java)
                 startActivity(i) // 멀티 윈도우 모드로 진행
-                Log.d("Activity2", "not multi window")
+//                Log.d("Activity2", "not multi window")
             }
         }
         val currenttime : Long = System.currentTimeMillis()
@@ -90,7 +86,6 @@ class MultiviewActivity : CommonActivity() {
     }
 
     override fun onDestroy() {
-        Log.d("Activity1","onDetroy  시작")
         super.onDestroy()
         try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
@@ -125,7 +120,7 @@ class MultiviewActivity : CommonActivity() {
         val COBEnable = prefs.getBoolean("cob_enable", true)
         val BasalEnable = prefs.getBoolean("basal_enable", true)
 
-        Log.d("current_info", "${current_bgInfo.toString()}")
+//        Log.d("current_info", "${current_bgInfo.toString()}")
 
 
         val currentTime : Long = System.currentTimeMillis() // ms로 반환
@@ -138,7 +133,6 @@ class MultiviewActivity : CommonActivity() {
         var sdf = SimpleDateFormat("HH:mm")
         if (pref_timeformat == "timeformat12"){ sdf = SimpleDateFormat("a hh:mm") }
         val displayTime: String = sdf.format(currentTime)
-//        var displayMins: String = ""
         info = "$displayTime"
 
         if(current_bgInfo!=null){
@@ -167,13 +161,11 @@ class MultiviewActivity : CommonActivity() {
                 displayBasal = "   \uD83C\uDD51${current_bgInfo.basal}"
                 info += displayBasal
             }
-            Log.d("showinfo", "iob cob 끝")
             // xml 구성 관련 부분
             var  bg_value : String = current_bgInfo.bg
             var float_bg = bg_value.toFloat()
             int_bg = float_bg.toInt()
             binding.screenBg.text = int_bg.toString()
-            Log.d("showinfo", "bg값 끝")
 
             binding.screenDirection.text ="${current_bgInfo.arrow} ${current_bgInfo.delta}"
             binding.screenInfo.text = info
@@ -185,13 +177,17 @@ class MultiviewActivity : CommonActivity() {
 
         //그래프 표시
         val lineChart: LineChart = findViewById(R.id.lineChart)
+        val guideline3: Guideline = findViewById(R.id.guideline3)
         val chartEnable = prefs.getBoolean("chart_enable", true)
         if(chartEnable){
             val thread = GraphThread(lineChart, baseContext)
             thread.start()
         }
-        else
+        else{
             lineChart.visibility = View.GONE
+            guideline3.visibility = View.GONE
+        }
+
 
         if (isFullscreen) { hide() }
 
@@ -241,8 +237,6 @@ class MultiviewActivity : CommonActivity() {
             }
         }
         catch (e: Exception ) {}
-
-        Log.d("color", "${fontcolor.toString()}")
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
