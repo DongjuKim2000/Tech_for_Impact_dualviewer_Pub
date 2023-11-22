@@ -11,26 +11,28 @@ import androidx.lifecycle.lifecycleScope
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.MultiviewScreenBinding
+import com.nightscout.nightviewer.databinding.SingleviewScreenBinding
 import java.text.SimpleDateFormat
 
 // 멀티스크린을 위한 액티비티입니다.
 class MultiviewActivity : CommonActivity() {
 
-    lateinit var binding: MultiviewScreenBinding
+    val binding by lazy { MultiviewScreenBinding.inflate(layoutInflater) }
+
+    val fadeOut: ObjectAnimator by lazy {
+        ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
+            duration = 1000L
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }
+    }
 
     private var prev_alarm: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = MultiviewScreenBinding.inflate(layoutInflater) //??
         setContentView(binding.root) // xml 파일 지정
-
-        val fadeOut = ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
-            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
-            repeatCount = ObjectAnimator.INFINITE // 애니메이션 반복 횟수를 무한으로 설정
-            repeatMode = ObjectAnimator.REVERSE // 애니메이션 반복 모드를 REVERSE로 설정
-        }
         fadeOut.start()
 
         val filter = IntentFilter()  // 인텐트 지정
@@ -65,8 +67,6 @@ class MultiviewActivity : CommonActivity() {
                     }
 
                     try{showinfo(newData)
-                        //fadeOut.cancel()
-                        //binding.screenDirection.alpha = 1.00f
                         reconnected = true } catch(e:Exception){
                         reconnected = false
                         showErrorMessage(this@MultiviewActivity, "인터넷 연결이 안되어 있습니다")
@@ -250,7 +250,8 @@ class MultiviewActivity : CommonActivity() {
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
-
+        fadeOut.cancel()
+        binding.screenDirection.alpha = 1.00f
     }
 
     companion object {
