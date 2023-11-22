@@ -1,5 +1,6 @@
 package com.nightscout.nightviewer
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
@@ -39,6 +40,13 @@ class SingleviewActivity : CommonActivity() {
         fullscreenContent.setOnClickListener { toggle() }
         val filter = IntentFilter()
 
+        val fadeOut = ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
+            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            repeatCount = ObjectAnimator.INFINITE // 애니메이션 반복 횟수를 무한으로 설정
+            repeatMode = ObjectAnimator.REVERSE // 애니메이션 반복 모드를 REVERSE로 설정
+        }
+        fadeOut.start()
+
         val updateIntervalMillis: Long = 5000
 
         var reconnected = true
@@ -48,8 +56,8 @@ class SingleviewActivity : CommonActivity() {
             Data_Courutine(applicationContext).dataFlow.collect { newData ->
                 // 여기에서 newData를 활용하여 화면에 업데이트
                 if (!isOnline(this@SingleviewActivity)) {
+                    fadeOut.start()
                     showErrorMessage(this@SingleviewActivity, "인터넷 연결 X")
-
                     reconnected = false
                 }
                 else {
@@ -58,6 +66,8 @@ class SingleviewActivity : CommonActivity() {
                     }
 
                     try{showinfo(newData)
+                        fadeOut.cancel()
+                        binding.screenDirection.alpha = 1.00f
                         reconnected = true } catch(e:Exception){
                         reconnected = false
                         showErrorMessage(this@SingleviewActivity, "인터넷 연결이 안되어 있습니다")

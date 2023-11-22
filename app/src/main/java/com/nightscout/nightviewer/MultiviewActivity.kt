@@ -1,4 +1,5 @@
 package com.nightscout.nightviewer
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
@@ -28,6 +29,13 @@ class MultiviewActivity : CommonActivity() {
         val filter = IntentFilter()  // 인텐트 지정
         filter.addAction("showinfo") //수신할 action 종류 넣기
 
+        val fadeOut = ObjectAnimator.ofFloat(binding.screenDirection, "alpha", 1.0f, 0.0f).apply {
+            duration = 1000L // 애니메이션 지속 시간 설정 (1초)
+            repeatCount = ObjectAnimator.INFINITE // 애니메이션 반복 횟수를 무한으로 설정
+            repeatMode = ObjectAnimator.REVERSE // 애니메이션 반복 모드를 REVERSE로 설정
+        }
+        fadeOut.start()
+
         if (Build.VERSION.SDK_INT >= 26) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.icon)
@@ -47,8 +55,8 @@ class MultiviewActivity : CommonActivity() {
             Data_Courutine(applicationContext).dataFlow.collect { newData ->
                 // 여기에서 newData를 활용하여 화면에 업데이트
                 if (!isOnline(this@MultiviewActivity)) {
+                    fadeOut.start()
                     showErrorMessage(this@MultiviewActivity, "인터넷 연결 X")
-
                     reconnected = false
                 }
                 else {
@@ -57,6 +65,8 @@ class MultiviewActivity : CommonActivity() {
                     }
 
                     try{showinfo(newData)
+                        fadeOut.cancel()
+                        binding.screenDirection.alpha = 1.00f
                         reconnected = true } catch(e:Exception){
                         reconnected = false
                         showErrorMessage(this@MultiviewActivity, "인터넷 연결이 안되어 있습니다")
