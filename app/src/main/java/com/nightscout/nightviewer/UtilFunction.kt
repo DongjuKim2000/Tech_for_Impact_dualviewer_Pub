@@ -2,20 +2,19 @@ package com.nightscout.nightviewer
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.os.VibratorManager
-import android.util.Log
 import java.text.SimpleDateFormat
-import java.util.*
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import java.time.Instant
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 fun convertUtcToLocal(utcTimestamp: String): String {
     val sdfUtc = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
@@ -43,7 +42,7 @@ fun calculateDelta(glucoseData: List<BG>): String {
     val previousBg = glucoseData[glucoseData.size - 2].bg.toFloat()
 
     val glucoseChange = latestBg - previousBg
-    Log.d("delta", "${glucoseChange.toString()}")
+//    Log.d("delta", "${glucoseChange.toString()}")
     val float_glucosechange = glucoseChange.toFloat()
     val int_glucoseChange = float_glucosechange.toInt()
 

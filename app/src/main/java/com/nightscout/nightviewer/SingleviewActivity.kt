@@ -1,16 +1,17 @@
 package com.nightscout.nightviewer
+
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.example.dualviewer.GraphThread
 import com.github.mikephil.charting.charts.LineChart
 import com.nightscout.nightviewer.databinding.SingleviewScreenBinding
 import java.text.SimpleDateFormat
-import androidx.lifecycle.lifecycleScope
+
 
 // 풀스크린 모드
 class SingleviewActivity : CommonActivity() {
@@ -22,7 +23,6 @@ class SingleviewActivity : CommonActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("Activity2","onCreate")
 
         binding = SingleviewScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -67,26 +67,23 @@ class SingleviewActivity : CommonActivity() {
         }
 
 
-        Log.d("Activity2","onCreate 끝")
-
     }
 
     override fun onResume() {
         super.onResume()
         if(Build.VERSION.SDK_INT >= 24) {
             if (isInMultiWindowMode) {
-                Log.d("Activity", "multi window mode")
+//                Log.d("Activity", "multi window mode")
                 val i = Intent(this, MultiviewActivity::class.java)
                 startActivity(i)
-                Log.d("FullscreenActivity","스타트 activity1")
+//                Log.d("FullscreenActivity","스타트 activity1")
 
             } else {
-                Log.d("Activity2", "not multi window")
+//                Log.d("Activity2", "not multi window")
             }
         }
     }
     override fun onDestroy() {
-        Log.d("Activity2","onDestroy  시작")
         super.onDestroy()
         try{unregisterReceiver(internetBroadcaster)} catch (e: Exception){}
     }
@@ -117,7 +114,7 @@ class SingleviewActivity : CommonActivity() {
         val BasalEnable = prefs.getBoolean("basal_enable", true)
 
 
-        Log.d("current_info", "${current_bgInfo.toString()}")
+//        Log.d("current_info", "${current_bgInfo.toString()}")
 
 
         val currentTime: Long = System.currentTimeMillis() // ms로 반환
@@ -159,13 +156,11 @@ class SingleviewActivity : CommonActivity() {
                 displayBasal = "   \uD83C\uDD51${current_bgInfo.basal}"
                 info += displayBasal
             }
-            Log.d("showinfo", "iob cob 끝")
             // xml 구성 관련 부분
             var bg_value: String = current_bgInfo.bg
             var float_bg = bg_value.toFloat()
             int_bg = float_bg.toInt()
             binding.screenBg.text = int_bg.toString()
-            Log.d("showinfo", "bg값 끝")
 
             binding.screenDirection.text =
                 "${current_bgInfo.arrow} ${current_bgInfo.delta}"
@@ -181,11 +176,13 @@ class SingleviewActivity : CommonActivity() {
         val lineChart: LineChart = findViewById(R.id.lineChart)
         val chartEnable = prefs.getBoolean("chart_enable", true)
         if(chartEnable){
+            lineChart.visibility = View.VISIBLE
             val thread = GraphThread(lineChart, baseContext)
             thread.start()
         }
-        else
+        else {
             lineChart.visibility = View.GONE
+        }
 
         if (isFullscreen) { hide() }
         fun getComplementaryColor(color: Int): Int {
@@ -234,12 +231,13 @@ class SingleviewActivity : CommonActivity() {
 
 
         }
-        catch (e: Exception ) {Log.d("color", "color exception")}
-        Log.d("color", "${fontcolor.toString()}")
-        Log.d("highlowcolor", "${pref_fontcolorhighlow.toString()}")
-        Log.d(
-            "high value", "${pref_highvalue.toString()}")
-        Log.d("bg value", "${int_bg.toString()}")
+        catch (e: Exception ) {
+//            Log.d("color", "color exception")
+        }
+//        Log.d("color", "${fontcolor.toString()}")
+//        Log.d("highlowcolor", "${pref_fontcolorhighlow.toString()}")
+//        Log.d("high value", "${pref_highvalue.toString()}")
+//        Log.d("bg value", "${int_bg.toString()}")
 
         binding.screenBg.setTextColor(fontcolor)
         binding.screenBg.setBackgroundColor(getComplementaryColor(fontcolor))
