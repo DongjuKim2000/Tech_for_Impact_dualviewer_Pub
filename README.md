@@ -50,6 +50,17 @@ StartURLActivity.kt: 시작 화면을 출력하며, URL을 입력받습니다.
 UtilFunction.kt: 여러 편의성 함수들을 정의합니다.
 
 ## 제작
+### 팀원
+김동주(KAIST, SoC) - 팀장
+김재호(KAIST, SoC)
+김혜연(KAIST, SoC)
+박찬호(KAIST, SoC)
+정지광(KAIST, ISysE)
+차연우(KAIST, SoC)
+
+### 팀 소개
+CS492 전산학 특강 <Tech for Impact>의 '운전 중 혈당 Viewer'팀은 혈당 모니터링 어플리케이션, BG Multiviewer를 개발하였습니다. 1형 당뇨병 환우회의 김미영 대표님과 카카오 멘토님의 피드백을 바탕으로 진행되었으며, 사용자들의 필요와 경험을 직접 반영하였습니다.
+
 
 ## LICENSE
 MIT 라이센스를 기본으로 합니다. 누구나 사용, 수정 및 재배포, 2차적인 저작물 개발도 가능합니다.
