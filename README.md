@@ -1,6 +1,6 @@
 # BG Multiviewer 
 ### 운전 중 혈당 Viewer
-혈당 모니터링 어플 BG_Multiviewer를 소개합니다
+##### 혈당 모니터링 어플 BG_Multiviewer를 소개합니다
 
 카이스트 전산학부 CS492 전산학 특강 <Tech for Impact>에서 진행된 프로젝트로, 운전 중에도 수시로 혈당을 모니터링하기 위해서 네비게이션과 함께 이용가능한 듀얼 뷰어 어플을 제작하게 되었습니다.
 팝업, 듀얼스크린 모드를 이용하면서 운전 중 뿐만 아니라 다른 어플을 방해받지 않고 이용해보세요!
@@ -22,6 +22,9 @@
 
 ## 연락처
 문제 발생시 연락할 연락처, 메일 주소, SNS 주소 입력 필요
+
+
+
 
 This is an Android app designed for type 1 diabetes patients (with pancreatic failure), which displays real-time blood sugar levels. By entering the Nightscout address, it fetches blood sugar data and displays blood sugar values and records as a dot graph, proportionate to the screen ratio.
 It appropriately displays information according to the screen split and pop-up ratio. You can set a dangerous blood sugar range, and if the blood sugar level exceeds this range, the color of the displayed data changes and vibrations and alerts sound. Data is updated every 5 minutes.
