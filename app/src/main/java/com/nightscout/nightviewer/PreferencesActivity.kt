@@ -201,8 +201,7 @@ class PreferencesActivity : AppCompatActivity(),
         binding.apply {
             //val sharedPreference =  getSharedPreferences("root_preferences",MODE_PRIVATE)
             var editor = prefs.edit()
-            editor.putBoolean("enablenoti", pref_enablenoti)
-            editor.putBoolean("readfromns", pref_readfromns)
+
             editor.putString("ns_url", ns_url)
 
             editor.putString("urgent_high_value", urgent_high_value)

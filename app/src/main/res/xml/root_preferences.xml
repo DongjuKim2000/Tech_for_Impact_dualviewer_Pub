@@ -5,17 +5,7 @@
         app:key="pref_ns"
         app:title="@string/string_general">
 
-        <SwitchPreference
-            app:title="@string/string_enablenoti"
-            app:key="enablenoti"
-            app:disableDependentsState="false">
-        </SwitchPreference>
 
-        <SwitchPreference
-            app:title="@string/string_readfromns"
-            app:key="readfromns"
-            app:disableDependentsState="false">
-        </SwitchPreference>
 
         <Preference
             app:key="ns_url"
