@@ -9,7 +9,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 
 class BGData(private val context: Context){
-    val pref_urlText = prefs.getString("ns_url", "defaultURL")
+    val pref_urlText = try{prefs.getString("ns_url", "defaultURL")}catch(e:Exception){"defaultURL"}
     //User_Prefs : 기본 Preferences (iob, cob, basal enable 등)
     //BG_db: 혈당 데이터베이스 (Preferences로 구현 sql로도 가능할듯)
     fun initializeBG_db(){ //최근 10개 데이터로 db initialize //delta,arrow정보는 제외
@@ -85,7 +85,7 @@ class BGData(private val context: Context){
         var result = ""
         try{
             result = URL(url.toString()).readText()
-        }catch(e: FileNotFoundException){
+        }catch(e: Exception){
             return null
         }
 //        val result = URL(url.toString()).readText()
