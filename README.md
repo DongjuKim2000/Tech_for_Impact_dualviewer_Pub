@@ -51,11 +51,16 @@ UtilFunction.kt: 여러 편의성 함수들을 정의합니다.
 
 ## 제작
 ### 팀원
-김동주(KAIST, SoC) - 팀장\\
-김재호(KAIST, SoC)\\
-김혜연(KAIST, SoC)\\
-박찬호(KAIST, SoC)\\
-정지광(KAIST, ISysE)\\
+김동주(KAIST, SoC) - 팀장
+
+김재호(KAIST, SoC)
+
+김혜연(KAIST, SoC)
+
+박찬호(KAIST, SoC)
+
+정지광(KAIST, ISysE)
+
 차연우(KAIST, SoC)
 
 ### 팀 소개
