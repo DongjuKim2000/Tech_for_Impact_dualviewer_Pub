@@ -14,6 +14,17 @@
 ### 주의사항
 혈당을 받아오는 사이트 중 nightscoutpro와 railway만 적용 가능합니다.
 인터넷 연결상태를 상시 확인해주세요.
+### 파일 설명
+BG.kt: 혈당 데이터의 형식을 저장합니다.
+BGData.kt: 혈당 데이터를 처리하여 저장합니다.
+CommonActivity.kt: MultiViewActivity와 SingleViewActivity 공통 요소를 구현합니다.
+Data_Courutine.kt: 비동기 방식으로 URL에서 혈당 데이터를 가져옵니다.
+GraphThread.kt: 그래프 출력 프로그램을 관리합니다.
+MultiViewActivity.kt: 분할 화면에서 혈당 정보를 표시합니다.
+PreferencesActivity.kt: 여러 변수들 (위험 혈당 범위, 알림음 설정 등)을 설정하는 설정창을 표시합니다.
+SingleViewActivity.kt: 기본 화면에서 혈당 정보를 표시합니다.
+StartURLActivity.kt: 시작 화면을 출력하며, URL을 입력받습니다.
+UtilFunction.kt: 여러 편의성 함수들을 정의합니다.
 
 ## 화면
 
