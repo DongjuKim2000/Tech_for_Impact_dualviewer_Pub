@@ -13,7 +13,6 @@ import androidx.work.WorkManager
 class InitializeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-
         val bgData = BGData(this)
         bgData.initializeBG_db()
 

@@ -1,10 +1,14 @@
 package com.nightscout.nightviewer
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.lifecycle.lifecycleScope
 import com.example.dualviewer.GraphThread
@@ -176,16 +180,74 @@ class MultiviewActivity : CommonActivity() {
         }
 
         //그래프 표시
+        val orientation = resources.configuration.orientation //가로 세로 확인
         val lineChart: LineChart = findViewById(R.id.lineChart)
+        val guideline1: Guideline = findViewById(R.id.guideline1)
+        val guideline2: Guideline = findViewById(R.id.guideline2)
         val guideline3: Guideline = findViewById(R.id.guideline3)
         val chartEnable = prefs.getBoolean("chart_enable", true)
         if(chartEnable){
+            lineChart.visibility = View.VISIBLE
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                // 세로 방향
+                guideline1.setGuidelinePercent(0.3f)
+                guideline2.setGuidelinePercent(0.45f)
+                guideline3.setGuidelinePercent(0.6f)
+                val directionText: TextView = findViewById(R.id.screen_direction)
+                val params = directionText.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = guideline1.id
+                params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                params.bottomToTop = guideline2.id
+                directionText.layoutParams = params
+            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // 가로 방향
+                guideline1.setGuidelinePercent(0.4f)
+                guideline2.setGuidelinePercent(0.85f)
+                guideline3.setGuidelinePercent(0.5f)
+                val directionText: TextView = findViewById(R.id.screen_direction)
+                val params = directionText.layoutParams as ConstraintLayout.LayoutParams
+                params.topToBottom = guideline3.id
+                params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                params.endToStart = guideline1.id
+                params.bottomToTop = guideline2.id
+                directionText.layoutParams = params
+            }
             val thread = GraphThread(lineChart, baseContext)
             thread.start()
         }
-        else{
+        else {
             lineChart.visibility = View.GONE
-            guideline3.visibility = View.GONE
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                // 세로 방향
+                guideline1.setGuidelinePercent(0.4f)
+                guideline2.setGuidelinePercent(0.6f)
+                guideline3.setGuidelinePercent(0.9f)
+                val directionText: TextView = findViewById(R.id.screen_direction)
+                val params = directionText.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = guideline1.id
+                params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                params.bottomToTop = guideline2.id
+                directionText.layoutParams = params
+            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // 가로 방향
+                Log.d("single", "가로")
+                val guideline: Guideline = findViewById(R.id.guideline)
+                guideline1.setGuidelinePercent(0.4f)
+                guideline2.setGuidelinePercent(0.8f)
+                guideline3.setGuidelinePercent(0.75f)
+
+                val directionText: TextView = findViewById(R.id.screen_direction)
+                val params = directionText.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = guideline.id
+                params.startToStart = ConstraintLayout.LayoutParams.UNSET
+                params.startToEnd = guideline1.id
+                params.endToStart = ConstraintLayout.LayoutParams.UNSET
+                params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                params.bottomToTop = guideline3.id
+                directionText.layoutParams = params
+            }
         }
 
 

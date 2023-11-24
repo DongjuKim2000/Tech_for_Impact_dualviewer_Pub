@@ -45,10 +45,17 @@ class PreferencesActivity : AppCompatActivity(),
             nsUrlPreference?.setOnPreferenceClickListener {
                 // 새로운 액티비티 시작
 //                var editor = prefs.edit()
+//                editor.remove("ns_url")
+//                editor.apply()
 //                editor.putString("ns_url", "defaultURL")
 //                editor.apply()
+                prefs.edit().clear().apply()
+                bgprefs.edit().clear().apply()
+
                 val intent = Intent(activity, StartURLActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
+//                activity?.finish()
                 true // 이벤트 처리 완료
             }
 

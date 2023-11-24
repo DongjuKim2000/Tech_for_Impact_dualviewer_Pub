@@ -2,10 +2,7 @@ package com.nightscout.nightviewer
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +10,6 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu

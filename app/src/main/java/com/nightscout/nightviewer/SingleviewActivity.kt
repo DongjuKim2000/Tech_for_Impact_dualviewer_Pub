@@ -66,8 +66,7 @@ class SingleviewActivity : CommonActivity() {
                         reconnected = true }
                     catch(e:Exception){
                         reconnected = false
-//                        showErrorMessage(this@SingleviewActivity, "인터넷 연결이 안되어 있습니다")
-                        Log.e("singleview", "Exception: ${e.message}", e)
+                        showErrorMessage(this@SingleviewActivity, "인터넷 연결이 안되어 있습니다")
                     }
                 }
             }
@@ -220,7 +219,7 @@ class SingleviewActivity : CommonActivity() {
             lineChart.visibility = View.GONE
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 // 세로 방향
-                guideline1.setGuidelinePercent(0.45f)
+                guideline1.setGuidelinePercent(0.4f)
                 guideline2.setGuidelinePercent(0.6f)
                 guideline3.setGuidelinePercent(0.9f)
                 val directionText: TextView = findViewById(R.id.screen_direction)
@@ -234,19 +233,19 @@ class SingleviewActivity : CommonActivity() {
                 // 가로 방향
                 Log.d("single", "가로")
                 val guideline: Guideline = findViewById(R.id.guideline)
-                guideline1.setGuidelinePercent(0.5f)
-                guideline2.setGuidelinePercent(0.85f)
-                guideline3.setGuidelinePercent(0.5f)
+                guideline1.setGuidelinePercent(0.4f)
+                guideline2.setGuidelinePercent(0.8f)
+                guideline3.setGuidelinePercent(0.75f)
 
                 val directionText: TextView = findViewById(R.id.screen_direction)
-//                val params = directionText.layoutParams as ConstraintLayout.LayoutParams
-//                params.topToTop = guideline.id
-//                params.startToEnd = guideline1.id
-//                params.topToTop = ConstraintLayout.LayoutParams
-//                params.startToEnd = ConstraintLayout.LayoutParams.UNSET
-//                params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-//                params.bottomToTop = guideline3.id
-//                directionText.layoutParams = params
+                val params = directionText.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = guideline.id
+                params.startToStart = ConstraintLayout.LayoutParams.UNSET
+                params.startToEnd = guideline1.id
+                params.endToStart = ConstraintLayout.LayoutParams.UNSET
+                params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                params.bottomToTop = guideline3.id
+                directionText.layoutParams = params
             }
         }
 
