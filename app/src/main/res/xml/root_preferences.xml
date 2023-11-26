@@ -165,7 +165,7 @@
         <EditTextPreference
             app:key="chartlinewidth"
             app:title="@string/string_chartlinewidth"
-            app:defaultValue="1"/>
+            app:defaultValue="0.5"/>
 
         <SwitchPreference
             app:key="chart_xaxis_enable"

@@ -103,7 +103,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         val BGpointSize = prefs.getString("chartbgpointsize", "4")
         val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
         val urgentLineColor = prefs.getString("chartlinecolorurgenthighlow", "#FCFF0000")
-        val chartLineWidth = prefs.getString("chartlinewidth", "1")
+        val chartLineWidth = prefs.getString("chartlinewidth", "0.3")
         val xaxisEnable = prefs.getBoolean("xaxis_enable", true)
         val chartBGMax = prefs.getString("chartBG_max", "400")
         val chartBGMin = prefs.getString("chartBG_min", "40")
@@ -113,7 +113,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
                 Color.argb(0, 0, 0, 0)
             else
                 Color.WHITE //그래프 선 색
-            lineWidth = chartLineWidth?.toFloat() ?: 0f
+            lineWidth = chartLineWidth?.toFloat() ?: 0.3f
             valueTextSize = 0f //값 출력 안되도록
             setCircleColor(Color.WHITE)
             circleHoleColor = Color.WHITE

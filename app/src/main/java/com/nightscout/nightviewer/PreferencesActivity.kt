@@ -44,11 +44,6 @@ class PreferencesActivity : AppCompatActivity(),
 
             nsUrlPreference?.setOnPreferenceClickListener {
                 // 새로운 액티비티 시작
-//                var editor = prefs.edit()
-//                editor.remove("ns_url")
-//                editor.apply()
-//                editor.putString("ns_url", "defaultURL")
-//                editor.apply()
                 prefs.edit().clear().apply()
                 bgprefs.edit().clear().apply()
                 url_text = "defaultURL"
@@ -67,22 +62,22 @@ class PreferencesActivity : AppCompatActivity(),
 
             val numberPreference1: EditTextPreference? = findPreference("urgent_high_value")
             numberPreference1?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             val numberPreference2: EditTextPreference? = findPreference("high_value")
             numberPreference2?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             val numberPreference3: EditTextPreference? = findPreference("low_value")
             numberPreference3?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             val numberPreference4: EditTextPreference? = findPreference("urgent_low_value")
             numberPreference4?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             numberPreference1?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
@@ -131,23 +126,23 @@ class PreferencesActivity : AppCompatActivity(),
 
             val numberPreference8: EditTextPreference? = findPreference("chartbgpointsize")
             numberPreference8?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
 
             val numberPreference9: EditTextPreference? = findPreference("chartlinewidth")
             numberPreference9?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             val numberPreference10: EditTextPreference? = findPreference("chartBG_max")
             numberPreference10?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             val numberPreference11: EditTextPreference? = findPreference("chartBG_min")
             numberPreference11?.setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
 
             val numberPreference12: EditTextPreference? = findPreference("limitlinewidth")
@@ -203,7 +198,7 @@ class PreferencesActivity : AppCompatActivity(),
         val chartlinecolorhighlow = pref.getString("chartlinecolorhighlow", "#FCFFFF00")
         val chartlinecolorurgenthighlow = pref.getString("chartlinecolorurgenthighlow", "#FCFF0000")
         val limitlinewidth = pref.getString("limitlinewidth", "1")
-        val chartlinewidth = pref.getString("chartlinewidth", "1")
+        val chartlinewidth = pref.getString("chartlinewidth", "0.3")
         val xaxis_enable = pref.getBoolean("chart_xaxis_enable", true)
         val chartBGMax = pref.getString("chartBG_max", "400")
         val chartBGMin = pref.getString("chartBG_min", "40")

@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -231,7 +230,6 @@ class SingleviewActivity : CommonActivity() {
                 directionText.layoutParams = params
             } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 // 가로 방향
-                Log.d("single", "가로")
                 val guideline: Guideline = findViewById(R.id.guideline)
                 guideline1.setGuidelinePercent(0.4f)
                 guideline2.setGuidelinePercent(0.8f)
