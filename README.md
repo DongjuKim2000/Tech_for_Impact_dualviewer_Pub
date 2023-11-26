@@ -26,7 +26,8 @@ apk 사용방법
 - 저혈당, 고혈당 진입시 울리는 진동과 알림도 on, off 가능합니다
 - 입력된 url을 변경하고 싶은 경우 nightscout 주소 재설정 버튼을 터치하시면 됩니다
 ### 주의사항
-혈당을 받아오는 사이트 중 nightscoutpro와 railway만 적용 가능합니다.
+혈당을 받아오는 사이트 중 nightscoutpro에만 적용 가능합니다.
+만약 authorazation(token) 없이 정보를 확인 할 수 없다면, 사용 불가능합니다.
 인터넷 연결상태를 상시 확인해주세요.
 ### 파일 설명
 BG.kt: 혈당 데이터의 형식을 저장합니다.
@@ -102,7 +103,8 @@ Settings(Preferences)
 - To change the entered URL, touch the reset Nightscout address button.
 
 ## Notes
-The app currently supports Nightscoutpro and railway sites only.
+The app currently supports Nightscoutpro only.
+If you can not check data without authorazation(token), this app is not available.
 Please ensure a stable internet connection.
 
 ## File Descriptions
