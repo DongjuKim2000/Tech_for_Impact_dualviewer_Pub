@@ -56,7 +56,8 @@
     <string name="string_chartbgpointsize">혈당포인트 크기</string>
     <string name="string_chartlinecolorhighlow">고저혈당 색상</string>
     <string name="string_chartlinecolorurgenthighlow">위험고저혈당 색상</string>
-    <string name="string_chartlinewidth">선두께</string>
+    <string name="string_limitlinewidth">저/고혈당 기준선 두께</string>
+    <string name="string_chartlinewidth">그래프 선 두께</string>
     <string name="string_xaxis_enable">시간 레이블 활성화</string>
     <string name="string_chartBG_max">그래프 혈당 최댓값</string>
     <string name="string_chartBG_min">그래프 혈당 최솟값</string>

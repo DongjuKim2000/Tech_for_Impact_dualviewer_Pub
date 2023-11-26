@@ -55,7 +55,8 @@
     <string name="string_chartbgpointsize">BG Point Size</string>
     <string name="string_chartlinecolorhighlow">High|Low Color</string>
     <string name="string_chartlinecolorurgenthighlow">Urgent High|Low Color</string>
-    <string name="string_chartlinewidth">Line Width</string>
+    <string name="string_limitlinewidth">BG Limit Line Width</string>
+    <string name="string_chartlinewidth">Chart Line Width</string>
     <string name="string_xaxis_enable">Time Label Enable</string>
     <string name="string_chartBG_max">Chart BG maximum</string>
     <string name="string_chartBG_min">Chart BG minimum</string>

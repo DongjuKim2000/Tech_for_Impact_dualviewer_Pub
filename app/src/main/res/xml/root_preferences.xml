@@ -6,7 +6,6 @@
         app:title="@string/string_general">
 
 
-
         <Preference
             app:key="ns_url"
             app:title="@string/string_nsurl"
@@ -157,6 +156,11 @@
             app:entries="@array/pref_color"
             app:entryValues="@array/pref_color_code"
             app:defaultValue="#FCFF0000"/>
+
+        <EditTextPreference
+            app:key="limitlinewidth"
+            app:title="@string/string_limitlinewidth"
+            app:defaultValue="1"/>
 
         <EditTextPreference
             app:key="chartlinewidth"

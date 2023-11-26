@@ -98,6 +98,7 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         val highLimitValue = prefs.getString("high_value", "180")
         val lowLimitValue = prefs.getString("low_value", "80")
         val urgentLowValue = prefs.getString("urgent_low_value", "55")
+        val limitLineWidth = prefs.getString("limitlinewidth", "1")
 
         val BGpointSize = prefs.getString("chartbgpointsize", "4")
         val limitLineColor = prefs.getString("chartlinecolorhighlow", "#FCFFFF00")
@@ -108,13 +109,15 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
         val chartBGMin = prefs.getString("chartBG_min", "40")
 
         dataset.apply {
-            color = Color.WHITE //그래프 선 색
-            lineWidth = 0f
+            color = if(chartLineWidth=="0")
+                Color.argb(0, 0, 0, 0)
+            else
+                Color.WHITE //그래프 선 색
+            lineWidth = chartLineWidth?.toFloat() ?: 0f
             valueTextSize = 0f //값 출력 안되도록
             setCircleColor(Color.WHITE)
             circleHoleColor = Color.WHITE
             circleRadius = BGpointSize?.toFloat() ?: 4f
-
         }
 
         lineChart.apply {
@@ -135,13 +138,13 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         //주의 혈당 기준선
         val lowLimit = LimitLine(lowLimitValue?.toFloat() ?: 80f, lowLimitValue).apply {
-            lineWidth = chartLineWidth?.toFloat() ?: 1f
+            lineWidth = limitLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(limitLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
         }
         val highLimit = LimitLine(highLimitValue?.toFloat() ?: 180f, highLimitValue).apply {
-            lineWidth = chartLineWidth?.toFloat() ?: 1f
+            lineWidth = limitLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(limitLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
@@ -149,13 +152,13 @@ class GraphThread(private val lineChart: LineChart, private val context: Context
 
         //위험 혈당 기준선
         val urgentLow = LimitLine(urgentLowValue?.toFloat() ?: 55f, urgentLowValue).apply {
-            lineWidth = chartLineWidth?.toFloat() ?: 1f
+            lineWidth = limitLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(urgentLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE
         }
         val urgentHigh = LimitLine(urgentHighValue?.toFloat() ?: 260f, urgentHighValue).apply {
-            lineWidth = chartLineWidth?.toFloat() ?: 1f
+            lineWidth = limitLineWidth?.toFloat() ?: 1f
             lineColor = Color.parseColor(urgentLineColor)
             enableDashedLine(5f, 10f, 0f)
             textColor = Color.WHITE

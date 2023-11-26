@@ -51,6 +51,7 @@ class PreferencesActivity : AppCompatActivity(),
 //                editor.apply()
                 prefs.edit().clear().apply()
                 bgprefs.edit().clear().apply()
+                url_text = "defaultURL"
 
                 val intent = Intent(activity, StartURLActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -133,6 +134,7 @@ class PreferencesActivity : AppCompatActivity(),
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
             }
 
+
             val numberPreference9: EditTextPreference? = findPreference("chartlinewidth")
             numberPreference9?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
@@ -147,6 +149,11 @@ class PreferencesActivity : AppCompatActivity(),
             numberPreference11?.setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
             }
+
+            val numberPreference12: EditTextPreference? = findPreference("limitlinewidth")
+            numberPreference12?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+            }
         }
     }
 
@@ -157,10 +164,6 @@ class PreferencesActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         saveSharedPreference()
-
-        val intent = Intent(this, SingleviewActivity::class.java)
-        startActivity(intent)
-        finish()
 
     }
     override fun onSupportNavigateUp(): Boolean {
@@ -199,6 +202,7 @@ class PreferencesActivity : AppCompatActivity(),
         val chartbgpointsize = pref.getString("chartbgpointsize", "4")
         val chartlinecolorhighlow = pref.getString("chartlinecolorhighlow", "#FCFFFF00")
         val chartlinecolorurgenthighlow = pref.getString("chartlinecolorurgenthighlow", "#FCFF0000")
+        val limitlinewidth = pref.getString("limitlinewidth", "1")
         val chartlinewidth = pref.getString("chartlinewidth", "1")
         val xaxis_enable = pref.getBoolean("chart_xaxis_enable", true)
         val chartBGMax = pref.getString("chartBG_max", "400")
@@ -233,6 +237,7 @@ class PreferencesActivity : AppCompatActivity(),
             editor.putString("chartbgpointsize", chartbgpointsize)
             editor.putString("chartlinecolorhighlow", chartlinecolorhighlow)
             editor.putString("chartlinecolorurgenthighlow", chartlinecolorurgenthighlow)
+            editor.putString("limitlineWidth", limitlinewidth)
             editor.putString("chartlinewidth", chartlinewidth)
             editor.putBoolean("xaxis_enable", xaxis_enable)
             editor.putString("chartBG_max", chartBGMax)
