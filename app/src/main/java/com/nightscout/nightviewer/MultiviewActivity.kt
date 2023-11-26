@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.lifecycle.lifecycleScope
@@ -50,20 +51,20 @@ class MultiviewActivity : CommonActivity() {
             Data_Courutine(applicationContext).dataFlow.collect { newData ->
                 // 여기에서 newData를 활용하여 화면에 업데이트
                 if (!isOnline(this@MultiviewActivity)) {
-                    showErrorMessage(this@MultiviewActivity, "인터넷 연결 X")
+                    Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
 
                     reconnected = false
                 }
                 else {
                     if (reconnected==false) {
-                        showMessage(this@MultiviewActivity, "인터넷 연결 재개")
+                        Toast.makeText(getApplicationContext(), "인터넷 연결 재개", Toast.LENGTH_SHORT).show()
                     }
 
-                    try{showinfo(newData)
-                        reconnected = true } catch(e:Exception){
-                        reconnected = false
-                        showErrorMessage(this@MultiviewActivity, "인터넷 연결이 안되어 있습니다")
+                    try{showinfo(newData)}
+                    catch(e:Exception){
+                        showErrorMessage(this@MultiviewActivity, "데이터 형식이나 주소가 잘못되었습니다.")
                     }
+                    reconnected = true
                 }
             }
         }

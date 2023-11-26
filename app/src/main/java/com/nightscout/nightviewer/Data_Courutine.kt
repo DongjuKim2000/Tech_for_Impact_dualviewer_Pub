@@ -1,6 +1,7 @@
 package com.nightscout.nightviewer
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
