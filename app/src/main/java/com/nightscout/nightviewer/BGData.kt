@@ -1,6 +1,7 @@
 package com.nightscout.nightviewer
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
@@ -16,7 +17,6 @@ class BGData(private val context: Context){
 //        Log.d("BGData.kt", "initialize 시작")
         Thread{
             val past10_EntireBGInfo = get_Past10_EntireBGInfo()
-//            Log.d("initialize", past10_EntireBGInfo.toString())
             SharedPreferencesUtil.saveBGDatas(context, past10_EntireBGInfo)
             get_EntireBGInfo()
         }.start()
@@ -53,7 +53,12 @@ class BGData(private val context: Context){
         val BGList = mutableListOf<BG>()
         // Iterate over each object and extract the specified fields
         val url = URL("${pref_urlText}/api/v1/entries.json")
-        val jsonresult = URL(url.toString()).readText()
+        var jsonresult:String = ""
+        try{
+            jsonresult = URL(url.toString()).readText()
+        }catch(e:Exception){
+            return BGList
+        }
 //        Log.d("get_past10", "${jsonresult}")
 
 
